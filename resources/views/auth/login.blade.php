@@ -40,7 +40,6 @@
         <div class="bg-white rounded-2xl border border-[#E2E8F0] shadow-sm p-8 space-y-6">
             <div>
                 <h2 class="text-lg font-bold text-[#1C2434]">Masuk ke Akun Anda</h2>
-                <p class="text-xs text-slate-500 mt-0.5">Masukkan email dan kata sandi untuk mengakses dashboard HR.</p>
             </div>
 
             <!-- Flash Error -->
@@ -61,13 +60,23 @@
             @endif
 
             @if (session('success'))
-                <div
-                    class="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-medium flex items-center gap-2">
-                    <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor"
-                        viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <span>{{ session('success') }}</span>
+                <div id="flash-success"
+                    class="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-medium flex items-center justify-between gap-2 transition-all duration-500 ease-in-out">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
+                            </path>
+                        </svg>
+                        <span>{{ session('success') }}</span>
+                    </div>
+                    <button type="button" onclick="dismissAlert('flash-success')"
+                        class="text-emerald-700 hover:text-emerald-950 p-0.5 rounded-sm">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
                 </div>
             @endif
 
@@ -137,11 +146,29 @@
                 </button>
             </form>
         </div>
-
-        <p class="text-center text-xs text-slate-400 mt-6">
-            &copy; {{ date('Y') }} SI-KONTRAK &bull; TailAdmin Dashboard Edition
-        </p>
     </div>
+
+    <script>
+        function dismissAlert(elementId) {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+            el.style.transition = 'all 0.5s ease-out';
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(-8px)';
+            setTimeout(() => {
+                el.remove();
+            }, 500);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const flashSuccess = document.getElementById('flash-success');
+            if (flashSuccess) {
+                setTimeout(() => {
+                    dismissAlert('flash-success');
+                }, 4000);
+            }
+        });
+    </script>
 </body>
 
 </html>
