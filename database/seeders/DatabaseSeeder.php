@@ -15,11 +15,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // 1. Super Admin Account
+        User::factory()->admin()->create([
+            'name' => 'Super Admin',
+            'email' => 'admin@example.com',
+        ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        // 2. Staff HRD Account
+        User::factory()->staff()->create([
+            'name' => 'Staff HRD',
+            'email' => 'hr@example.com',
+        ]);
+
+        $this->call([
+            EmployeeSeeder::class,
         ]);
     }
 }
