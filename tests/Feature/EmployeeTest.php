@@ -29,7 +29,7 @@ class EmployeeTest extends TestCase
 
         $response->assertOk();
         $response->assertSee('Pencatatan Karyawan Kontrak');
-        $response->assertSee('Total Karyawan');
+        $response->assertSee('Tambah Karyawan');
     }
 
     public function test_employees_index_url_renders_employees(): void

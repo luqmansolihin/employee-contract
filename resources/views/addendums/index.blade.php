@@ -19,11 +19,6 @@
                     Arsip resmi seluruh amandemen, penyesuaian gaji/jabatan, dan perpanjangan kontrak karyawan.
                 </p>
             </div>
-
-            <div class="text-right text-xs">
-                <span class="text-slate-400 block">Total Diterbitkan:</span>
-                <span class="text-lg font-bold text-[#1C2434]">{{ $totalCount }} Adendum</span>
-            </div>
         </div>
 
         <!-- Search Bar -->

@@ -31,46 +31,10 @@
             </div>
         </div>
 
-        <!-- KPI Tipe Kontrak Cards -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <a href="{{ route('contracts.index') }}"
-                class="p-4 rounded-2xl bg-white border border-[#E2E8F0] shadow-xs hover:border-[#3C50E0] transition {{ !request('type') ? 'ring-2 ring-[#3C50E0]' : '' }}">
-                <p class="text-xs font-medium text-slate-400">Semua Kontrak</p>
-                <h3 class="text-2xl font-bold text-[#1C2434] mt-1">{{ $counts['total'] }}</h3>
-            </a>
-
-            <a href="{{ route('contracts.index', ['type' => 'PKWT']) }}"
-                class="p-4 rounded-2xl bg-white border border-[#E2E8F0] shadow-xs hover:border-indigo-500 transition {{ request('type') === 'PKWT' ? 'ring-2 ring-indigo-500' : '' }}">
-                <div class="flex items-center justify-between">
-                    <p class="text-xs font-medium text-indigo-500">PKWT</p>
-                    <span class="text-[10px] text-indigo-400 font-semibold">Waktu Tertentu</span>
-                </div>
-                <h3 class="text-2xl font-bold text-indigo-700 mt-1">{{ $counts['pkwt'] }}</h3>
-            </a>
-
-            <a href="{{ route('contracts.index', ['type' => 'MT']) }}"
-                class="p-4 rounded-2xl bg-white border border-[#E2E8F0] shadow-xs hover:border-purple-500 transition {{ request('type') === 'MT' ? 'ring-2 ring-purple-500' : '' }}">
-                <div class="flex items-center justify-between">
-                    <p class="text-xs font-medium text-purple-500">MT</p>
-                    <span class="text-[10px] text-purple-400 font-semibold">Management Trainee</span>
-                </div>
-                <h3 class="text-2xl font-bold text-purple-700 mt-1">{{ $counts['mt'] }}</h3>
-            </a>
-
-            <a href="{{ route('contracts.index', ['type' => 'MAGANG']) }}"
-                class="p-4 rounded-2xl bg-white border border-[#E2E8F0] shadow-xs hover:border-amber-500 transition {{ request('type') === 'MAGANG' ? 'ring-2 ring-amber-500' : '' }}">
-                <div class="flex items-center justify-between">
-                    <p class="text-xs font-medium text-amber-500">MAGANG</p>
-                    <span class="text-[10px] text-amber-400 font-semibold">Internship</span>
-                </div>
-                <h3 class="text-2xl font-bold text-amber-700 mt-1">{{ $counts['magang'] }}</h3>
-            </a>
-        </div>
-
         <!-- Filter & Search Bar -->
         <div
-            class="p-4 rounded-2xl bg-white border border-[#E2E8F0] shadow-xs flex flex-col sm:flex-row items-center justify-between gap-4">
-            <form action="{{ route('contracts.index') }}" method="GET" class="w-full sm:w-80 relative">
+            class="p-4 rounded-2xl bg-white border border-[#E2E8F0] shadow-xs flex flex-col xl:flex-row xl:items-center justify-between gap-4">
+            <form action="{{ route('contracts.index') }}" method="GET" class="w-full xl:w-80 relative">
                 @if (request('type'))
                     <input type="hidden" name="type" value="{{ request('type') }}">
                 @endif
@@ -88,24 +52,50 @@
                     class="w-full pl-9 pr-4 py-2 text-xs rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
             </form>
 
-            <div class="flex items-center gap-2">
-                <span class="text-xs text-slate-400">Filter Status:</span>
-                <a href="{{ route('contracts.index', array_merge(request()->query(), ['status' => null])) }}"
-                    class="px-2.5 py-1 text-xs rounded-lg {{ !request('status') ? 'bg-[#1C2434] text-white font-semibold' : 'text-slate-600 hover:bg-slate-100' }}">
-                    Semua
-                </a>
-                <a href="{{ route('contracts.index', array_merge(request()->query(), ['status' => 'active'])) }}"
-                    class="px-2.5 py-1 text-xs rounded-lg {{ request('status') === 'active' ? 'bg-emerald-600 text-white font-semibold' : 'text-slate-600 hover:bg-slate-100' }}">
-                    Aktif
-                </a>
-                <a href="{{ route('contracts.index', array_merge(request()->query(), ['status' => 'expiring_soon'])) }}"
-                    class="px-2.5 py-1 text-xs rounded-lg {{ request('status') === 'expiring_soon' ? 'bg-amber-500 text-white font-semibold' : 'text-slate-600 hover:bg-slate-100' }}">
-                    Segera Habis
-                </a>
-                <a href="{{ route('contracts.index', array_merge(request()->query(), ['status' => 'expired'])) }}"
-                    class="px-2.5 py-1 text-xs rounded-lg {{ request('status') === 'expired' ? 'bg-rose-600 text-white font-semibold' : 'text-slate-600 hover:bg-slate-100' }}">
-                    Expired
-                </a>
+            <div class="flex flex-wrap items-center gap-4">
+                <!-- Filter Jenis Kontrak -->
+                <div class="flex items-center gap-1.5">
+                    <span class="text-xs text-slate-400 mr-1">Tipe:</span>
+                    <a href="{{ route('contracts.index', array_merge(request()->query(), ['type' => null])) }}"
+                        class="px-2.5 py-1 text-xs rounded-lg transition {{ !request('type') ? 'bg-[#1C2434] text-white font-semibold' : 'text-slate-600 hover:bg-slate-100' }}">
+                        Semua
+                    </a>
+                    <a href="{{ route('contracts.index', array_merge(request()->query(), ['type' => 'PKWT'])) }}"
+                        class="px-2.5 py-1 text-xs rounded-lg transition {{ request('type') === 'PKWT' ? 'bg-indigo-600 text-white font-semibold' : 'text-slate-600 hover:bg-slate-100' }}">
+                        PKWT
+                    </a>
+                    <a href="{{ route('contracts.index', array_merge(request()->query(), ['type' => 'MT'])) }}"
+                        class="px-2.5 py-1 text-xs rounded-lg transition {{ request('type') === 'MT' ? 'bg-purple-600 text-white font-semibold' : 'text-slate-600 hover:bg-slate-100' }}">
+                        MT
+                    </a>
+                    <a href="{{ route('contracts.index', array_merge(request()->query(), ['type' => 'MAGANG'])) }}"
+                        class="px-2.5 py-1 text-xs rounded-lg transition {{ request('type') === 'MAGANG' ? 'bg-amber-600 text-white font-semibold' : 'text-slate-600 hover:bg-slate-100' }}">
+                        Magang
+                    </a>
+                </div>
+
+                <div class="hidden sm:block w-[1px] h-5 bg-[#E2E8F0]"></div>
+
+                <!-- Filter Status -->
+                <div class="flex items-center gap-1.5">
+                    <span class="text-xs text-slate-400 mr-1">Status:</span>
+                    <a href="{{ route('contracts.index', array_merge(request()->query(), ['status' => null])) }}"
+                        class="px-2.5 py-1 text-xs rounded-lg transition {{ !request('status') ? 'bg-[#1C2434] text-white font-semibold' : 'text-slate-600 hover:bg-slate-100' }}">
+                        Semua
+                    </a>
+                    <a href="{{ route('contracts.index', array_merge(request()->query(), ['status' => 'active'])) }}"
+                        class="px-2.5 py-1 text-xs rounded-lg transition {{ request('status') === 'active' ? 'bg-emerald-600 text-white font-semibold' : 'text-slate-600 hover:bg-slate-100' }}">
+                        Aktif
+                    </a>
+                    <a href="{{ route('contracts.index', array_merge(request()->query(), ['status' => 'expiring_soon'])) }}"
+                        class="px-2.5 py-1 text-xs rounded-lg transition {{ request('status') === 'expiring_soon' ? 'bg-amber-500 text-white font-semibold' : 'text-slate-600 hover:bg-slate-100' }}">
+                        Segera Habis
+                    </a>
+                    <a href="{{ route('contracts.index', array_merge(request()->query(), ['status' => 'expired'])) }}"
+                        class="px-2.5 py-1 text-xs rounded-lg transition {{ request('status') === 'expired' ? 'bg-rose-600 text-white font-semibold' : 'text-slate-600 hover:bg-slate-100' }}">
+                        Expired
+                    </a>
+                </div>
             </div>
         </div>
 

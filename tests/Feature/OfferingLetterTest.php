@@ -35,7 +35,7 @@ class OfferingLetterTest extends TestCase
 
         $response->assertOk();
         $response->assertSee('Surat Penawaran Kerja (Offering Letter)');
-        $response->assertSee('Total Penawaran');
+        $response->assertSee('Filter Status:');
     }
 
     public function test_can_render_create_offering_letter_page(): void

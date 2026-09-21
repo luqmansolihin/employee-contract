@@ -31,37 +31,10 @@
             </div>
         </div>
 
-        <!-- KPI Status Cards -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <a href="{{ route('offering-letters.index') }}"
-                class="p-4 rounded-2xl bg-white border border-[#E2E8F0] shadow-xs hover:border-[#3C50E0] transition group {{ !request('status') ? 'ring-2 ring-[#3C50E0]' : '' }}">
-                <p class="text-xs font-medium text-slate-400">Total Penawaran</p>
-                <h3 class="text-2xl font-bold text-[#1C2434] mt-1">{{ $counts['total'] }}</h3>
-            </a>
-
-            <a href="{{ route('offering-letters.index', ['status' => 'draft']) }}"
-                class="p-4 rounded-2xl bg-white border border-[#E2E8F0] shadow-xs hover:border-slate-500 transition group {{ request('status') === 'draft' ? 'ring-2 ring-slate-400' : '' }}">
-                <p class="text-xs font-medium text-slate-500">Draft</p>
-                <h3 class="text-2xl font-bold text-slate-700 mt-1">{{ $counts['draft'] }}</h3>
-            </a>
-
-            <a href="{{ route('offering-letters.index', ['status' => 'sent']) }}"
-                class="p-4 rounded-2xl bg-white border border-[#E2E8F0] shadow-xs hover:border-blue-500 transition group {{ request('status') === 'sent' ? 'ring-2 ring-blue-500' : '' }}">
-                <p class="text-xs font-medium text-blue-500">Terkirim</p>
-                <h3 class="text-2xl font-bold text-blue-700 mt-1">{{ $counts['sent'] }}</h3>
-            </a>
-
-            <a href="{{ route('offering-letters.index', ['status' => 'accepted']) }}"
-                class="p-4 rounded-2xl bg-white border border-[#E2E8F0] shadow-xs hover:border-emerald-500 transition group {{ request('status') === 'accepted' ? 'ring-2 ring-emerald-500' : '' }}">
-                <p class="text-xs font-medium text-emerald-500">Diterima (Accepted)</p>
-                <h3 class="text-2xl font-bold text-emerald-700 mt-1">{{ $counts['accepted'] }}</h3>
-            </a>
-        </div>
-
         <!-- Filter & Search Bar -->
         <div
-            class="p-4 rounded-2xl bg-white border border-[#E2E8F0] shadow-xs flex flex-col sm:flex-row items-center justify-between gap-4">
-            <form action="{{ route('offering-letters.index') }}" method="GET" class="w-full sm:w-80 relative">
+            class="p-4 rounded-2xl bg-white border border-[#E2E8F0] shadow-xs flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <form action="{{ route('offering-letters.index') }}" method="GET" class="w-full lg:w-80 relative">
                 @if (request('status'))
                     <input type="hidden" name="status" value="{{ request('status') }}">
                 @endif
@@ -76,8 +49,28 @@
                     class="w-full pl-9 pr-4 py-2 text-xs rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
             </form>
 
-            <div class="text-xs text-slate-400">
-                Menampilkan {{ $offeringLetters->total() }} surat penawaran
+            <div class="flex flex-wrap items-center gap-2">
+                <span class="text-xs text-slate-400 mr-1">Filter Status:</span>
+                <a href="{{ route('offering-letters.index', array_merge(request()->query(), ['status' => null])) }}"
+                    class="px-2.5 py-1 text-xs rounded-lg transition {{ !request('status') ? 'bg-[#1C2434] text-white font-semibold' : 'text-slate-600 hover:bg-slate-100' }}">
+                    Semua
+                </a>
+                <a href="{{ route('offering-letters.index', array_merge(request()->query(), ['status' => 'draft'])) }}"
+                    class="px-2.5 py-1 text-xs rounded-lg transition {{ request('status') === 'draft' ? 'bg-slate-600 text-white font-semibold' : 'text-slate-600 hover:bg-slate-100' }}">
+                    Draft
+                </a>
+                <a href="{{ route('offering-letters.index', array_merge(request()->query(), ['status' => 'sent'])) }}"
+                    class="px-2.5 py-1 text-xs rounded-lg transition {{ request('status') === 'sent' ? 'bg-[#3C50E0] text-white font-semibold' : 'text-slate-600 hover:bg-slate-100' }}">
+                    Terkirim
+                </a>
+                <a href="{{ route('offering-letters.index', array_merge(request()->query(), ['status' => 'accepted'])) }}"
+                    class="px-2.5 py-1 text-xs rounded-lg transition {{ request('status') === 'accepted' ? 'bg-emerald-600 text-white font-semibold' : 'text-slate-600 hover:bg-slate-100' }}">
+                    Diterima
+                </a>
+                <a href="{{ route('offering-letters.index', array_merge(request()->query(), ['status' => 'rejected'])) }}"
+                    class="px-2.5 py-1 text-xs rounded-lg transition {{ request('status') === 'rejected' ? 'bg-rose-600 text-white font-semibold' : 'text-slate-600 hover:bg-slate-100' }}">
+                    Ditolak
+                </a>
             </div>
         </div>
 
@@ -149,8 +142,7 @@
                                         <a href="{{ route('offering-letters.print', $ol) }}" target="_blank"
                                             class="p-1.5 rounded-lg text-[#8A99AD] hover:text-emerald-600 hover:bg-emerald-50 transition"
                                             title="Cetak Surat Penawaran">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z">
                                                 </path>
