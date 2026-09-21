@@ -41,7 +41,7 @@ class LoginController extends Controller
 
             return redirect()
                 ->intended(route('employees.index'))
-                ->with('success', 'Selamat datang kembali, ' . Auth::user()->name . '!');
+                ->with('success', 'Selamat datang kembali, '.Auth::user()->name.'!');
         }
 
         return back()

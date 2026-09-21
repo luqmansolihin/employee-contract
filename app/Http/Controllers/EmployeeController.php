@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
 use App\Models\Employee;
+use App\Services\LetterNumberService;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -75,25 +76,43 @@ class EmployeeController extends Controller
                 'birth_place' => $request->birth_place,
                 'birth_date' => $request->birth_date,
                 'address' => $request->address,
+                'email' => $request->email,
+                'phone' => $request->phone,
                 'first_join_date' => $request->join_date,
                 'current_position' => $request->position,
                 'current_branch' => $request->branch,
                 'current_contract_end_date' => $request->contract_end_date,
             ]);
 
-            $employee->contracts()->create([
-                'contract_sequence' => 1,
-                'contract_number' => $request->contract_number,
-                'position' => $request->position,
-                'branch' => $request->branch,
-                'start_date' => $request->join_date,
-                'end_date' => $request->contract_end_date,
-                'status' => 'active',
-                'notes' => $request->notes,
-            ]);
+            // If initial contract dates provided, generate initial contract
+            if ($request->filled('contract_end_date')) {
+                $contractType = $request->input('contract_type', 'PKWT');
+                $contractNumber = $request->filled('contract_number')
+                    ? $request->contract_number
+                    : LetterNumberService::generateContractNumber($contractType, Carbon::parse($request->join_date));
+
+                $employee->contracts()->create([
+                    'contract_sequence' => 1,
+                    'contract_number' => $contractNumber,
+                    'contract_type' => $contractType,
+                    'position' => $request->position,
+                    'branch' => $request->branch,
+                    'start_date' => $request->join_date,
+                    'end_date' => $request->contract_end_date,
+                    'status' => 'active',
+                    'notes' => $request->notes,
+                ]);
+            }
 
             return $employee;
         });
+
+        // If user specifically requested to create offering letter next
+        if ($request->input('next_action') === 'offering' || ! $request->filled('contract_end_date')) {
+            return redirect()
+                ->route('offering-letters.create', $employee)
+                ->with('success', "Data karyawan {$employee->name} berhasil disimpan. Silakan lanjutkan dengan menerbitkan Surat Penawaran (Offering Letter).");
+        }
 
         return redirect()
             ->route('employees.show', $employee)
@@ -105,7 +124,11 @@ class EmployeeController extends Controller
      */
     public function show(Employee $employee): View
     {
-        $employee->load(['contracts']);
+        $employee->load([
+            'contracts' => fn($q) => $q->with(['addendums', 'offeringLetter'])->orderBy('contract_sequence', 'desc'),
+            'offeringLetters' => fn($q) => $q->with('contract')->orderBy('offer_date', 'desc'),
+            'addendums' => fn($q) => $q->with('contract')->orderBy('issue_date', 'desc'),
+        ]);
 
         return view('employees.show', compact('employee'));
     }

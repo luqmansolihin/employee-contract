@@ -87,6 +87,33 @@
                         @enderror
                     </div>
 
+                    <!-- Email & No Telepon -->
+                    <div>
+                        <label for="email"
+                            class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                            Email Karyawan <span class="text-slate-400 font-normal">(Opsional)</span>
+                        </label>
+                        <input type="email" name="email" id="email" value="{{ old('email') }}"
+                            placeholder="nama@email.com"
+                            class="w-full px-4 py-2.5 text-sm rounded-lg border border-[#E2E8F0] focus:border-[#3C50E0] focus:ring-2 focus:ring-[#3C50E0]/20 outline-hidden transition bg-white">
+                        @error('email')
+                            <p class="text-xs text-rose-600 mt-1 font-medium">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="phone"
+                            class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                            No. Telepon / WhatsApp <span class="text-slate-400 font-normal">(Opsional)</span>
+                        </label>
+                        <input type="text" name="phone" id="phone" value="{{ old('phone') }}"
+                            placeholder="Contoh: 081234567890"
+                            class="w-full px-4 py-2.5 text-sm rounded-lg border border-[#E2E8F0] focus:border-[#3C50E0] focus:ring-2 focus:ring-[#3C50E0]/20 outline-hidden transition bg-white">
+                        @error('phone')
+                            <p class="text-xs text-rose-600 mt-1 font-medium">{{ $message }}</p>
+                        @enderror
+                    </div>
+
                     <!-- Tempat Lahir -->
                     <div>
                         <label for="birth_place"
@@ -146,15 +173,33 @@
                 </div>
 
                 <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <!-- Tipe Kontrak -->
+                    <div class="md:col-span-2">
+                        <label for="contract_type"
+                            class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                            Tipe Kontrak Kerja
+                        </label>
+                        <select name="contract_type" id="contract_type"
+                            class="w-full px-4 py-2.5 text-sm rounded-lg border border-[#E2E8F0] focus:border-[#3C50E0] focus:ring-2 focus:ring-[#3C50E0]/20 outline-hidden transition bg-white">
+                            <option value="PKWT" {{ old('contract_type') === 'PKWT' ? 'selected' : '' }}>PKWT
+                                (Perjanjian Kerja Waktu Tertentu)</option>
+                            <option value="MT" {{ old('contract_type') === 'MT' ? 'selected' : '' }}>MT (Management
+                                Trainee)</option>
+                            <option value="MAGANG" {{ old('contract_type') === 'MAGANG' ? 'selected' : '' }}>MAGANG
+                                (Internship / Pemagangan)</option>
+                        </select>
+                    </div>
+
                     <!-- Nomor Kontrak / PKWT -->
                     <div class="md:col-span-2">
                         <label for="contract_number"
                             class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                            Nomor Surat Kontrak / PKWT <span class="text-slate-400 font-normal">(Opsional)</span>
+                            Nomor Surat Kontrak / PKWT <span class="text-slate-400 font-normal">(Opsional - Otomatis bila
+                                dikosongkan)</span>
                         </label>
                         <input type="text" name="contract_number" id="contract_number"
-                            value="{{ old('contract_number') }}" placeholder="Contoh: 001/HRD-PKWT/I/2026"
-                            class="w-full px-4 py-2.5 text-sm rounded-lg border border-[#E2E8F0] focus:border-[#3C50E0] focus:ring-2 focus:ring-[#3C50E0]/20 outline-hidden transition bg-white">
+                            value="{{ old('contract_number') }}" placeholder="Contoh: 001/IX/2026/PKWT"
+                            class="w-full px-4 py-2.5 text-sm rounded-lg border border-[#E2E8F0] focus:border-[#3C50E0] focus:ring-2 focus:ring-[#3C50E0]/20 outline-hidden transition bg-white font-mono">
                         @error('contract_number')
                             <p class="text-xs text-rose-600 mt-1 font-medium">{{ $message }}</p>
                         @enderror
@@ -249,18 +294,32 @@
             </div>
 
             <!-- Submit & Actions -->
-            <div class="flex items-center justify-end gap-3 pt-2">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
                 <a href="{{ route('employees.index') }}"
-                    class="px-5 py-2.5 text-sm font-semibold rounded-lg border border-[#E2E8F0] text-slate-700 hover:bg-[#F7F9FC] transition bg-white shadow-xs">
+                    class="px-5 py-2.5 text-sm font-semibold rounded-lg border border-[#E2E8F0] text-slate-700 hover:bg-[#F7F9FC] transition bg-white shadow-xs w-full sm:w-auto text-center">
                     Batal
                 </a>
-                <button type="submit"
-                    class="px-6 py-2.5 text-sm font-semibold rounded-lg bg-[#3C50E0] text-white hover:bg-[#2F40BD] shadow-sm transition flex items-center gap-2">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <span>Simpan Karyawan Baru</span>
-                </button>
+
+                <div class="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto justify-end">
+                    <button type="submit" name="next_action" value="offering"
+                        class="px-5 py-2.5 text-sm font-semibold rounded-lg border border-[#3C50E0] text-[#3C50E0] hover:bg-[#3C50E0]/10 transition flex items-center justify-center gap-2 w-full sm:w-auto">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                            </path>
+                        </svg>
+                        <span>Simpan & Buat Offering Letter &rarr;</span>
+                    </button>
+
+                    <button type="submit" name="next_action" value="contract"
+                        class="px-6 py-2.5 text-sm font-semibold rounded-lg bg-[#3C50E0] text-white hover:bg-[#2F40BD] shadow-sm transition flex items-center justify-center gap-2 w-full sm:w-auto">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
+                            </path>
+                        </svg>
+                        <span>Simpan & Terbitkan Kontrak</span>
+                    </button>
+                </div>
             </div>
         </form>
     </div>

@@ -26,6 +26,8 @@ class Employee extends Model
         'birth_place',
         'birth_date',
         'address',
+        'email',
+        'phone',
         'first_join_date',
         'current_position',
         'current_branch',
@@ -47,6 +49,22 @@ class Employee extends Model
     }
 
     /**
+     * Relationship: All offering letters of the employee.
+     */
+    public function offeringLetters(): HasMany
+    {
+        return $this->hasMany(OfferingLetter::class)->orderBy('offer_date', 'desc');
+    }
+
+    /**
+     * Relationship: Latest offering letter of the employee.
+     */
+    public function latestOfferingLetter(): HasOne
+    {
+        return $this->hasOne(OfferingLetter::class)->latestOfMany('offer_date');
+    }
+
+    /**
      * Relationship: All contract periods of the employee.
      */
     public function contracts(): HasMany
@@ -60,6 +78,14 @@ class Employee extends Model
     public function latestContract(): HasOne
     {
         return $this->hasOne(EmployeeContract::class)->latestOfMany('contract_sequence');
+    }
+
+    /**
+     * Relationship: All contract addendums of the employee.
+     */
+    public function addendums(): HasMany
+    {
+        return $this->hasMany(ContractAddendum::class)->orderBy('issue_date', 'desc');
     }
 
     /**
@@ -120,6 +146,16 @@ class Employee extends Model
                     default => 'bg-gray-50 text-gray-700 ring-gray-600/20 border border-gray-200',
                 };
             }
+        );
+    }
+
+    /**
+     * Get current contract type (PKWT, MT, MAGANG, or -)
+     */
+    protected function currentContractType(): Attribute
+    {
+        return Attribute::make(
+            get: fn(): string => $this->latestContract?->contract_type ?? '-'
         );
     }
 

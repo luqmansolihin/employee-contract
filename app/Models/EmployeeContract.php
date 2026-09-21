@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class EmployeeContract extends Model
 {
@@ -19,12 +21,16 @@ class EmployeeContract extends Model
      */
     protected $fillable = [
         'employee_id',
+        'offering_letter_id',
         'contract_sequence',
         'contract_number',
+        'contract_type',
         'position',
         'branch',
         'start_date',
         'end_date',
+        'basic_salary',
+        'allowance',
         'status',
         'notes',
     ];
@@ -40,6 +46,8 @@ class EmployeeContract extends Model
             'start_date' => 'date',
             'end_date' => 'date',
             'contract_sequence' => 'integer',
+            'basic_salary' => 'decimal:2',
+            'allowance' => 'decimal:2',
         ];
     }
 
@@ -49,6 +57,69 @@ class EmployeeContract extends Model
     public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class);
+    }
+
+    /**
+     * Relationship: Optional offering letter reference.
+     */
+    public function offeringLetter(): BelongsTo
+    {
+        return $this->belongsTo(OfferingLetter::class);
+    }
+
+    /**
+     * Relationship: Addendums for this contract.
+     */
+    public function addendums(): HasMany
+    {
+        return $this->hasMany(ContractAddendum::class, 'employee_contract_id')->orderBy('addendum_sequence', 'asc');
+    }
+
+    /**
+     * Relationship: Latest addendum for this contract.
+     */
+    public function latestAddendum(): HasOne
+    {
+        return $this->hasOne(ContractAddendum::class, 'employee_contract_id')->latestOfMany('addendum_sequence');
+    }
+
+    /**
+     * Badge CSS class for contract type (PKWT, MT, MAGANG).
+     */
+    protected function contractTypeBadgeClass(): Attribute
+    {
+        return Attribute::make(
+            get: fn(): string => match ($this->contract_type) {
+                'PKWT' => 'bg-indigo-50 text-indigo-700 border-indigo-200',
+                'MT' => 'bg-purple-50 text-purple-700 border-purple-200',
+                'MAGANG' => 'bg-amber-50 text-amber-700 border-amber-200',
+                default => 'bg-slate-100 text-slate-700 border-slate-200',
+            }
+        );
+    }
+
+    /**
+     * Formatted basic salary.
+     */
+    protected function formattedSalary(): Attribute
+    {
+        return Attribute::make(
+            get: fn(): ?string => $this->basic_salary !== null
+                ? 'Rp ' . number_format((float) $this->basic_salary, 0, ',', '.')
+                : null
+        );
+    }
+
+    /**
+     * Formatted allowance.
+     */
+    protected function formattedAllowance(): Attribute
+    {
+        return Attribute::make(
+            get: fn(): ?string => $this->allowance !== null
+                ? 'Rp ' . number_format((float) $this->allowance, 0, ',', '.')
+                : null
+        );
     }
 
     /**

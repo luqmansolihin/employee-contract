@@ -10,9 +10,11 @@
                 <div class="flex items-center gap-2 text-xs text-slate-400 mb-1">
                     <a href="{{ route('employees.index') }}" class="hover:text-[#3C50E0] transition">Daftar Karyawan</a>
                     <span>/</span>
-                    <span class="text-[#1C2434] font-semibold">Detail Profil</span>
+                    <span class="text-[#1C2434] font-semibold">Detail Karyawan</span>
                 </div>
-                <h1 class="text-2xl font-extrabold text-[#1C2434] tracking-tight">Detail Profil & Histori Kontrak</h1>
+                <h1 class="text-2xl font-extrabold text-[#1C2434] tracking-tight">{{ $employee->name }}</h1>
+                <p class="text-xs text-slate-500 mt-0.5">Siklus Hidup: Input Data &rarr; Offering Letter &rarr; Kontrak Kerja
+                    &rarr; Adendum Kontrak</p>
             </div>
             <div class="flex items-center gap-2 flex-wrap">
                 <a href="{{ route('employees.index') }}"
@@ -20,16 +22,40 @@
                     &larr; Kembali
                 </a>
 
-                <!-- Renew Contract Button -->
-                <a href="{{ route('employees.renew', $employee) }}"
-                    class="inline-flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-xl bg-[#3C50E0] text-white hover:bg-[#2F40BD] shadow-sm shadow-[#3C50E0]/30 transition uppercase tracking-wider">
+                <!-- Step 2: Buat Offering Letter -->
+                <a href="{{ route('offering-letters.create', $employee) }}"
+                    class="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold rounded-xl bg-blue-50 border border-blue-200 text-blue-700 hover:bg-blue-100 transition shadow-xs">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+                            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
                         </path>
                     </svg>
-                    <span>+ Perpanjang Kontrak</span>
+                    <span>+ Offering Letter</span>
                 </a>
+
+                <!-- Step 3: Terbitkan Kontrak -->
+                <a href="{{ route('contracts.create', ['employee_id' => $employee->id]) }}"
+                    class="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold rounded-xl bg-[#3C50E0] text-white hover:bg-[#2F40BD] shadow-sm transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                        </path>
+                    </svg>
+                    <span>+ Kontrak Baru</span>
+                </a>
+
+                <!-- Step 4: Buat Adendum (if has contract) -->
+                @if ($employee->latestContract)
+                    <a href="{{ route('addendums.create', $employee->latestContract) }}"
+                        class="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold rounded-xl bg-purple-50 border border-purple-200 text-purple-700 hover:bg-purple-100 transition shadow-xs">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                            </path>
+                        </svg>
+                        <span>+ Adendum</span>
+                    </a>
+                @endif
 
                 <!-- Edit Biodata -->
                 <a href="{{ route('employees.edit', $employee) }}"
@@ -43,10 +69,10 @@
                     <span>Edit</span>
                 </a>
 
-                <!-- Delete (Only Super Admin) -->
+                <!-- Delete (Super Admin only) -->
                 @can('delete', $employee)
                     <form action="{{ route('employees.destroy', $employee) }}" method="POST"
-                        onsubmit="return confirm('Apakah Anda yakin ingin menghapus data karyawan {{ $employee->name }} beserta seluruh riwayat kontraknya?')"
+                        onsubmit="return confirm('Apakah Anda yakin ingin menghapus data karyawan {{ $employee->name }} beserta seluruh riwayat dokumennya?')"
                         class="inline">
                         @csrf
                         @method('DELETE')
@@ -64,7 +90,129 @@
             </div>
         </div>
 
-        <!-- Profile Header Card (TailAdmin Style) -->
+        <!-- Interactive Workflow Stepper Pipeline -->
+        <div class="p-4 sm:p-5 rounded-2xl bg-white border border-[#E2E8F0] shadow-xs">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">Status Tahapan Alur Kerja Karyawan
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                <!-- Step 1: Input Karyawan -->
+                <div class="p-3 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center gap-3">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center shrink-0 font-bold text-xs">
+                        ✓
+                    </div>
+                    <div class="min-w-0">
+                        <span class="text-[10px] font-bold text-emerald-800 uppercase block">1. Input Data</span>
+                        <span class="text-xs font-bold text-emerald-950 block truncate">Karyawan Terdaftar</span>
+                    </div>
+                </div>
+
+                <!-- Step 2: Offering Letter -->
+                @if ($employee->offeringLetters->isNotEmpty())
+                    <div class="p-3 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center gap-3">
+                        <div
+                            class="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center shrink-0 font-bold text-xs">
+                            ✓
+                        </div>
+                        <div class="min-w-0">
+                            <span class="text-[10px] font-bold text-emerald-800 uppercase block">2. Offering Letter</span>
+                            <span
+                                class="text-xs font-bold text-emerald-950 block truncate">{{ $employee->offeringLetters->count() }}
+                                Surat Diterbitkan</span>
+                        </div>
+                    </div>
+                @else
+                    <a href="{{ route('offering-letters.create', $employee) }}"
+                        class="p-3 rounded-xl bg-slate-50 hover:bg-blue-50/50 border border-dashed border-slate-300 hover:border-blue-400 flex items-center gap-3 transition group">
+                        <div
+                            class="w-8 h-8 rounded-lg bg-slate-200 group-hover:bg-[#3C50E0] group-hover:text-white text-slate-600 flex items-center justify-center shrink-0 font-bold text-xs transition">
+                            2
+                        </div>
+                        <div class="min-w-0">
+                            <span class="text-[10px] font-bold text-slate-400 group-hover:text-[#3C50E0] uppercase block">2.
+                                Offering Letter</span>
+                            <span class="text-xs font-semibold text-slate-700 group-hover:text-[#1C2434] block truncate">+
+                                Buat Penawaran</span>
+                        </div>
+                    </a>
+                @endif
+
+                <!-- Step 3: Kontrak (PKWT / MT / MAGANG) -->
+                @if ($employee->contracts->isNotEmpty())
+                    <div class="p-3 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center gap-3">
+                        <div
+                            class="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center shrink-0 font-bold text-xs">
+                            ✓
+                        </div>
+                        <div class="min-w-0">
+                            <span class="text-[10px] font-bold text-emerald-800 uppercase block">3. Kontrak Kerja</span>
+                            <span class="text-xs font-bold text-emerald-950 block truncate">
+                                {{ $employee->latestContract->contract_type }} ({{ $employee->contracts->count() }}
+                                Kontrak)
+                            </span>
+                        </div>
+                    </div>
+                @else
+                    <a href="{{ route('contracts.create', ['employee_id' => $employee->id]) }}"
+                        class="p-3 rounded-xl bg-slate-50 hover:bg-indigo-50/50 border border-dashed border-slate-300 hover:border-indigo-400 flex items-center gap-3 transition group">
+                        <div
+                            class="w-8 h-8 rounded-lg bg-slate-200 group-hover:bg-[#3C50E0] group-hover:text-white text-slate-600 flex items-center justify-center shrink-0 font-bold text-xs transition">
+                            3
+                        </div>
+                        <div class="min-w-0">
+                            <span class="text-[10px] font-bold text-slate-400 group-hover:text-[#3C50E0] uppercase block">3.
+                                Kontrak Resmi</span>
+                            <span class="text-xs font-semibold text-slate-700 group-hover:text-[#1C2434] block truncate">+
+                                Terbitkan Kontrak</span>
+                        </div>
+                    </a>
+                @endif
+
+                <!-- Step 4: Adendum Kontrak -->
+                @if ($employee->addendums->isNotEmpty())
+                    <div class="p-3 rounded-xl bg-purple-50 border border-purple-200 flex items-center gap-3">
+                        <div
+                            class="w-8 h-8 rounded-lg bg-purple-600 text-white flex items-center justify-center shrink-0 font-bold text-xs">
+                            ✓
+                        </div>
+                        <div class="min-w-0">
+                            <span class="text-[10px] font-bold text-purple-800 uppercase block">4. Adendum Kontrak</span>
+                            <span
+                                class="text-xs font-bold text-purple-950 block truncate">{{ $employee->addendums->count() }}
+                                Adendum Terbit</span>
+                        </div>
+                    </div>
+                @elseif($employee->latestContract)
+                    <a href="{{ route('addendums.create', $employee->latestContract) }}"
+                        class="p-3 rounded-xl bg-slate-50 hover:bg-purple-50/50 border border-dashed border-slate-300 hover:border-purple-400 flex items-center gap-3 transition group">
+                        <div
+                            class="w-8 h-8 rounded-lg bg-slate-200 group-hover:bg-purple-600 group-hover:text-white text-slate-600 flex items-center justify-center shrink-0 font-bold text-xs transition">
+                            4
+                        </div>
+                        <div class="min-w-0">
+                            <span
+                                class="text-[10px] font-bold text-slate-400 group-hover:text-purple-600 uppercase block">4.
+                                Adendum Kontrak</span>
+                            <span class="text-xs font-semibold text-slate-700 group-hover:text-[#1C2434] block truncate">+
+                                Buat Adendum</span>
+                        </div>
+                    </a>
+                @else
+                    <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 opacity-60 flex items-center gap-3">
+                        <div
+                            class="w-8 h-8 rounded-lg bg-slate-200 text-slate-400 flex items-center justify-center shrink-0 font-bold text-xs">
+                            4
+                        </div>
+                        <div class="min-w-0">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase block">4. Adendum Kontrak</span>
+                            <span class="text-xs text-slate-400 block truncate">Menunggu Kontrak</span>
+                        </div>
+                    </div>
+                @endif
+            </div>
+        </div>
+
+        <!-- Profile Header Card -->
         <div class="p-6 rounded-2xl bg-white border border-[#E2E8F0] shadow-xs">
             <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div class="flex items-center gap-4">
@@ -79,25 +227,17 @@
                                 class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold {{ $employee->status_badge_class }}">
                                 {{ $employee->status_label }}
                             </span>
-                            <span
-                                class="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700">
-                                {{ $employee->contracts->count() }} Periode Kontrak
-                            </span>
+                            @if ($employee->latestContract)
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border {{ $employee->latestContract->contract_type_badge_class }}">
+                                    {{ $employee->latestContract->contract_type }}
+                                </span>
+                            @endif
                         </div>
                         <div class="flex items-center gap-4 text-xs text-slate-500 mt-1.5 flex-wrap">
                             <span class="font-bold text-slate-800">{{ $employee->current_position }}</span>
                             <span>&bull;</span>
-                            <span class="flex items-center gap-1">
-                                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
-                                    </path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                </svg>
-                                Cabang {{ $employee->current_branch }}
-                            </span>
+                            <span>Cabang {{ $employee->current_branch }}</span>
                             <span>&bull;</span>
                             <span class="font-mono bg-slate-100 px-2 py-0.5 rounded-md text-slate-700">NIK:
                                 {{ $employee->ktp_number }}</span>
@@ -115,57 +255,93 @@
             </div>
         </div>
 
-        <!-- Contract Status & Progress Card -->
-        @php
-            $latest = $employee->latestContract;
-        @endphp
-        @if ($latest)
-            <div class="p-6 rounded-2xl bg-white border border-[#E2E8F0] shadow-xs space-y-4">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-2">
-                        <span
-                            class="w-2.5 h-2.5 rounded-full {{ $latest->status === 'active' ? 'bg-emerald-500' : 'bg-amber-500' }}"></span>
-                        <h3 class="text-xs font-bold text-[#1C2434] uppercase tracking-wider">
-                            Status Kontrak Terkini ({{ $latest->sequence_label }})
-                        </h3>
+        <!-- Section: Riwayat Offering Letter (Surat Penawaran) -->
+        <div class="bg-white rounded-2xl border border-[#E2E8F0] shadow-xs overflow-hidden">
+            <div class="px-6 py-4 border-b border-[#E2E8F0] bg-[#F7F9FC] flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <div class="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                            </path>
+                        </svg>
                     </div>
-                    <span class="text-xs font-bold text-slate-500">
-                        Progres: {{ $latest->progress_percentage }}%
-                    </span>
+                    <h3 class="text-xs font-bold text-[#1C2434] uppercase tracking-wider">
+                        Surat Penawaran Kerja (Offering Letter)
+                    </h3>
                 </div>
-
-                <!-- Progress Bar -->
-                <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden p-0.5 border border-[#E2E8F0]">
-                    <div class="h-full rounded-full transition-all duration-500 {{ $latest->calculated_status === 'expired' ? 'bg-rose-500' : ($latest->calculated_status === 'expiring_soon' ? 'bg-amber-500' : 'bg-[#3C50E0]') }}"
-                        style="width: {{ $latest->progress_percentage }}%"></div>
-                </div>
-
-                <!-- Metric Boxes -->
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-2">
-                    <div class="p-4 rounded-xl bg-[#F7F9FC] border border-[#E2E8F0]">
-                        <p class="text-xs text-slate-400 font-medium">Tanggal Mulai</p>
-                        <p class="text-sm font-bold text-[#1C2434] mt-1">{{ $latest->start_date->format('d F Y') }}</p>
-                    </div>
-                    <div class="p-4 rounded-xl bg-[#F7F9FC] border border-[#E2E8F0]">
-                        <p class="text-xs text-slate-400 font-medium">Tanggal Selesai</p>
-                        <p class="text-sm font-bold text-[#1C2434] mt-1">{{ $latest->end_date->format('d F Y') }}</p>
-                    </div>
-                    <div class="p-4 rounded-xl bg-[#F7F9FC] border border-[#E2E8F0]">
-                        <p class="text-xs text-slate-400 font-medium">Durasi Periode Ini</p>
-                        <p class="text-sm font-bold text-[#1C2434] mt-1">~{{ $latest->duration_in_months }} Bulan</p>
-                    </div>
-                    <div class="p-4 rounded-xl bg-[#F7F9FC] border border-[#E2E8F0]">
-                        <p class="text-xs text-slate-400 font-medium">Status Kontrak</p>
-                        <p
-                            class="text-sm font-bold mt-1 {{ $latest->calculated_status === 'expired' ? 'text-rose-600' : ($latest->calculated_status === 'expiring_soon' ? 'text-amber-600' : 'text-emerald-600') }}">
-                            {{ $latest->status_label }}
-                        </p>
-                    </div>
-                </div>
+                <a href="{{ route('offering-letters.create', $employee) }}"
+                    class="text-xs font-bold text-[#3C50E0] hover:underline">
+                    + Buat Offering Letter
+                </a>
             </div>
-        @endif
 
-        <!-- RIWAYAT KONTRAK (CONTRACT HISTORY TIMELINE) -->
+            <div class="p-6">
+                @if ($employee->offeringLetters->isNotEmpty())
+                    <div class="divide-y divide-[#E2E8F0] border border-[#E2E8F0] rounded-xl overflow-hidden text-xs">
+                        @foreach ($employee->offeringLetters as $ol)
+                            <div
+                                class="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 hover:bg-slate-50/50 transition">
+                                <div class="space-y-1">
+                                    <div class="flex items-center gap-2 flex-wrap">
+                                        <span
+                                            class="font-mono font-bold text-xs text-[#1C2434]">{{ $ol->letter_number }}</span>
+                                        <span
+                                            class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold border {{ $ol->contract_type_badge_class }}">
+                                            {{ $ol->contract_type }}
+                                        </span>
+                                        <span
+                                            class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold border {{ $ol->status_badge_class }}">
+                                            {{ $ol->status_label }}
+                                        </span>
+                                    </div>
+                                    <p class="text-slate-600">
+                                        Jabatan: <strong>{{ $ol->position }}</strong> ({{ $ol->branch }}) &bull;
+                                        Kompensasi: <strong>{{ $ol->formatted_total_compensation }}</strong>
+                                    </p>
+                                    <p class="text-[11px] text-slate-400">
+                                        Tgl Penawaran: {{ $ol->offer_date->format('d M Y') }} &bull; Rencana Mulai:
+                                        {{ $ol->proposed_start_date->format('d M Y') }}
+                                    </p>
+                                </div>
+
+                                <div class="flex items-center gap-2 shrink-0">
+                                    <a href="{{ route('offering-letters.print', $ol) }}" target="_blank"
+                                        class="px-2.5 py-1.5 rounded-lg border border-[#E2E8F0] text-slate-700 hover:text-emerald-600 hover:border-emerald-300 text-xs font-semibold transition flex items-center gap-1">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z">
+                                            </path>
+                                        </svg>
+                                        <span>Cetak</span>
+                                    </a>
+
+                                    <a href="{{ route('offering-letters.show', $ol) }}"
+                                        class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition">
+                                        Detail
+                                    </a>
+
+                                    @if (!$ol->contract)
+                                        <a href="{{ route('contracts.create', ['offering_letter_id' => $ol->id]) }}"
+                                            class="px-3 py-1.5 rounded-lg bg-[#3C50E0] hover:bg-[#2F40BD] text-white text-xs font-bold transition shadow-xs">
+                                            Terbitkan Kontrak
+                                        </a>
+                                    @endif
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <div
+                        class="text-center py-6 text-slate-400 bg-[#F8FAFC] rounded-xl border border-dashed border-slate-200 text-xs">
+                        Belum ada Offering Letter diterbitkan untuk karyawan ini.
+                    </div>
+                @endif
+            </div>
+        </div>
+
+        <!-- Section: Riwayat Kontrak Kerja & Adendum -->
         <div class="bg-white rounded-2xl border border-[#E2E8F0] shadow-xs overflow-hidden">
             <div class="px-6 py-4 border-b border-[#E2E8F0] bg-[#F7F9FC] flex items-center justify-between">
                 <div class="flex items-center gap-2">
@@ -179,10 +355,18 @@
                         Riwayat Seluruh Kontrak Kerja
                     </h3>
                 </div>
-                <a href="{{ route('employees.renew', $employee) }}"
-                    class="text-xs font-bold text-[#3C50E0] hover:underline flex items-center gap-1">
-                    <span>+ Perpanjang Kontrak</span>
-                </a>
+                <div class="flex items-center gap-3">
+                    @if ($employee->latestContract)
+                        <a href="{{ route('addendums.create', $employee->latestContract) }}"
+                            class="text-xs font-bold text-purple-600 hover:underline">
+                            + Buat Adendum
+                        </a>
+                    @endif
+                    <a href="{{ route('contracts.create', ['employee_id' => $employee->id]) }}"
+                        class="text-xs font-bold text-[#3C50E0] hover:underline">
+                        + Terbitkan Kontrak
+                    </a>
+                </div>
             </div>
 
             <div class="p-6">
@@ -195,49 +379,78 @@
                             </div>
 
                             <div
-                                class="p-4 rounded-xl border border-[#E2E8F0] bg-[#F7F9FC]/60 hover:bg-[#F7F9FC] transition space-y-2">
+                                class="p-4 rounded-xl border border-[#E2E8F0] bg-[#F7F9FC]/60 hover:bg-[#F7F9FC] transition space-y-3">
                                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                                     <div class="flex items-center gap-2 flex-wrap">
                                         <span class="font-bold text-[#1C2434] text-sm">
                                             {{ $contract->sequence_label }}
                                         </span>
+                                        @if ($contract->contract_number)
+                                            <span class="font-mono text-xs text-slate-500 font-semibold">
+                                                ({{ $contract->contract_number }})
+                                            </span>
+                                        @endif
                                         <span
-                                            class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold {{ $contract->status_badge_class }}">
+                                            class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold border {{ $contract->contract_type_badge_class }}">
+                                            {{ $contract->contract_type }}
+                                        </span>
+                                        <span
+                                            class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold {{ $contract->status_badge_class }}">
                                             {{ $contract->status_label }}
                                         </span>
                                         @if ($loop->first)
                                             <span
-                                                class="text-[11px] font-bold px-2 py-0.5 rounded-md bg-indigo-100 text-[#3C50E0]">
-                                                Kontrak Saat Ini
+                                                class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-indigo-100 text-[#3C50E0]">
+                                                Kontrak Terkini
                                             </span>
                                         @endif
                                     </div>
-                                    <span class="text-[11px] font-medium text-slate-500">
-                                        Dibuat: {{ $contract->created_at->format('d M Y') }}
-                                    </span>
+
+                                    <div class="flex items-center gap-2">
+                                        <a href="{{ route('contracts.print', $contract) }}" target="_blank"
+                                            class="px-2.5 py-1 rounded-lg border border-[#E2E8F0] hover:border-emerald-300 text-slate-700 hover:text-emerald-600 text-xs font-semibold transition flex items-center gap-1">
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z">
+                                                </path>
+                                            </svg>
+                                            <span>Cetak Kontrak</span>
+                                        </a>
+
+                                        <a href="{{ route('addendums.create', $contract) }}"
+                                            class="px-2.5 py-1 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 text-xs font-semibold transition">
+                                            + Adendum
+                                        </a>
+
+                                        <a href="{{ route('contracts.show', $contract) }}"
+                                            class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition">
+                                            Detail
+                                        </a>
+                                    </div>
                                 </div>
 
                                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-slate-600 pt-1">
                                     <div>
-                                        <span class="text-slate-400 block text-[11px]">Periode Kontrak:</span>
+                                        <span class="text-slate-400 block text-[11px]">Periode Masa Kerja:</span>
                                         <strong class="text-slate-800">{{ $contract->start_date->format('d M Y') }}
                                             &mdash; {{ $contract->end_date->format('d M Y') }}</strong>
                                         <span
                                             class="text-slate-400 block mt-0.5 text-[11px]">(~{{ $contract->duration_in_months }}
-                                            Bulan / {{ $contract->duration_in_days }} Hari)</span>
+                                            Bulan)</span>
                                     </div>
                                     <div>
-                                        <span class="text-slate-400 block text-[11px]">Jabatan & Cabang:</span>
+                                        <span class="text-slate-400 block text-[11px]">Jabatan & Lokasi:</span>
                                         <strong class="text-slate-800">{{ $contract->position }}</strong>
                                         <span class="text-slate-500 block mt-0.5 text-[11px]">Cabang
                                             {{ $contract->branch }}</span>
                                     </div>
                                     <div>
-                                        <span class="text-slate-400 block text-[11px]">Nomor Surat / PKWT:</span>
+                                        <span class="text-slate-400 block text-[11px]">Gaji & Tunjangan:</span>
                                         <strong
-                                            class="font-mono text-slate-800">{{ $contract->contract_number ?? '-' }}</strong>
+                                            class="text-slate-800">{{ $contract->formatted_salary ?: 'Rp 0' }}</strong>
                                         <span
-                                            class="block mt-0.5 font-medium {{ $contract->status === 'renewed' ? 'text-indigo-600' : ($contract->calculated_status === 'expired' ? 'text-rose-600' : 'text-emerald-600') }}">
+                                            class="block mt-0.5 font-medium {{ $contract->calculated_status === 'expired' ? 'text-rose-600' : 'text-emerald-600' }}">
                                             {{ $contract->remaining_days_text }}
                                         </span>
                                     </div>
@@ -249,10 +462,58 @@
                                         <span class="font-bold text-slate-700">Catatan:</span> {{ $contract->notes }}
                                     </div>
                                 @endif
+
+                                <!-- Child Addendums Sub-List -->
+                                @if ($contract->addendums->isNotEmpty())
+                                    <div class="mt-3 pt-3 border-t border-[#E2E8F0] space-y-2">
+                                        <span class="text-[11px] font-bold uppercase tracking-wider text-purple-700 block">
+                                            Adendum Kontrak Terbit ({{ $contract->addendums->count() }}):
+                                        </span>
+                                        @foreach ($contract->addendums as $ad)
+                                            <div
+                                                class="p-2.5 rounded-lg bg-white border border-purple-100 flex items-center justify-between gap-2 text-xs">
+                                                <div>
+                                                    <span
+                                                        class="font-mono font-bold text-slate-800">{{ $ad->addendum_number }}</span>
+                                                    <span
+                                                        class="text-[10px] font-semibold text-purple-700 bg-purple-50 px-1.5 py-0.5 rounded-sm ml-1">{{ $ad->sequence_label }}</span>
+                                                    <span class="text-slate-500 block text-[11px] mt-0.5">
+                                                        {{ $ad->amendment_reason }} &bull; Perpanjangan s/d
+                                                        <strong>{{ $ad->new_end_date->format('d/m/Y') }}</strong>
+                                                    </span>
+                                                </div>
+                                                <div class="flex items-center gap-1 shrink-0">
+                                                    <a href="{{ route('addendums.print', $ad) }}" target="_blank"
+                                                        class="p-1 rounded text-slate-400 hover:text-emerald-600"
+                                                        title="Cetak Adendum">
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z">
+                                                            </path>
+                                                        </svg>
+                                                    </a>
+                                                    <a href="{{ route('addendums.show', $ad) }}"
+                                                        class="p-1 rounded text-slate-400 hover:text-[#3C50E0]"
+                                                        title="Lihat Detail">
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                                        </svg>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     @empty
-                        <p class="text-xs text-slate-500">Belum ada riwayat kontrak tercatat.</p>
+                        <div class="p-4 text-center text-slate-400 text-xs">
+                            Belum ada kontrak resmi yang diterbitkan untuk karyawan ini.
+                        </div>
                     @endforelse
                 </div>
             </div>
@@ -292,6 +553,18 @@
                             <span class="text-slate-400 font-normal">({{ $employee->age }} tahun)</span>
                         </span>
                     </div>
+                    @if ($employee->email)
+                        <div class="py-2.5 flex justify-between gap-4">
+                            <span class="text-slate-500">Email</span>
+                            <span class="font-semibold text-slate-900 text-right">{{ $employee->email }}</span>
+                        </div>
+                    @endif
+                    @if ($employee->phone)
+                        <div class="py-2.5 flex justify-between gap-4">
+                            <span class="text-slate-500">No. Telepon / WA</span>
+                            <span class="font-semibold text-slate-900 text-right">{{ $employee->phone }}</span>
+                        </div>
+                    @endif
                     <div class="pt-2.5">
                         <span class="text-slate-500 block mb-1">Alamat Lengkap Domisili</span>
                         <p
@@ -317,7 +590,7 @@
 
                 <div class="p-6 divide-y divide-slate-100 text-xs">
                     <div class="py-2.5 flex justify-between gap-4">
-                        <span class="text-slate-500">Jabatan Saat Ini</span>
+                        <span class="text-slate-500">Jabatan Terkini</span>
                         <span class="font-bold text-slate-900 text-right">{{ $employee->current_position }}</span>
                     </div>
                     <div class="py-2.5 flex justify-between gap-4">
@@ -332,7 +605,7 @@
                     <div class="py-2.5 flex justify-between gap-4">
                         <span class="text-slate-500">Akhir Kontrak Terkini</span>
                         <span
-                            class="font-semibold text-slate-900 text-right">{{ $employee->current_contract_end_date?->format('d F Y') }}</span>
+                            class="font-semibold text-slate-900 text-right">{{ $employee->current_contract_end_date?->format('d F Y') ?: '-' }}</span>
                     </div>
                     <div class="py-2.5 flex justify-between gap-4 text-slate-400">
                         <span>Terdaftar pada</span>

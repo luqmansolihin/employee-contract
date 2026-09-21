@@ -41,11 +41,11 @@ class AuthorizationTest extends TestCase
 
         $responseIndex = $this->actingAs($admin)->get(route('employees.index'));
         $responseIndex->assertOk();
-        $responseIndex->assertSee('action="' . route('employees.destroy', $employee) . '"', false);
+        $responseIndex->assertSee('action="'.route('employees.destroy', $employee).'"', false);
 
         $responseShow = $this->actingAs($admin)->get(route('employees.show', $employee));
         $responseShow->assertOk();
-        $responseShow->assertSee('action="' . route('employees.destroy', $employee) . '"', false);
+        $responseShow->assertSee('action="'.route('employees.destroy', $employee).'"', false);
     }
 
     public function test_delete_action_is_hidden_from_staff(): void
@@ -55,11 +55,11 @@ class AuthorizationTest extends TestCase
 
         $responseIndex = $this->actingAs($staff)->get(route('employees.index'));
         $responseIndex->assertOk();
-        $responseIndex->assertDontSee('action="' . route('employees.destroy', $employee) . '"', false);
+        $responseIndex->assertDontSee('action="'.route('employees.destroy', $employee).'"', false);
 
         $responseShow = $this->actingAs($staff)->get(route('employees.show', $employee));
         $responseShow->assertOk();
-        $responseShow->assertDontSee('action="' . route('employees.destroy', $employee) . '"', false);
+        $responseShow->assertDontSee('action="'.route('employees.destroy', $employee).'"', false);
     }
 
     public function test_staff_can_view_create_edit_and_renew_contract(): void

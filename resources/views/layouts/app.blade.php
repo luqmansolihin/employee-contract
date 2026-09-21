@@ -44,12 +44,9 @@
                             </path>
                         </svg>
                     </div>
-                    <div class="min-w-0">
-                        <span class="text-base font-extrabold tracking-tight text-white block truncate">
-                            SI-KONTRAK
-                        </span>
-                        <span class="text-[11px] font-semibold text-[#8A99AD] block truncate">HR Suite</span>
-                    </div>
+                    <span class="text-base font-extrabold tracking-tight text-white truncate">
+                        SI-KONTRAK
+                    </span>
                 </a>
 
                 <button type="button" onclick="toggleSidebar()"
@@ -77,30 +74,103 @@
 
         <!-- Sidebar Navigation Menu -->
         <div class="grow overflow-y-auto px-3 py-6 space-y-4">
-            <!-- Section: Menu Utama -->
+            <!-- Section: Menu Utama (Alur Karyawan) -->
             <div>
                 <p class="sidebar-text px-3 text-[10px] font-bold uppercase tracking-wider text-[#8A99AD] mb-2">
-                    Menu Utama
+                    Menu Alur Kerja
                 </p>
                 <nav class="space-y-1">
+                    <!-- 1. Karyawan -->
                     <a href="{{ route('employees.index') }}" title="Daftar Karyawan"
-                        class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition {{ request()->routeIs('employees.index') && !request('status') ? 'bg-[#333A48] text-white font-semibold' : 'text-[#8A99AD] hover:bg-[#333A48]/60 hover:text-white' }}">
+                        class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition {{ request()->routeIs('employees.*') && !request('status') && !request()->routeIs('employees.create') ? 'bg-[#333A48] text-white font-semibold' : 'text-[#8A99AD] hover:bg-[#333A48]/60 hover:text-white' }}">
                         <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
                             </path>
                         </svg>
-                        <span class="sidebar-text truncate">Daftar Karyawan</span>
+                        <span class="sidebar-text truncate">Data Karyawan</span>
                     </a>
 
-                    <a href="{{ route('employees.create') }}" title="Tambah Karyawan Baru"
+                    <!-- 2. Tambah Karyawan -->
+                    <a href="{{ route('employees.create') }}" title="Input Karyawan Baru"
                         class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition {{ request()->routeIs('employees.create') ? 'bg-[#333A48] text-white font-semibold' : 'text-[#8A99AD] hover:bg-[#333A48]/60 hover:text-white' }}">
                         <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z">
                             </path>
                         </svg>
-                        <span class="sidebar-text truncate">Tambah Karyawan</span>
+                        <span class="sidebar-text truncate">Input Karyawan</span>
+                    </a>
+
+                    <!-- 3. Offering Letter -->
+                    <a href="{{ route('offering-letters.index') }}" title="Offering Letter (Surat Penawaran)"
+                        class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition {{ request()->routeIs('offering-letters.*') ? 'bg-[#333A48] text-white font-semibold' : 'text-[#8A99AD] hover:bg-[#333A48]/60 hover:text-white' }}">
+                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                            </path>
+                        </svg>
+                        <span class="sidebar-text truncate">Offering Letter</span>
+                    </a>
+
+                    <!-- 4. Kontrak Kerja (PKWT, MT, MAGANG) -->
+                    <a href="{{ route('contracts.index') }}" title="Kontrak Kerja (PKWT, MT, MAGANG)"
+                        class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition {{ request()->routeIs('contracts.*') ? 'bg-[#333A48] text-white font-semibold' : 'text-[#8A99AD] hover:bg-[#333A48]/60 hover:text-white' }}">
+                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                            </path>
+                        </svg>
+                        <span class="sidebar-text truncate">Kontrak Kerja</span>
+                    </a>
+
+                    <!-- 5. Adendum Kontrak -->
+                    <a href="{{ route('addendums.index') }}" title="Adendum Kontrak"
+                        class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition {{ request()->routeIs('addendums.*') ? 'bg-[#333A48] text-white font-semibold' : 'text-[#8A99AD] hover:bg-[#333A48]/60 hover:text-white' }}">
+                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                            </path>
+                        </svg>
+                        <span class="sidebar-text truncate">Adendum Kontrak</span>
+                    </a>
+                </nav>
+            </div>
+
+            <!-- Mini Divider for Collapsed State -->
+            <div class="sidebar-divider hidden w-8 mx-auto h-[1px] bg-[#2E3A47] my-2"></div>
+
+            <!-- Section: Tipe Kontrak -->
+            <div>
+                <p class="sidebar-text px-3 text-[10px] font-bold uppercase tracking-wider text-[#8A99AD] mb-2">
+                    Tipe Kontrak
+                </p>
+                <nav class="space-y-1">
+                    <a href="{{ route('contracts.index', ['type' => 'PKWT']) }}" title="Kontrak PKWT"
+                        class="sidebar-item flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition {{ request('type') === 'PKWT' ? 'bg-[#333A48] text-white font-semibold' : 'text-[#8A99AD] hover:bg-[#333A48]/50 hover:text-white' }}">
+                        <span class="flex items-center gap-2.5">
+                            <span class="w-2.5 h-2.5 rounded-full bg-indigo-400 shrink-0"></span>
+                            <span class="sidebar-text truncate">PKWT</span>
+                        </span>
+                        <span class="sidebar-text text-[10px] text-indigo-300 font-semibold">Waktu Tertentu</span>
+                    </a>
+
+                    <a href="{{ route('contracts.index', ['type' => 'MT']) }}" title="Management Trainee"
+                        class="sidebar-item flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition {{ request('type') === 'MT' ? 'bg-[#333A48] text-white font-semibold' : 'text-[#8A99AD] hover:bg-[#333A48]/50 hover:text-white' }}">
+                        <span class="flex items-center gap-2.5">
+                            <span class="w-2.5 h-2.5 rounded-full bg-purple-400 shrink-0"></span>
+                            <span class="sidebar-text truncate">MT</span>
+                        </span>
+                        <span class="sidebar-text text-[10px] text-purple-300 font-semibold">Trainee</span>
+                    </a>
+
+                    <a href="{{ route('contracts.index', ['type' => 'MAGANG']) }}" title="Magang / Internship"
+                        class="sidebar-item flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition {{ request('type') === 'MAGANG' ? 'bg-[#333A48] text-white font-semibold' : 'text-[#8A99AD] hover:bg-[#333A48]/50 hover:text-white' }}">
+                        <span class="flex items-center gap-2.5">
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-400 shrink-0"></span>
+                            <span class="sidebar-text truncate">MAGANG</span>
+                        </span>
+                        <span class="sidebar-text text-[10px] text-amber-300 font-semibold">Internship</span>
                     </a>
                 </nav>
             </div>
@@ -111,12 +181,12 @@
             <!-- Section: Filter Status Kontrak -->
             <div>
                 <p class="sidebar-text px-3 text-[10px] font-bold uppercase tracking-wider text-[#8A99AD] mb-2">
-                    Filter Status
+                    Status Kontrak
                 </p>
                 <nav class="space-y-1">
                     <!-- Semua -->
                     <a href="{{ route('employees.index') }}" title="Semua Kontrak"
-                        class="sidebar-item flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition {{ !request('status') ? 'bg-[#333A48] text-white' : 'text-[#8A99AD] hover:bg-[#333A48]/50 hover:text-white' }}">
+                        class="sidebar-item flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition {{ request()->routeIs('employees.index') && !request('status') ? 'bg-[#333A48] text-white' : 'text-[#8A99AD] hover:bg-[#333A48]/50 hover:text-white' }}">
                         <span class="flex items-center gap-2.5">
                             <span class="w-2.5 h-2.5 rounded-full bg-slate-400 shrink-0"></span>
                             <span class="sidebar-text truncate">Semua Kontrak</span>
@@ -124,7 +194,8 @@
                     </a>
 
                     <!-- Aktif -->
-                    <a href="{{ route('employees.index', ['status' => 'active']) }}" title="Kontrak Aktif (> 30 Hari)"
+                    <a href="{{ route('employees.index', ['status' => 'active']) }}"
+                        title="Kontrak Aktif (> 30 Hari)"
                         class="sidebar-item flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition {{ request('status') === 'active' ? 'bg-[#333A48] text-white' : 'text-[#8A99AD] hover:bg-[#333A48]/50 hover:text-white' }}">
                         <span class="flex items-center gap-2.5">
                             <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shrink-0"></span>
