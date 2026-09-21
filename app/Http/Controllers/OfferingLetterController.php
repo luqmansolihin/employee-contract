@@ -24,12 +24,12 @@ class OfferingLetterController extends Controller
 
         $query = OfferingLetter::query()
             ->with(['employee'])
-            ->when($status, fn($q) => $q->where('status', $status))
+            ->when($status, fn ($q) => $q->where('status', $status))
             ->when($search, function ($q) use ($search) {
                 $q->where('letter_number', 'like', "%{$search}%")
                     ->orWhere('position', 'like', "%{$search}%")
                     ->orWhere('branch', 'like', "%{$search}%")
-                    ->orWhereHas('employee', fn($eq) => $eq->where('name', 'like', "%{$search}%"));
+                    ->orWhereHas('employee', fn ($eq) => $eq->where('name', 'like', "%{$search}%"));
             })
             ->orderBy('offer_date', 'desc');
 

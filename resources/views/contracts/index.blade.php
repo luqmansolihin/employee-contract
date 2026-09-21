@@ -8,7 +8,7 @@
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
                 <div class="flex items-center gap-2 text-xs text-[#8A99AD] mb-1">
-                    <a href="{{ route('employees.index') }}" class="hover:text-[#3C50E0] transition">Dashboard</a>
+                    <a href="{{ route('dashboard') }}" class="hover:text-[#3C50E0] transition">Dashboard</a>
                     <span>/</span>
                     <span class="text-slate-800 font-medium">Kontrak Kerja</span>
                 </div>
@@ -156,7 +156,8 @@
                                         {{ $c->start_date->format('d/m/Y') }} s/d {{ $c->end_date->format('d/m/Y') }}
                                     </span>
                                     <span class="text-[11px] text-slate-400 block">{{ $c->duration_in_months }} Bulan
-                                        ({{ $c->duration_in_days }} Hari)</span>
+                                        ({{ $c->duration_in_days }} Hari)
+                                    </span>
                                 </td>
                                 <td class="py-3.5 px-4">
                                     <span

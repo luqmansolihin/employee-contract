@@ -4,8 +4,10 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ContractAddendumController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\ContractRenewalController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\OfferingLetterController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 // Authentication Routes
@@ -15,7 +17,8 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // Protected Routes
 Route::middleware('auth')->group(function () {
-    Route::get('/', [EmployeeController::class, 'index'])->name('home');
+    Route::get('/', [DashboardController::class, 'index'])->name('home');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::redirect('/contract-employees', '/employees');
 
     // 1. Employee Management
@@ -46,4 +49,7 @@ Route::middleware('auth')->group(function () {
     Route::post('contracts/{contract}/addendums', [ContractAddendumController::class, 'store'])->name('addendums.store');
     Route::get('contract-addendums/{addendum}', [ContractAddendumController::class, 'show'])->name('addendums.show');
     Route::get('contract-addendums/{addendum}/print', [ContractAddendumController::class, 'print'])->name('addendums.print');
+
+    // 5. User Management (Khusus Admin)
+    Route::resource('users', UserController::class)->except(['show']);
 });

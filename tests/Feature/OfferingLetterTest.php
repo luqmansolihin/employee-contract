@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Models\Employee;
 use App\Models\OfferingLetter;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -14,6 +13,7 @@ class OfferingLetterTest extends TestCase
     use RefreshDatabase;
 
     protected User $user;
+
     protected Employee $employee;
 
     protected function setUp(): void

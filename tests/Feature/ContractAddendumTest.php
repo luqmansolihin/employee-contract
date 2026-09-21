@@ -14,7 +14,9 @@ class ContractAddendumTest extends TestCase
     use RefreshDatabase;
 
     protected User $user;
+
     protected Employee $employee;
+
     protected EmployeeContract $contract;
 
     protected function setUp(): void
@@ -58,7 +60,8 @@ class ContractAddendumTest extends TestCase
         $response = $this->get(route('addendums.create', $this->contract));
 
         $response->assertOk();
-        $response->assertSee('Penerbitan Adendum I untuk Kontrak Induk');
+        $response->assertSee('Penerbitan Adendum I');
+        $response->assertSee('untuk Kontrak');
         $response->assertSee('Bambang Sudiro');
         $response->assertSee('/A-PKWT');
     }

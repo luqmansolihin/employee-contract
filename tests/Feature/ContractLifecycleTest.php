@@ -14,6 +14,7 @@ class ContractLifecycleTest extends TestCase
     use RefreshDatabase;
 
     protected User $user;
+
     protected Employee $employee;
 
     protected function setUp(): void

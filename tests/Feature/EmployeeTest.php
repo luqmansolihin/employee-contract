@@ -32,9 +32,9 @@ class EmployeeTest extends TestCase
         $response->assertSee('Total Karyawan');
     }
 
-    public function test_root_url_renders_employees(): void
+    public function test_employees_index_url_renders_employees(): void
     {
-        $response = $this->get('/');
+        $response = $this->get('/employees');
 
         $response->assertOk();
         $response->assertSee('Pencatatan Karyawan Kontrak');

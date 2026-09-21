@@ -26,8 +26,8 @@ class ContractAddendumController extends Controller
             ->when($search, function ($q) use ($search) {
                 $q->where('addendum_number', 'like', "%{$search}%")
                     ->orWhere('amendment_reason', 'like', "%{$search}%")
-                    ->orWhereHas('employee', fn($eq) => $eq->where('name', 'like', "%{$search}%"))
-                    ->orWhereHas('contract', fn($cq) => $cq->where('contract_number', 'like', "%{$search}%"));
+                    ->orWhereHas('employee', fn ($eq) => $eq->where('name', 'like', "%{$search}%"))
+                    ->orWhereHas('contract', fn ($cq) => $cq->where('contract_number', 'like', "%{$search}%"));
             })
             ->orderBy('issue_date', 'desc');
 

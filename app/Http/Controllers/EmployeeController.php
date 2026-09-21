@@ -125,9 +125,9 @@ class EmployeeController extends Controller
     public function show(Employee $employee): View
     {
         $employee->load([
-            'contracts' => fn($q) => $q->with(['addendums', 'offeringLetter'])->orderBy('contract_sequence', 'desc'),
-            'offeringLetters' => fn($q) => $q->with('contract')->orderBy('offer_date', 'desc'),
-            'addendums' => fn($q) => $q->with('contract')->orderBy('issue_date', 'desc'),
+            'contracts' => fn ($q) => $q->with(['addendums', 'offeringLetter'])->orderBy('contract_sequence', 'desc'),
+            'offeringLetters' => fn ($q) => $q->with('contract')->orderBy('offer_date', 'desc'),
+            'addendums' => fn ($q) => $q->with('contract')->orderBy('issue_date', 'desc'),
         ]);
 
         return view('employees.show', compact('employee'));

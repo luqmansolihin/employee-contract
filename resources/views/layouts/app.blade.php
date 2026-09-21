@@ -34,8 +34,7 @@
         <div class="h-20 flex items-center border-b border-[#2E3A47] px-4">
             <!-- Expanded View: Logo + Title + Collapse Button -->
             <div class="sidebar-expanded-header flex items-center justify-between w-full">
-                <a href="{{ route('employees.index') }}" class="flex items-center gap-3 min-w-0"
-                    title="SI-KONTRAK TailAdmin">
+                <a href="{{ route('dashboard') }}" class="flex items-center gap-3 min-w-0" title="SI-KONTRAK TailAdmin">
                     <div
                         class="w-10 h-10 rounded-xl bg-[#3C50E0] text-white flex items-center justify-center shadow-lg shadow-[#3C50E0]/30 shrink-0">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -73,159 +72,79 @@
         </div>
 
         <!-- Sidebar Navigation Menu -->
-        <div class="grow overflow-y-auto px-3 py-6 space-y-4">
-            <!-- Section: Menu Utama (Alur Karyawan) -->
-            <div>
-                <p class="sidebar-text px-3 text-[10px] font-bold uppercase tracking-wider text-[#8A99AD] mb-2">
-                    Menu Alur Kerja
-                </p>
-                <nav class="space-y-1">
-                    <!-- 1. Karyawan -->
-                    <a href="{{ route('employees.index') }}" title="Daftar Karyawan"
-                        class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition {{ request()->routeIs('employees.*') && !request('status') && !request()->routeIs('employees.create') ? 'bg-[#333A48] text-white font-semibold' : 'text-[#8A99AD] hover:bg-[#333A48]/60 hover:text-white' }}">
+        <div class="grow overflow-y-auto px-3 py-6">
+            <nav class="space-y-1.5">
+                <!-- 1. Dashboard -->
+                <a href="{{ route('dashboard') }}" title="Dashboard"
+                    class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition {{ request()->routeIs('dashboard') || (request()->routeIs('home') && !request()->routeIs('employees.*')) ? 'bg-[#333A48] text-white font-semibold' : 'text-[#8A99AD] hover:bg-[#333A48]/60 hover:text-white' }}">
+                    <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                        </path>
+                    </svg>
+                    <span class="sidebar-text truncate">Dashboard</span>
+                </a>
+
+                <!-- 2. Employee -->
+                <a href="{{ route('employees.index') }}" title="Employee"
+                    class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition {{ request()->routeIs('employees.*') ? 'bg-[#333A48] text-white font-semibold' : 'text-[#8A99AD] hover:bg-[#333A48]/60 hover:text-white' }}">
+                    <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
+                        </path>
+                    </svg>
+                    <span class="sidebar-text truncate">Employee</span>
+                </a>
+
+                <!-- 3. Offering Letter -->
+                <a href="{{ route('offering-letters.index') }}" title="Offering Letter"
+                    class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition {{ request()->routeIs('offering-letters.*') ? 'bg-[#333A48] text-white font-semibold' : 'text-[#8A99AD] hover:bg-[#333A48]/60 hover:text-white' }}">
+                    <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                        </path>
+                    </svg>
+                    <span class="sidebar-text truncate">Offering Letter</span>
+                </a>
+
+                <!-- 4. Kontrak -->
+                <a href="{{ route('contracts.index') }}" title="Kontrak"
+                    class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition {{ request()->routeIs('contracts.*') ? 'bg-[#333A48] text-white font-semibold' : 'text-[#8A99AD] hover:bg-[#333A48]/60 hover:text-white' }}">
+                    <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                        </path>
+                    </svg>
+                    <span class="sidebar-text truncate">Kontrak</span>
+                </a>
+
+                <!-- 5. Adendum -->
+                <a href="{{ route('addendums.index') }}" title="Adendum"
+                    class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition {{ request()->routeIs('addendums.*') ? 'bg-[#333A48] text-white font-semibold' : 'text-[#8A99AD] hover:bg-[#333A48]/60 hover:text-white' }}">
+                    <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                        </path>
+                    </svg>
+                    <span class="sidebar-text truncate">Adendum</span>
+                </a>
+
+                @if (auth()->user()?->isAdmin())
+                    <!-- Mini Divider -->
+                    <div class="sidebar-divider w-full h-[1px] bg-[#2E3A47] my-2"></div>
+
+                    <!-- 6. Kelola Pengguna (Admin Only) -->
+                    <a href="{{ route('users.index') }}" title="Kelola Pengguna"
+                        class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition {{ request()->routeIs('users.*') ? 'bg-[#333A48] text-white font-semibold' : 'text-[#8A99AD] hover:bg-[#333A48]/60 hover:text-white' }}">
                         <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
+                                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
                             </path>
                         </svg>
-                        <span class="sidebar-text truncate">Data Karyawan</span>
+                        <span class="sidebar-text truncate">Kelola User</span>
                     </a>
-
-                    <!-- 2. Tambah Karyawan -->
-                    <a href="{{ route('employees.create') }}" title="Input Karyawan Baru"
-                        class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition {{ request()->routeIs('employees.create') ? 'bg-[#333A48] text-white font-semibold' : 'text-[#8A99AD] hover:bg-[#333A48]/60 hover:text-white' }}">
-                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z">
-                            </path>
-                        </svg>
-                        <span class="sidebar-text truncate">Input Karyawan</span>
-                    </a>
-
-                    <!-- 3. Offering Letter -->
-                    <a href="{{ route('offering-letters.index') }}" title="Offering Letter (Surat Penawaran)"
-                        class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition {{ request()->routeIs('offering-letters.*') ? 'bg-[#333A48] text-white font-semibold' : 'text-[#8A99AD] hover:bg-[#333A48]/60 hover:text-white' }}">
-                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
-                            </path>
-                        </svg>
-                        <span class="sidebar-text truncate">Offering Letter</span>
-                    </a>
-
-                    <!-- 4. Kontrak Kerja (PKWT, MT, MAGANG) -->
-                    <a href="{{ route('contracts.index') }}" title="Kontrak Kerja (PKWT, MT, MAGANG)"
-                        class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition {{ request()->routeIs('contracts.*') ? 'bg-[#333A48] text-white font-semibold' : 'text-[#8A99AD] hover:bg-[#333A48]/60 hover:text-white' }}">
-                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                            </path>
-                        </svg>
-                        <span class="sidebar-text truncate">Kontrak Kerja</span>
-                    </a>
-
-                    <!-- 5. Adendum Kontrak -->
-                    <a href="{{ route('addendums.index') }}" title="Adendum Kontrak"
-                        class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition {{ request()->routeIs('addendums.*') ? 'bg-[#333A48] text-white font-semibold' : 'text-[#8A99AD] hover:bg-[#333A48]/60 hover:text-white' }}">
-                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
-                            </path>
-                        </svg>
-                        <span class="sidebar-text truncate">Adendum Kontrak</span>
-                    </a>
-                </nav>
-            </div>
-
-            <!-- Mini Divider for Collapsed State -->
-            <div class="sidebar-divider hidden w-8 mx-auto h-[1px] bg-[#2E3A47] my-2"></div>
-
-            <!-- Section: Tipe Kontrak -->
-            <div>
-                <p class="sidebar-text px-3 text-[10px] font-bold uppercase tracking-wider text-[#8A99AD] mb-2">
-                    Tipe Kontrak
-                </p>
-                <nav class="space-y-1">
-                    <a href="{{ route('contracts.index', ['type' => 'PKWT']) }}" title="Kontrak PKWT"
-                        class="sidebar-item flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition {{ request('type') === 'PKWT' ? 'bg-[#333A48] text-white font-semibold' : 'text-[#8A99AD] hover:bg-[#333A48]/50 hover:text-white' }}">
-                        <span class="flex items-center gap-2.5">
-                            <span class="w-2.5 h-2.5 rounded-full bg-indigo-400 shrink-0"></span>
-                            <span class="sidebar-text truncate">PKWT</span>
-                        </span>
-                        <span class="sidebar-text text-[10px] text-indigo-300 font-semibold">Waktu Tertentu</span>
-                    </a>
-
-                    <a href="{{ route('contracts.index', ['type' => 'MT']) }}" title="Management Trainee"
-                        class="sidebar-item flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition {{ request('type') === 'MT' ? 'bg-[#333A48] text-white font-semibold' : 'text-[#8A99AD] hover:bg-[#333A48]/50 hover:text-white' }}">
-                        <span class="flex items-center gap-2.5">
-                            <span class="w-2.5 h-2.5 rounded-full bg-purple-400 shrink-0"></span>
-                            <span class="sidebar-text truncate">MT</span>
-                        </span>
-                        <span class="sidebar-text text-[10px] text-purple-300 font-semibold">Trainee</span>
-                    </a>
-
-                    <a href="{{ route('contracts.index', ['type' => 'MAGANG']) }}" title="Magang / Internship"
-                        class="sidebar-item flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition {{ request('type') === 'MAGANG' ? 'bg-[#333A48] text-white font-semibold' : 'text-[#8A99AD] hover:bg-[#333A48]/50 hover:text-white' }}">
-                        <span class="flex items-center gap-2.5">
-                            <span class="w-2.5 h-2.5 rounded-full bg-amber-400 shrink-0"></span>
-                            <span class="sidebar-text truncate">MAGANG</span>
-                        </span>
-                        <span class="sidebar-text text-[10px] text-amber-300 font-semibold">Internship</span>
-                    </a>
-                </nav>
-            </div>
-
-            <!-- Mini Divider for Collapsed State -->
-            <div class="sidebar-divider hidden w-8 mx-auto h-[1px] bg-[#2E3A47] my-2"></div>
-
-            <!-- Section: Filter Status Kontrak -->
-            <div>
-                <p class="sidebar-text px-3 text-[10px] font-bold uppercase tracking-wider text-[#8A99AD] mb-2">
-                    Status Kontrak
-                </p>
-                <nav class="space-y-1">
-                    <!-- Semua -->
-                    <a href="{{ route('employees.index') }}" title="Semua Kontrak"
-                        class="sidebar-item flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition {{ request()->routeIs('employees.index') && !request('status') ? 'bg-[#333A48] text-white' : 'text-[#8A99AD] hover:bg-[#333A48]/50 hover:text-white' }}">
-                        <span class="flex items-center gap-2.5">
-                            <span class="w-2.5 h-2.5 rounded-full bg-slate-400 shrink-0"></span>
-                            <span class="sidebar-text truncate">Semua Kontrak</span>
-                        </span>
-                    </a>
-
-                    <!-- Aktif -->
-                    <a href="{{ route('employees.index', ['status' => 'active']) }}"
-                        title="Kontrak Aktif (> 30 Hari)"
-                        class="sidebar-item flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition {{ request('status') === 'active' ? 'bg-[#333A48] text-white' : 'text-[#8A99AD] hover:bg-[#333A48]/50 hover:text-white' }}">
-                        <span class="flex items-center gap-2.5">
-                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shrink-0"></span>
-                            <span class="sidebar-text truncate">Kontrak Aktif</span>
-                        </span>
-                        <span class="sidebar-text text-[10px] text-emerald-400 font-semibold">&gt; 30 Hari</span>
-                    </a>
-
-                    <!-- Segera Habis -->
-                    <a href="{{ route('employees.index', ['status' => 'expiring_soon']) }}"
-                        title="Segera Habis (<= 30 Hari)"
-                        class="sidebar-item flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition {{ request('status') === 'expiring_soon' ? 'bg-[#333A48] text-white' : 'text-[#8A99AD] hover:bg-[#333A48]/50 hover:text-white' }}">
-                        <span class="flex items-center gap-2.5">
-                            <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse shrink-0"></span>
-                            <span class="sidebar-text truncate">Segera Habis</span>
-                        </span>
-                        <span class="sidebar-text text-[10px] text-amber-400 font-semibold">&le; 30 Hari</span>
-                    </a>
-
-                    <!-- Habis Kontrak -->
-                    <a href="{{ route('employees.index', ['status' => 'expired']) }}" title="Habis Kontrak (Expired)"
-                        class="sidebar-item flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition {{ request('status') === 'expired' ? 'bg-[#333A48] text-white' : 'text-[#8A99AD] hover:bg-[#333A48]/50 hover:text-white' }}">
-                        <span class="flex items-center gap-2.5">
-                            <span class="w-2.5 h-2.5 rounded-full bg-rose-400 shrink-0"></span>
-                            <span class="sidebar-text truncate">Habis Kontrak</span>
-                        </span>
-                        <span class="sidebar-text text-[10px] text-rose-400 font-semibold">Expired</span>
-                    </a>
-                </nav>
-            </div>
+                @endif
+            </nav>
         </div>
 
         <!-- Sidebar User Badge & Logout Form (Bottom) -->
@@ -248,19 +167,35 @@
                         </div>
                     </div>
 
-                    <!-- Logout Button (Expanded) -->
-                    <form action="{{ route('logout') }}" method="POST" class="shrink-0">
-                        @csrf
-                        <button type="submit"
-                            class="p-2 rounded-lg text-[#8A99AD] hover:text-rose-400 hover:bg-rose-500/10 transition"
-                            title="Keluar / Logout">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
-                                </path>
-                            </svg>
-                        </button>
-                    </form>
+                    <div class="flex items-center gap-1 shrink-0">
+                        @if (auth()->user()->isAdmin())
+                            <a href="{{ route('users.index') }}"
+                                class="p-2 rounded-lg text-[#8A99AD] hover:text-[#3C50E0] hover:bg-[#3C50E0]/10 transition"
+                                title="Kelola Pengguna">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
+                                    </path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                            </a>
+                        @endif
+
+                        <!-- Logout Button (Expanded) -->
+                        <form action="{{ route('logout') }}" method="POST">
+                            @csrf
+                            <button type="submit"
+                                class="p-2 rounded-lg text-[#8A99AD] hover:text-rose-400 hover:bg-rose-500/10 transition"
+                                title="Keluar / Logout">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
+                                    </path>
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
                 </div>
 
                 <!-- Collapsed View: Stacked Centered Avatar and Logout Button -->
@@ -269,6 +204,18 @@
                         title="{{ auth()->user()->name }} ({{ auth()->user()->role_label }})">
                         {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
                     </div>
+
+                    @if (auth()->user()->isAdmin())
+                        <a href="{{ route('users.index') }}"
+                            class="w-9 h-9 rounded-xl text-[#8A99AD] hover:text-[#3C50E0] hover:bg-[#3C50E0]/10 flex items-center justify-center transition"
+                            title="Kelola Pengguna">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
+                                </path>
+                            </svg>
+                        </a>
+                    @endif
 
                     <form action="{{ route('logout') }}" method="POST" class="w-full flex justify-center">
                         @csrf

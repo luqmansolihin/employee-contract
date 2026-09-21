@@ -8,9 +8,9 @@
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
                 <div class="flex items-center gap-2 text-xs text-slate-400 mb-1">
-                    <span>TailAdmin Dashboard</span>
+                    <a href="{{ route('dashboard') }}" class="hover:text-[#3C50E0] transition">Dashboard</a>
                     <span>/</span>
-                    <span class="text-[#1C2434] font-semibold">Karyawan Kontrak</span>
+                    <span class="text-[#1C2434] font-semibold">Employee</span>
                 </div>
                 <h1 class="text-2xl font-extrabold text-[#1C2434] tracking-tight">Pencatatan Karyawan Kontrak</h1>
                 <p class="text-xs text-slate-500 mt-0.5">Kelola data kepegawaian, masa berlaku kontrak, dan riwayat

@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Models\ContractAddendum;
 use App\Models\Employee;
 use App\Models\EmployeeContract;
 use App\Models\OfferingLetter;
@@ -31,6 +30,7 @@ class LetterNumberServiceTest extends TestCase
         $this->assertEquals('001/IX/2026/MAGANG', $magangNumber);
         $this->assertEquals('001/IX/2026/A-PKWT', $addendumNumber);
     }
+
     public function test_increments_sequence_separately_for_each_document_type(): void
     {
         $employee = Employee::create([

@@ -89,7 +89,7 @@ class EmployeeContract extends Model
     protected function contractTypeBadgeClass(): Attribute
     {
         return Attribute::make(
-            get: fn(): string => match ($this->contract_type) {
+            get: fn (): string => match ($this->contract_type) {
                 'PKWT' => 'bg-indigo-50 text-indigo-700 border-indigo-200',
                 'MT' => 'bg-purple-50 text-purple-700 border-purple-200',
                 'MAGANG' => 'bg-amber-50 text-amber-700 border-amber-200',
@@ -104,8 +104,8 @@ class EmployeeContract extends Model
     protected function formattedSalary(): Attribute
     {
         return Attribute::make(
-            get: fn(): ?string => $this->basic_salary !== null
-                ? 'Rp ' . number_format((float) $this->basic_salary, 0, ',', '.')
+            get: fn (): ?string => $this->basic_salary !== null
+                ? 'Rp '.number_format((float) $this->basic_salary, 0, ',', '.')
                 : null
         );
     }
@@ -116,8 +116,8 @@ class EmployeeContract extends Model
     protected function formattedAllowance(): Attribute
     {
         return Attribute::make(
-            get: fn(): ?string => $this->allowance !== null
-                ? 'Rp ' . number_format((float) $this->allowance, 0, ',', '.')
+            get: fn (): ?string => $this->allowance !== null
+                ? 'Rp '.number_format((float) $this->allowance, 0, ',', '.')
                 : null
         );
     }

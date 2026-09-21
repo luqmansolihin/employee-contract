@@ -143,7 +143,8 @@
                                 placeholder="Biarkan sama jika tidak ada perubahan"
                                 class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('new_position') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
                             <p class="text-[10px] text-slate-400 mt-1">Jabatan sebelumnya:
-                                <strong>{{ $contract->position }}</strong></p>
+                                <strong>{{ $contract->position }}</strong>
+                            </p>
                             @error('new_position')
                                 <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
                             @enderror
@@ -158,7 +159,8 @@
                                 value="{{ old('new_salary', $contract->basic_salary ? (float) $contract->basic_salary : 0) }}"
                                 class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('new_salary') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] font-mono outline-hidden transition">
                             <p class="text-[10px] text-slate-400 mt-1">Gaji sebelumnya:
-                                <strong>{{ $contract->formatted_salary ?: 'Belum diatur' }}</strong></p>
+                                <strong>{{ $contract->formatted_salary ?: 'Belum diatur' }}</strong>
+                            </p>
                             @error('new_salary')
                                 <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
                             @enderror

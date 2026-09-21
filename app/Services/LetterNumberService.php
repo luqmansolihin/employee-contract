@@ -91,7 +91,7 @@ class LetterNumberService
         $year = $date->year;
         $romanMonth = self::romanMonth($date->month);
         $cleanType = strtoupper(trim($contractType));
-        $code = 'A-' . $cleanType;
+        $code = 'A-'.$cleanType;
 
         $count = ContractAddendum::query()
             ->whereYear('issue_date', $year)
