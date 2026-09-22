@@ -32,7 +32,16 @@ class AuthenticationTest extends TestCase
         ]);
 
         $this->assertAuthenticated();
-        $response->assertRedirect('/employees');
+        $response->assertRedirect('/dashboard');
+    }
+
+    public function test_authenticated_users_visiting_login_are_redirected_to_dashboard(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get('/login');
+
+        $response->assertRedirect('/dashboard');
     }
 
     public function test_users_cannot_authenticate_with_invalid_password(): void

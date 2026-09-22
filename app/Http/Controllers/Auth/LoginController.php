@@ -16,7 +16,7 @@ class LoginController extends Controller
     public function showLoginForm(): View|RedirectResponse
     {
         if (Auth::check()) {
-            return redirect()->route('employees.index');
+            return redirect()->route('dashboard');
         }
 
         return view('auth.login');
@@ -40,7 +40,7 @@ class LoginController extends Controller
             $request->session()->regenerate();
 
             return redirect()
-                ->intended(route('employees.index'))
+                ->intended(route('dashboard'))
                 ->with('success', 'Selamat datang kembali, '.Auth::user()->name.'!');
         }
 
