@@ -15,9 +15,6 @@
                 <h1 class="text-2xl font-extrabold tracking-tight text-[#1C2434]">
                     Kontrak Kerja Karyawan
                 </h1>
-                <p class="text-xs text-slate-500 mt-1">
-                    Pengelolaan surat perjanjian kerja resmi (PKWT, Management Trainee, dan Magang).
-                </p>
             </div>
 
             <div class="flex items-center gap-3 shrink-0">

@@ -15,9 +15,6 @@
                 <h1 class="text-2xl font-extrabold tracking-tight text-[#1C2434]">
                     Adendum Perjanjian Kerja
                 </h1>
-                <p class="text-xs text-slate-500 mt-1">
-                    Arsip resmi seluruh amandemen, penyesuaian gaji/jabatan, dan perpanjangan kontrak karyawan.
-                </p>
             </div>
         </div>
 

@@ -13,10 +13,6 @@
                     <span class="text-[#1C2434] font-semibold">Dashboard</span>
                 </div>
                 <h1 class="text-2xl font-extrabold text-[#1C2434] tracking-tight">Dashboard Ringkasan</h1>
-                <p class="text-xs text-slate-500 mt-0.5">
-                    Monitoring menyeluruh siklus kerja karyawan: Input Employee, Offering Letter, Kontrak Kerja, dan
-                    Adendum.
-                </p>
             </div>
             <div class="flex flex-wrap items-center gap-2">
                 <a href="{{ route('employees.create') }}"

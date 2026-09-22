@@ -15,9 +15,6 @@
                 <h1 class="text-2xl font-extrabold tracking-tight text-[#1C2434]">
                     Manajemen Pengguna
                 </h1>
-                <p class="text-xs text-slate-500 mt-1">
-                    Kelola akun operator sistem, pemberian hak akses (Super Admin / Staff HRD), dan kredensial login.
-                </p>
             </div>
             <div class="flex items-center gap-3">
                 <a href="{{ route('users.create') }}"

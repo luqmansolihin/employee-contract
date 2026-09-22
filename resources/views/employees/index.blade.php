@@ -13,8 +13,6 @@
                     <span class="text-[#1C2434] font-semibold">Employee</span>
                 </div>
                 <h1 class="text-2xl font-extrabold text-[#1C2434] tracking-tight">Pencatatan Karyawan Kontrak</h1>
-                <p class="text-xs text-slate-500 mt-0.5">Kelola data kepegawaian, masa berlaku kontrak, dan riwayat
-                    perpanjangan kontrak karyawan.</p>
             </div>
             <div class="flex items-center gap-3">
                 <a href="{{ route('employees.create') }}"

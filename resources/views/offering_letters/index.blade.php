@@ -15,9 +15,6 @@
                 <h1 class="text-2xl font-extrabold tracking-tight text-[#1C2434]">
                     Surat Penawaran Kerja (Offering Letter)
                 </h1>
-                <p class="text-xs text-slate-500 mt-1">
-                    Daftar surat penawaran kerja sebelum diterbitkan kontrak resmi bagi calon karyawan.
-                </p>
             </div>
 
             <div class="flex items-center gap-3 shrink-0">
