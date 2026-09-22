@@ -4,17 +4,12 @@
 
 @section('content')
     <div class="max-w-4xl mx-auto space-y-6">
-        <!-- Breadcrumb & Title -->
+        <!-- Header -->
         <div class="flex items-center justify-between">
             <div>
-                <div class="flex items-center gap-2 text-xs text-slate-500 mb-1">
-                    <a href="{{ route('employees.index') }}" class="hover:text-[#3C50E0] transition">Daftar Karyawan</a>
-                    <span>/</span>
-                    <span class="text-slate-800 font-medium">Tambah Baru</span>
-                </div>
-                <h1 class="text-2xl font-extrabold text-[#1C2434] tracking-tight">Pendaftaran Karyawan Kontrak Baru</h1>
-                <p class="text-sm text-slate-500 mt-0.5">Isi seluruh informasi pribadi dan detail kontrak kerja awal
-                    karyawan.</p>
+                <h1 class="text-xl font-extrabold tracking-tight text-[#1C2434]">
+                    <span class="text-slate-400">SI-KONTRAK /</span> TAMBAH EMPLOYEE
+                </h1>
             </div>
             <a href="{{ route('employees.index') }}"
                 class="px-4 py-2 text-sm font-medium rounded-lg border border-[#E2E8F0] text-slate-700 hover:bg-[#F7F9FC] transition bg-white shadow-xs">
@@ -26,7 +21,7 @@
         <form action="{{ route('employees.store') }}" method="POST" class="space-y-6">
             @csrf
 
-            <!-- Section 1: Data Pribadi -->
+            <!-- Section: Data Pribadi Karyawan -->
             <div class="bg-white rounded-xl border border-[#E2E8F0] shadow-xs overflow-hidden">
                 <div class="px-6 py-4 border-b border-[#E2E8F0] bg-[#F7F9FC] flex items-center gap-2">
                     <div class="w-7 h-7 rounded-lg bg-[#3C50E0]/10 text-[#3C50E0] flex items-center justify-center">
@@ -35,7 +30,7 @@
                                 d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                         </svg>
                     </div>
-                    <h2 class="text-sm font-bold text-[#1C2434] uppercase tracking-wider">1. Data Pribadi Karyawan</h2>
+                    <h2 class="text-sm font-bold text-[#1C2434] uppercase tracking-wider">Data Pribadi Karyawan</h2>
                 </div>
 
                 <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -87,7 +82,7 @@
                         @enderror
                     </div>
 
-                    <!-- Email & No Telepon -->
+                    <!-- Email -->
                     <div>
                         <label for="email"
                             class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
@@ -101,6 +96,7 @@
                         @enderror
                     </div>
 
+                    <!-- No Telepon -->
                     <div>
                         <label for="phone"
                             class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
@@ -158,141 +154,6 @@
                 </div>
             </div>
 
-            <!-- Section 2: Data Penempatan & Kontrak Awal -->
-            <div class="bg-white rounded-xl border border-[#E2E8F0] shadow-xs overflow-hidden">
-                <div class="px-6 py-4 border-b border-[#E2E8F0] bg-[#F7F9FC] flex items-center gap-2">
-                    <div class="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                            </path>
-                        </svg>
-                    </div>
-                    <h2 class="text-sm font-bold text-[#1C2434] uppercase tracking-wider">2. Data Penempatan & Kontrak Awal
-                        (Kontrak #1)</h2>
-                </div>
-
-                <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <!-- Tipe Kontrak -->
-                    <div class="md:col-span-2">
-                        <label for="contract_type"
-                            class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                            Tipe Kontrak Kerja
-                        </label>
-                        <select name="contract_type" id="contract_type"
-                            class="w-full px-4 py-2.5 text-sm rounded-lg border border-[#E2E8F0] focus:border-[#3C50E0] focus:ring-2 focus:ring-[#3C50E0]/20 outline-hidden transition bg-white">
-                            <option value="PKWT" {{ old('contract_type') === 'PKWT' ? 'selected' : '' }}>PKWT
-                                (Perjanjian Kerja Waktu Tertentu)</option>
-                            <option value="MT" {{ old('contract_type') === 'MT' ? 'selected' : '' }}>MT (Management
-                                Trainee)</option>
-                            <option value="MAGANG" {{ old('contract_type') === 'MAGANG' ? 'selected' : '' }}>MAGANG
-                                (Internship / Pemagangan)</option>
-                        </select>
-                    </div>
-
-                    <!-- Nomor Kontrak / PKWT -->
-                    <div class="md:col-span-2">
-                        <label for="contract_number"
-                            class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                            Nomor Surat Kontrak / PKWT <span class="text-slate-400 font-normal">(Opsional - Otomatis bila
-                                dikosongkan)</span>
-                        </label>
-                        <input type="text" name="contract_number" id="contract_number"
-                            value="{{ old('contract_number') }}" placeholder="Contoh: 001/IX/2026/PKWT"
-                            class="w-full px-4 py-2.5 text-sm rounded-lg border border-[#E2E8F0] focus:border-[#3C50E0] focus:ring-2 focus:ring-[#3C50E0]/20 outline-hidden transition bg-white font-mono">
-                        @error('contract_number')
-                            <p class="text-xs text-rose-600 mt-1 font-medium">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Jabatan -->
-                    <div>
-                        <label for="position"
-                            class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                            Jabatan / Posisi <span class="text-rose-500">*</span>
-                        </label>
-                        <input type="text" name="position" id="position" value="{{ old('position') }}" required
-                            placeholder="Contoh: Staff IT / Administrasi"
-                            class="w-full px-4 py-2.5 text-sm rounded-lg border {{ $errors->has('position') ? 'border-rose-400 focus:border-rose-500 focus:ring-rose-200' : 'border-[#E2E8F0] focus:border-[#3C50E0] focus:ring-[#3C50E0]/20' }} focus:ring-2 outline-hidden transition bg-white">
-                        @error('position')
-                            <p class="text-xs text-rose-600 mt-1 font-medium">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Cabang -->
-                    <div>
-                        <label for="branch"
-                            class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                            Cabang Penempatan <span class="text-rose-500">*</span>
-                        </label>
-                        <input type="text" name="branch" id="branch" value="{{ old('branch') }}" required
-                            placeholder="Contoh: Jakarta Pusat / Bandung"
-                            class="w-full px-4 py-2.5 text-sm rounded-lg border {{ $errors->has('branch') ? 'border-rose-400 focus:border-rose-500 focus:ring-rose-200' : 'border-[#E2E8F0] focus:border-[#3C50E0] focus:ring-[#3C50E0]/20' }} focus:ring-2 outline-hidden transition bg-white">
-                        @error('branch')
-                            <p class="text-xs text-rose-600 mt-1 font-medium">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Tanggal Mulai Bergabung / Mulai Kontrak -->
-                    <div>
-                        <label for="join_date"
-                            class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                            Tanggal Mulai Kontrak <span class="text-rose-500">*</span>
-                        </label>
-                        <input type="date" name="join_date" id="join_date"
-                            value="{{ old('join_date', now()->toDateString()) }}" required
-                            class="w-full px-4 py-2.5 text-sm rounded-lg border {{ $errors->has('join_date') ? 'border-rose-400 focus:border-rose-500 focus:ring-rose-200' : 'border-[#E2E8F0] focus:border-[#3C50E0] focus:ring-[#3C50E0]/20' }} focus:ring-2 outline-hidden transition bg-white">
-                        @error('join_date')
-                            <p class="text-xs text-rose-600 mt-1 font-medium">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Tanggal Habis Kontrak -->
-                    <div>
-                        <label for="contract_end_date"
-                            class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                            Tanggal Habis Kontrak <span class="text-rose-500">*</span>
-                        </label>
-                        <input type="date" name="contract_end_date" id="contract_end_date"
-                            value="{{ old('contract_end_date') }}" required
-                            class="w-full px-4 py-2.5 text-sm rounded-lg border {{ $errors->has('contract_end_date') ? 'border-rose-400 focus:border-rose-500 focus:ring-rose-200' : 'border-[#E2E8F0] focus:border-[#3C50E0] focus:ring-[#3C50E0]/20' }} focus:ring-2 outline-hidden transition bg-white">
-                        <p class="text-xs text-slate-400 mt-1">Harus tanggal setelah tanggal mulai kontrak.</p>
-                        @error('contract_end_date')
-                            <p class="text-xs text-rose-600 mt-1 font-medium">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Catatan Kontrak -->
-                    <div class="md:col-span-2">
-                        <label for="notes"
-                            class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                            Catatan Kontrak <span class="text-slate-400 font-normal">(Opsional)</span>
-                        </label>
-                        <textarea name="notes" id="notes" rows="2"
-                            placeholder="Keterangan tambahan atau klausul khusus kontrak awal..."
-                            class="w-full px-4 py-2.5 text-sm rounded-lg border border-[#E2E8F0] focus:border-[#3C50E0] focus:ring-2 focus:ring-[#3C50E0]/20 outline-hidden transition bg-white">{{ old('notes') }}</textarea>
-                        @error('notes')
-                            <p class="text-xs text-rose-600 mt-1 font-medium">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Live Contract Duration Preview Box -->
-                    <div id="duration-preview-box"
-                        class="md:col-span-2 hidden p-4 rounded-lg bg-[#F7F9FC] border border-[#E2E8F0] text-xs">
-                        <p class="font-bold text-[#1C2434] uppercase tracking-wider mb-1">Preview Kalkulasi Kontrak Awal
-                        </p>
-                        <div class="flex items-center gap-4 text-slate-600 flex-wrap">
-                            <span>Total Durasi: <strong id="preview-duration" class="text-slate-900">-</strong></span>
-                            <span>&bull;</span>
-                            <span>Sisa Waktu: <strong id="preview-remaining" class="text-slate-900">-</strong></span>
-                            <span>&bull;</span>
-                            <span>Status Prediksi: <span id="preview-badge"
-                                    class="px-2 py-0.5 rounded-full font-semibold">-</span></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <!-- Submit & Actions -->
             <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
                 <a href="{{ route('employees.index') }}"
@@ -311,70 +172,16 @@
                         <span>Simpan & Buat Offering Letter &rarr;</span>
                     </button>
 
-                    <button type="submit" name="next_action" value="contract"
+                    <button type="submit"
                         class="px-6 py-2.5 text-sm font-semibold rounded-lg bg-[#3C50E0] text-white hover:bg-[#2F40BD] shadow-sm transition flex items-center justify-center gap-2 w-full sm:w-auto">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
                             </path>
                         </svg>
-                        <span>Simpan & Terbitkan Kontrak</span>
+                        <span>Simpan Data Karyawan</span>
                     </button>
                 </div>
             </div>
         </form>
     </div>
-
-    <script>
-        function updateContractPreview() {
-            const joinInput = document.getElementById('join_date').value;
-            const endInput = document.getElementById('contract_end_date').value;
-            const box = document.getElementById('duration-preview-box');
-
-            if (!joinInput || !endInput) {
-                box.classList.add('hidden');
-                return;
-            }
-
-            const joinDate = new Date(joinInput);
-            const endDate = new Date(endInput);
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-
-            if (endDate <= joinDate) {
-                box.classList.add('hidden');
-                return;
-            }
-
-            box.classList.remove('hidden');
-
-            const totalDays = Math.round((endDate - joinDate) / (1000 * 60 * 60 * 24));
-            const months = Math.round(totalDays / 30);
-            document.getElementById('preview-duration').textContent = `${months} bulan (${totalDays} hari)`;
-
-            const remainingDays = Math.round((endDate - today) / (1000 * 60 * 60 * 24));
-            const badgeEl = document.getElementById('preview-badge');
-
-            if (remainingDays < 0) {
-                document.getElementById('preview-remaining').textContent =
-                    `Lewat ${Math.abs(remainingDays)} hari yang lalu`;
-                badgeEl.textContent = 'Habis Kontrak';
-                badgeEl.className =
-                    'px-2 py-0.5 rounded-full font-semibold bg-rose-50 text-rose-700 border border-rose-200';
-            } else if (remainingDays <= 30) {
-                document.getElementById('preview-remaining').textContent = `Sisa ${remainingDays} hari lagi`;
-                badgeEl.textContent = 'Segera Habis (< 30 Hari)';
-                badgeEl.className =
-                    'px-2 py-0.5 rounded-full font-semibold bg-amber-50 text-amber-700 border border-amber-200';
-            } else {
-                document.getElementById('preview-remaining').textContent = `Sisa ${remainingDays} hari lagi`;
-                badgeEl.textContent = 'Aktif';
-                badgeEl.className =
-                    'px-2 py-0.5 rounded-full font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200';
-            }
-        }
-
-        document.getElementById('join_date').addEventListener('change', updateContractPreview);
-        document.getElementById('contract_end_date').addEventListener('change', updateContractPreview);
-        updateContractPreview();
-    </script>
 @endsection

@@ -5,11 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
 use App\Models\Employee;
-use App\Services\LetterNumberService;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 
@@ -64,59 +62,21 @@ class EmployeeController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage (with initial contract).
+     * Store a newly created resource in storage (personal data only).
      */
     public function store(StoreEmployeeRequest $request): RedirectResponse
     {
-        $employee = DB::transaction(function () use ($request) {
-            $employee = Employee::create([
-                'name' => $request->name,
-                'ktp_number' => $request->ktp_number,
-                'gender' => $request->gender,
-                'birth_place' => $request->birth_place,
-                'birth_date' => $request->birth_date,
-                'address' => $request->address,
-                'email' => $request->email,
-                'phone' => $request->phone,
-                'first_join_date' => $request->join_date,
-                'current_position' => $request->position,
-                'current_branch' => $request->branch,
-                'current_contract_end_date' => $request->contract_end_date,
-            ]);
+        $employee = Employee::create($request->validated());
 
-            // If initial contract dates provided, generate initial contract
-            if ($request->filled('contract_end_date')) {
-                $contractType = $request->input('contract_type', 'PKWT');
-                $contractNumber = $request->filled('contract_number')
-                    ? $request->contract_number
-                    : LetterNumberService::generateContractNumber($contractType, Carbon::parse($request->join_date));
-
-                $employee->contracts()->create([
-                    'contract_sequence' => 1,
-                    'contract_number' => $contractNumber,
-                    'contract_type' => $contractType,
-                    'position' => $request->position,
-                    'branch' => $request->branch,
-                    'start_date' => $request->join_date,
-                    'end_date' => $request->contract_end_date,
-                    'status' => 'active',
-                    'notes' => $request->notes,
-                ]);
-            }
-
-            return $employee;
-        });
-
-        // If user specifically requested to create offering letter next
-        if ($request->input('next_action') === 'offering' || ! $request->filled('contract_end_date')) {
+        if ($request->input('next_action') === 'offering') {
             return redirect()
                 ->route('offering-letters.create', $employee)
-                ->with('success', "Data karyawan {$employee->name} berhasil disimpan. Silakan lanjutkan dengan menerbitkan Surat Penawaran (Offering Letter).");
+                ->with('success', "Data pribadi karyawan {$employee->name} berhasil disimpan. Silakan lanjutkan dengan menerbitkan Surat Penawaran (Offering Letter).");
         }
 
         return redirect()
             ->route('employees.show', $employee)
-            ->with('success', "Data karyawan {$employee->name} dan kontrak awal berhasil ditambahkan.");
+            ->with('success', "Data pribadi karyawan {$employee->name} berhasil ditambahkan.");
     }
 
     /**

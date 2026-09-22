@@ -72,7 +72,9 @@ class DashboardTest extends TestCase
         $response->assertOk();
         $response->assertSee('SI-KONTRAK /');
         $response->assertSee('DASHBOARD');
-        $response->assertSeeText('Alur Siklus Kepegawaian');
+        $response->assertDontSee('Alur Siklus Kepegawaian');
+        $response->assertDontSee('Input Karyawan');
+        $response->assertDontSee('Terbitkan Kontrak');
         $response->assertSee('Total Karyawan Terdaftar');
         $response->assertSee('Offering Letter');
         $response->assertSee('Kontrak Kerja Aktif');

@@ -32,13 +32,6 @@ class StoreEmployeeRequest extends FormRequest
             'address' => ['required', 'string', 'max:1000'],
             'email' => ['nullable', 'email', 'max:255'],
             'phone' => ['nullable', 'string', 'max:25'],
-            'position' => ['required', 'string', 'max:100'],
-            'branch' => ['required', 'string', 'max:100'],
-            'join_date' => ['required', 'date'],
-            'contract_end_date' => ['nullable', 'date', 'after:join_date'],
-            'contract_type' => ['nullable', Rule::in(['PKWT', 'MT', 'MAGANG'])],
-            'contract_number' => ['nullable', 'string', 'max:100'],
-            'notes' => ['nullable', 'string', 'max:1000'],
         ];
     }
 
@@ -56,12 +49,8 @@ class StoreEmployeeRequest extends FormRequest
             'birth_place' => 'tempat lahir',
             'birth_date' => 'tanggal lahir',
             'address' => 'alamat',
-            'position' => 'jabatan',
-            'branch' => 'cabang',
-            'join_date' => 'tanggal mulai bergabung',
-            'contract_end_date' => 'tanggal habis kontrak',
-            'contract_number' => 'nomor kontrak',
-            'notes' => 'catatan',
+            'email' => 'email',
+            'phone' => 'nomor telepon',
         ];
     }
 
@@ -76,7 +65,6 @@ class StoreEmployeeRequest extends FormRequest
             'ktp_number.digits' => 'Nomor KTP harus tepat 16 digit angka.',
             'ktp_number.unique' => 'Nomor KTP ini sudah terdaftar dalam sistem.',
             'birth_date.before' => 'Tanggal lahir harus sebelum hari ini.',
-            'contract_end_date.after' => 'Tanggal habis kontrak harus setelah tanggal bergabung.',
         ];
     }
 }

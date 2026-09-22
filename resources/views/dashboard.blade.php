@@ -4,86 +4,13 @@
 
 @section('content')
     <div class="space-y-6">
-        <!-- Dashboard Header & Quick Actions -->
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div>
-                <h1 class="text-xl font-extrabold tracking-tight text-[#1C2434]">
-                    <span class="text-slate-400">SI-KONTRAK /</span> DASHBOARD
-                </h1>
-            </div>
-            <div class="flex flex-wrap items-center gap-2">
-                <a href="{{ route('employees.create') }}"
-                    class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold bg-[#3C50E0] text-white hover:bg-[#2F40BD] shadow-sm shadow-[#3C50E0]/30 transition">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                    </svg>
-                    <span>Input Karyawan</span>
-                </a>
-                <a href="{{ route('contracts.create') }}"
-                    class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold bg-white border border-[#E2E8F0] text-slate-700 hover:bg-slate-50 transition shadow-xs">
-                    <svg class="w-4 h-4 text-[#3C50E0]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                        </path>
-                    </svg>
-                    <span>Terbitkan Kontrak</span>
-                </a>
-                @if (auth()->user()->isAdmin())
-                    <a href="{{ route('users.index') }}"
-                        class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold bg-white border border-[#E2E8F0] text-slate-700 hover:bg-slate-50 transition shadow-xs">
-                        <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
-                            </path>
-                        </svg>
-                        <span>Kelola Pengguna</span>
-                    </a>
-                @endif
-            </div>
+        <!-- Dashboard Header -->
+        <div>
+            <h1 class="text-xl font-extrabold tracking-tight text-[#1C2434]">
+                <span class="text-slate-400">SI-KONTRAK /</span> DASHBOARD
+            </h1>
         </div>
 
-        <!-- 4-Stage Workflow Stepper Banner -->
-        <div class="p-5 rounded-2xl bg-[#1C2434] text-[#DEE4EE] border border-[#2E3A47] shadow-md">
-            <div class="flex items-center justify-between mb-3">
-                <span class="text-[10px] font-extrabold uppercase tracking-widest text-[#8A99AD]">Alur Siklus
-                    Kepegawaian</span>
-                <span class="text-xs text-indigo-400 font-semibold">4 Tahap Utama</span>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                <!-- Tahap 1 -->
-                <a href="{{ route('employees.index') }}"
-                    class="p-3 rounded-xl bg-[#24303F] border border-[#2E3A47] hover:border-[#3C50E0] transition group flex items-center gap-2.5">
-                    <span
-                        class="w-6 h-6 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs font-bold shrink-0">1</span>
-                    <p class="text-xs font-bold text-white group-hover:text-indigo-400 transition truncate">Employee</p>
-                </a>
-
-                <!-- Tahap 2 -->
-                <a href="{{ route('offering-letters.index') }}"
-                    class="p-3 rounded-xl bg-[#24303F] border border-[#2E3A47] hover:border-amber-400 transition group flex items-center gap-2.5">
-                    <span
-                        class="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold shrink-0">2</span>
-                    <p class="text-xs font-bold text-white group-hover:text-amber-400 transition truncate">Offering Letter
-                    </p>
-                </a>
-
-                <!-- Tahap 3 -->
-                <a href="{{ route('contracts.index') }}"
-                    class="p-3 rounded-xl bg-[#24303F] border border-[#2E3A47] hover:border-emerald-400 transition group flex items-center gap-2.5">
-                    <span
-                        class="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs font-bold shrink-0">3</span>
-                    <p class="text-xs font-bold text-white group-hover:text-emerald-400 transition truncate">Kontrak</p>
-                </a>
-
-                <!-- Tahap 4 -->
-                <a href="{{ route('addendums.index') }}"
-                    class="p-3 rounded-xl bg-[#24303F] border border-[#2E3A47] hover:border-purple-400 transition group flex items-center gap-2.5">
-                    <span
-                        class="w-6 h-6 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center text-xs font-bold shrink-0">4</span>
-                    <p class="text-xs font-bold text-white group-hover:text-purple-400 transition truncate">Adendum</p>
-                </a>
-            </div>
-        </div>
 
         <!-- TailAdmin KPI Analytic Cards Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -99,9 +26,6 @@
                             </path>
                         </svg>
                     </div>
-                    <span
-                        class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-indigo-50 text-[#3C50E0]">Tahap
-                        1</span>
                 </div>
                 <div class="mt-4">
                     <p class="text-3xl font-extrabold text-[#1C2434]">{{ number_format($totalEmployees) }}</p>
@@ -121,9 +45,6 @@
                             </path>
                         </svg>
                     </div>
-                    <span
-                        class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-50 text-amber-700">Tahap
-                        2</span>
                 </div>
                 <div class="mt-4">
                     <p class="text-3xl font-extrabold text-[#1C2434]">{{ number_format($totalOfferingLetters) }}</p>
@@ -148,9 +69,6 @@
                             </path>
                         </svg>
                     </div>
-                    <span
-                        class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700">Tahap
-                        3</span>
                 </div>
                 <div class="mt-4">
                     <p class="text-3xl font-extrabold text-emerald-800">{{ number_format($activeContractsCount) }}</p>
@@ -170,9 +88,6 @@
                             </path>
                         </svg>
                     </div>
-                    <span
-                        class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-purple-50 text-purple-700">Tahap
-                        4</span>
                 </div>
                 <div class="mt-4">
                     <p class="text-3xl font-extrabold text-purple-900">{{ number_format($totalAddendums) }}</p>

@@ -93,11 +93,14 @@ class EmployeeTest extends TestCase
         $response = $this->get(route('employees.create'));
 
         $response->assertOk();
-        $response->assertSee('Pendaftaran Karyawan Kontrak Baru');
+        $response->assertSee('SI-KONTRAK /');
+        $response->assertSee('TAMBAH EMPLOYEE');
+        $response->assertDontSee('Pendaftaran Karyawan Kontrak Baru');
+        $response->assertDontSee('Isi seluruh informasi pribadi dan detail kontrak kerja awal karyawan');
         $response->assertSee('Nomor KTP / NIK');
     }
 
-    public function test_can_store_new_employee_with_initial_contract(): void
+    public function test_can_store_new_employee_with_personal_data_only(): void
     {
         $payload = [
             'name' => 'Ahmad Fauzi',
@@ -106,12 +109,8 @@ class EmployeeTest extends TestCase
             'birth_place' => 'Jakarta',
             'birth_date' => '1995-04-23',
             'address' => 'Jl. Sudirman No. 45, Jakarta Pusat',
-            'position' => 'DevOps Engineer',
-            'branch' => 'Jakarta Pusat',
-            'join_date' => Carbon::today()->subMonths(3)->toDateString(),
-            'contract_end_date' => Carbon::today()->addMonths(9)->toDateString(),
-            'contract_number' => '001/PKWT/2026',
-            'notes' => 'Catatan kontrak awal',
+            'email' => 'ahmad.fauzi@example.com',
+            'phone' => '081234567890',
         ];
 
         $response = $this->post(route('employees.store'), $payload);
@@ -120,15 +119,18 @@ class EmployeeTest extends TestCase
         $this->assertDatabaseHas('employees', [
             'name' => 'Ahmad Fauzi',
             'ktp_number' => '3171012304950005',
-            'current_position' => 'DevOps Engineer',
+            'current_position' => null,
+            'current_branch' => null,
+            'first_join_date' => null,
+            'current_contract_end_date' => null,
         ]);
 
-        $this->assertDatabaseHas('employee_contracts', [
-            'contract_sequence' => 1,
-            'contract_number' => '001/PKWT/2026',
-            'position' => 'DevOps Engineer',
-            'status' => 'active',
-        ]);
+        // Verify no contract was created automatically
+        $employee = Employee::where('ktp_number', '3171012304950005')->first();
+        $this->assertNotNull($employee);
+        $this->assertEquals(0, $employee->contracts()->count());
+        $this->assertEquals('uncontracted', $employee->status);
+        $this->assertEquals('Belum Ada Kontrak', $employee->status_label);
     }
 
     public function test_validates_ktp_must_be_16_digits(): void
@@ -140,10 +142,6 @@ class EmployeeTest extends TestCase
             'birth_place' => 'Jakarta',
             'birth_date' => '1995-04-23',
             'address' => 'Jl. Sudirman No. 45',
-            'position' => 'DevOps Engineer',
-            'branch' => 'Jakarta Pusat',
-            'join_date' => '2026-01-01',
-            'contract_end_date' => '2026-12-31',
         ];
 
         $response = $this->post(route('employees.store'), $payload);
@@ -167,10 +165,6 @@ class EmployeeTest extends TestCase
             'birth_place' => 'Surabaya',
             'birth_date' => '1996-01-01',
             'address' => 'Jl. Pemuda No. 10',
-            'position' => 'Staff IT',
-            'branch' => 'Surabaya',
-            'join_date' => '2026-01-01',
-            'contract_end_date' => '2026-12-31',
         ];
 
         $response = $this->post(route('employees.store'), $payload);
@@ -178,24 +172,20 @@ class EmployeeTest extends TestCase
         $response->assertSessionHasErrors('ktp_number');
     }
 
-    public function test_validates_contract_end_date_must_be_after_join_date(): void
+    public function test_validates_birth_date_must_be_before_today(): void
     {
         $payload = [
             'name' => 'Dewi Sartika',
             'ktp_number' => '3273012304950008',
             'gender' => 'Perempuan',
             'birth_place' => 'Bandung',
-            'birth_date' => '1997-03-15',
+            'birth_date' => Carbon::tomorrow()->toDateString(),
             'address' => 'Jl. Dago No. 12',
-            'position' => 'HR Staff',
-            'branch' => 'Bandung',
-            'join_date' => '2026-06-01',
-            'contract_end_date' => '2026-05-01',
         ];
 
         $response = $this->post(route('employees.store'), $payload);
 
-        $response->assertSessionHasErrors('contract_end_date');
+        $response->assertSessionHasErrors('birth_date');
     }
 
     public function test_can_show_employee_detail_with_contract_timeline(): void

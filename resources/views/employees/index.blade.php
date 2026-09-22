@@ -140,7 +140,7 @@
                                 <!-- Position & Branch -->
                                 <td class="py-4 px-4">
                                     <span
-                                        class="font-semibold text-slate-800 block text-xs">{{ $employee->current_position }}</span>
+                                        class="font-semibold text-slate-800 block text-xs">{{ $employee->current_position ?: 'Belum Ada Kontrak' }}</span>
                                     <span class="inline-flex items-center gap-1 text-[11px] text-slate-500 mt-0.5">
                                         <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
@@ -150,7 +150,7 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                         </svg>
-                                        {{ $employee->current_branch }}
+                                        {{ $employee->current_branch ?: '-' }}
                                     </span>
                                 </td>
 
@@ -171,22 +171,31 @@
                                             </svg>
                                             PKWT #{{ $contractCount }}
                                         </span>
-                                    @else
+                                    @elseif ($contractCount === 1)
                                         <span
                                             class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-slate-100 text-slate-600">
                                             Kontrak Awal
+                                        </span>
+                                    @else
+                                        <span
+                                            class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-slate-100 text-slate-400">
+                                            Belum Ada
                                         </span>
                                     @endif
                                 </td>
 
                                 <!-- Current Contract Period -->
                                 <td class="py-4 px-4 text-xs">
-                                    <div class="font-medium text-slate-700">
-                                        s/d <span
-                                            class="font-bold text-[#1C2434]">{{ $employee->current_contract_end_date?->format('d M Y') }}</span>
-                                    </div>
-                                    <span class="text-[11px] text-slate-400 block mt-0.5">Mulai:
-                                        {{ $employee->first_join_date?->format('d M Y') }}</span>
+                                    @if ($employee->current_contract_end_date)
+                                        <div class="font-medium text-slate-700">
+                                            s/d <span
+                                                class="font-bold text-[#1C2434]">{{ $employee->current_contract_end_date->format('d M Y') }}</span>
+                                        </div>
+                                        <span class="text-[11px] text-slate-400 block mt-0.5">Mulai:
+                                            {{ $employee->first_join_date?->format('d M Y') ?: '-' }}</span>
+                                    @else
+                                        <span class="text-slate-400 italic">Belum ada kontrak</span>
+                                    @endif
                                 </td>
 
                                 <!-- Status & Remaining Days -->
@@ -218,17 +227,31 @@
                                             </svg>
                                         </a>
 
-                                        <!-- Renew Contract -->
-                                        <a href="{{ route('employees.renew', $employee) }}"
-                                            class="p-1.5 rounded-lg text-[#3C50E0] hover:text-[#2F40BD] hover:bg-indigo-50 transition"
-                                            title="Perpanjang Kontrak">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
-                                                </path>
-                                            </svg>
-                                        </a>
+                                        @if ($contractCount > 0)
+                                            <!-- Renew Contract -->
+                                            <a href="{{ route('employees.renew', $employee) }}"
+                                                class="p-1.5 rounded-lg text-[#3C50E0] hover:text-[#2F40BD] hover:bg-indigo-50 transition"
+                                                title="Perpanjang Kontrak">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+                                                    </path>
+                                                </svg>
+                                            </a>
+                                        @else
+                                            <!-- Create Offering Letter -->
+                                            <a href="{{ route('offering-letters.create', $employee) }}"
+                                                class="p-1.5 rounded-lg text-blue-600 hover:text-blue-800 hover:bg-blue-50 transition"
+                                                title="Terbitkan Offering Letter">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                                                    </path>
+                                                </svg>
+                                            </a>
+                                        @endif
 
                                         <!-- Edit Biodata -->
                                         <a href="{{ route('employees.edit', $employee) }}"

@@ -121,6 +121,7 @@ class ContractController extends Controller
 
             // Sync employee cached contract info
             $employee->update([
+                'first_join_date' => $employee->first_join_date ?? $request->start_date,
                 'current_position' => $request->position,
                 'current_branch' => $request->branch,
                 'current_contract_end_date' => $request->end_date,

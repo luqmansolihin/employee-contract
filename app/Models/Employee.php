@@ -89,7 +89,7 @@ class Employee extends Model
     }
 
     /**
-     * Status attribute based on current_contract_end_date: active, expiring_soon, expired
+     * Status attribute based on current_contract_end_date: active, expiring_soon, expired, uncontracted
      */
     protected function status(): Attribute
     {
@@ -99,7 +99,7 @@ class Employee extends Model
                 $endDate = $this->current_contract_end_date?->copy()->startOfDay();
 
                 if (! $endDate) {
-                    return 'unknown';
+                    return 'uncontracted';
                 }
 
                 if ($endDate->lt($today)) {
@@ -126,6 +126,7 @@ class Employee extends Model
                     'active' => 'Aktif',
                     'expiring_soon' => 'Segera Habis (< 30 Hari)',
                     'expired' => 'Habis Kontrak',
+                    'uncontracted' => 'Belum Ada Kontrak',
                     default => 'Tidak Diketahui',
                 };
             }
@@ -143,6 +144,7 @@ class Employee extends Model
                     'active' => 'bg-emerald-50 text-emerald-700 ring-emerald-600/20 border border-emerald-200',
                     'expiring_soon' => 'bg-amber-50 text-amber-700 ring-amber-600/20 border border-amber-200',
                     'expired' => 'bg-rose-50 text-rose-700 ring-rose-600/20 border border-rose-200',
+                    'uncontracted' => 'bg-slate-100 text-slate-700 ring-slate-600/20 border border-slate-200',
                     default => 'bg-gray-50 text-gray-700 ring-gray-600/20 border border-gray-200',
                 };
             }
@@ -185,6 +187,10 @@ class Employee extends Model
     {
         return Attribute::make(
             get: function (): string {
+                if (! $this->current_contract_end_date) {
+                    return 'Belum ada kontrak';
+                }
+
                 $days = $this->remaining_days;
 
                 if ($days > 0) {
