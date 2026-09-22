@@ -30,8 +30,6 @@ class StoreEmployeeRequest extends FormRequest
             'birth_place' => ['required', 'string', 'max:100'],
             'birth_date' => ['required', 'date', 'before:today'],
             'address' => ['required', 'string', 'max:1000'],
-            'email' => ['nullable', 'email', 'max:255'],
-            'phone' => ['nullable', 'string', 'max:25'],
         ];
     }
 
@@ -49,8 +47,6 @@ class StoreEmployeeRequest extends FormRequest
             'birth_place' => 'tempat lahir',
             'birth_date' => 'tanggal lahir',
             'address' => 'alamat',
-            'email' => 'email',
-            'phone' => 'nomor telepon',
         ];
     }
 

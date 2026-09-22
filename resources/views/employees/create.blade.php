@@ -82,34 +82,6 @@
                         @enderror
                     </div>
 
-                    <!-- Email -->
-                    <div>
-                        <label for="email"
-                            class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                            Email Karyawan <span class="text-slate-400 font-normal">(Opsional)</span>
-                        </label>
-                        <input type="email" name="email" id="email" value="{{ old('email') }}"
-                            placeholder="nama@email.com" autocomplete="off"
-                            class="w-full px-4 py-2.5 text-sm rounded-lg border border-[#E2E8F0] focus:border-[#3C50E0] focus:ring-2 focus:ring-[#3C50E0]/20 outline-hidden transition bg-white">
-                        @error('email')
-                            <p class="text-xs text-rose-600 mt-1 font-medium">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- No Telepon -->
-                    <div>
-                        <label for="phone"
-                            class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                            No. Telepon / WhatsApp <span class="text-slate-400 font-normal">(Opsional)</span>
-                        </label>
-                        <input type="text" name="phone" id="phone" value="{{ old('phone') }}"
-                            placeholder="Contoh: 081234567890" autocomplete="off"
-                            class="w-full px-4 py-2.5 text-sm rounded-lg border border-[#E2E8F0] focus:border-[#3C50E0] focus:ring-2 focus:ring-[#3C50E0]/20 outline-hidden transition bg-white">
-                        @error('phone')
-                            <p class="text-xs text-rose-600 mt-1 font-medium">{{ $message }}</p>
-                        @enderror
-                    </div>
-
                     <!-- Tempat Lahir -->
                     <div>
                         <label for="birth_place"

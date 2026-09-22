@@ -26,8 +26,6 @@ class Employee extends Model
         'birth_place',
         'birth_date',
         'address',
-        'email',
-        'phone',
         'first_join_date',
         'current_position',
         'current_branch',
@@ -157,7 +155,7 @@ class Employee extends Model
     protected function currentContractType(): Attribute
     {
         return Attribute::make(
-            get: fn (): string => $this->latestContract?->contract_type ?? '-'
+            get: fn(): string => $this->latestContract?->contract_type ?? '-'
         );
     }
 

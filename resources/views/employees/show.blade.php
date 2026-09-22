@@ -128,18 +128,6 @@
                             <span class="text-slate-400 font-normal">({{ $employee->age }} tahun)</span>
                         </span>
                     </div>
-                    @if ($employee->email)
-                        <div class="py-2.5 flex justify-between gap-4">
-                            <span class="text-slate-500">Email</span>
-                            <span class="font-semibold text-slate-900 text-right">{{ $employee->email }}</span>
-                        </div>
-                    @endif
-                    @if ($employee->phone)
-                        <div class="py-2.5 flex justify-between gap-4">
-                            <span class="text-slate-500">No. Telepon / WA</span>
-                            <span class="font-semibold text-slate-900 text-right">{{ $employee->phone }}</span>
-                        </div>
-                    @endif
                     <div class="pt-2.5">
                         <span class="text-slate-500 block mb-1">Alamat Lengkap Domisili</span>
                         <p

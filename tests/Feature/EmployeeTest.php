@@ -98,6 +98,8 @@ class EmployeeTest extends TestCase
         $response->assertDontSee('Pendaftaran Karyawan Kontrak Baru');
         $response->assertDontSee('Isi seluruh informasi pribadi dan detail kontrak kerja awal karyawan');
         $response->assertSee('Nomor KTP / NIK');
+        $response->assertDontSee('Email Karyawan');
+        $response->assertDontSee('No. Telepon / WhatsApp');
     }
 
     public function test_can_store_new_employee_with_personal_data_only(): void
@@ -109,8 +111,6 @@ class EmployeeTest extends TestCase
             'birth_place' => 'Jakarta',
             'birth_date' => '1995-04-23',
             'address' => 'Jl. Sudirman No. 45, Jakarta Pusat',
-            'email' => 'ahmad.fauzi@example.com',
-            'phone' => '081234567890',
         ];
 
         $response = $this->post(route('employees.store'), $payload);
