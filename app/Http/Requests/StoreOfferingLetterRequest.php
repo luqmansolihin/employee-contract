@@ -23,6 +23,7 @@ class StoreOfferingLetterRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'employee_id' => [$this->route('employee') ? 'nullable' : 'required', 'exists:employees,id'],
             'letter_number' => ['required', 'string', 'max:255', 'unique:offering_letters,letter_number'],
             'offer_date' => ['required', 'date'],
             'contract_type' => ['required', 'in:PKWT,MT,MAGANG'],
@@ -46,6 +47,7 @@ class StoreOfferingLetterRequest extends FormRequest
     public function attributes(): array
     {
         return [
+            'employee_id' => 'karyawan',
             'letter_number' => 'nomor surat penawaran',
             'offer_date' => 'tanggal penawaran',
             'contract_type' => 'tipe kontrak',
@@ -58,6 +60,19 @@ class StoreOfferingLetterRequest extends FormRequest
             'valid_until' => 'berlaku hingga',
             'terms' => 'syarat & ketentuan',
             'notes' => 'catatan tambahan',
+        ];
+    }
+
+    /**
+     * Get custom messages for validator errors.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'employee_id.required' => 'Pilih karyawan yang sudah terdaftar.',
+            'employee_id.exists' => 'Data karyawan yang dipilih tidak valid atau tidak ditemukan.',
         ];
     }
 }

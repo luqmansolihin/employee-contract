@@ -24,12 +24,12 @@ class OfferingLetterController extends Controller
 
         $query = OfferingLetter::query()
             ->with(['employee'])
-            ->when($status, fn ($q) => $q->where('status', $status))
+            ->when($status, fn($q) => $q->where('status', $status))
             ->when($search, function ($q) use ($search) {
                 $q->where('letter_number', 'like', "%{$search}%")
                     ->orWhere('position', 'like', "%{$search}%")
                     ->orWhere('branch', 'like', "%{$search}%")
-                    ->orWhereHas('employee', fn ($eq) => $eq->where('name', 'like', "%{$search}%"));
+                    ->orWhereHas('employee', fn($eq) => $eq->where('name', 'like', "%{$search}%"));
             })
             ->orderBy('offer_date', 'desc');
 
@@ -47,20 +47,28 @@ class OfferingLetterController extends Controller
     }
 
     /**
-     * Show the form for creating a new offering letter for a specific employee.
+     * Show the form for creating a new offering letter.
      */
-    public function create(Employee $employee): View
+    public function create(Request $request, ?Employee $employee = null): View
     {
-        $suggestedNumber = LetterNumberService::generateOfferingLetterNumber(Carbon::today());
+        if (! $employee && $request->filled('employee_id')) {
+            $employee = Employee::find($request->employee_id);
+        }
 
-        return view('offering_letters.create', compact('employee', 'suggestedNumber'));
+        $suggestedNumber = LetterNumberService::generateOfferingLetterNumber(Carbon::today());
+        $employees = Employee::orderBy('name')->get(['id', 'name', 'ktp_number', 'current_position', 'current_branch', 'first_join_date']);
+
+        return view('offering_letters.create', compact('employee', 'employees', 'suggestedNumber'));
     }
 
     /**
      * Store a newly created offering letter in storage.
      */
-    public function store(StoreOfferingLetterRequest $request, Employee $employee): RedirectResponse
+    public function store(StoreOfferingLetterRequest $request, ?Employee $employee = null): RedirectResponse
     {
+        $employeeId = $employee?->id ?? $request->employee_id;
+        $employee = Employee::findOrFail($employeeId);
+
         $offeringLetter = $employee->offeringLetters()->create([
             'letter_number' => $request->letter_number,
             'offer_date' => $request->offer_date,

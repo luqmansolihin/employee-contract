@@ -37,11 +37,13 @@ class OfferingLetterTest extends TestCase
         $response->assertSee('SI-KONTRAK /');
         $response->assertSee('OFFERING LETTER');
         $response->assertSee('Filter Status:');
+        $response->assertSee('Buat Offering Letter');
+        $response->assertSee(route('offering-letters.create'));
     }
 
-    public function test_can_render_create_offering_letter_page(): void
+    public function test_can_render_create_offering_letter_page_for_specific_employee(): void
     {
-        $response = $this->get(route('offering-letters.create', $this->employee));
+        $response = $this->get(route('employees.offering-letters.create', $this->employee));
 
         $response->assertOk();
         $response->assertSee('Terbitkan Surat Penawaran Kerja Resmi');
@@ -49,9 +51,20 @@ class OfferingLetterTest extends TestCase
         $response->assertSee('/OL');
     }
 
-    public function test_can_store_offering_letter_with_valid_data(): void
+    public function test_can_render_standalone_create_offering_letter_page(): void
+    {
+        $response = $this->get(route('offering-letters.create'));
+
+        $response->assertOk();
+        $response->assertSee('Terbitkan Surat Penawaran Kerja Resmi');
+        $response->assertSee('Pilih Karyawan Terdaftar');
+        $response->assertSee($this->employee->name);
+    }
+
+    public function test_can_store_offering_letter_with_employee_id(): void
     {
         $payload = [
+            'employee_id' => $this->employee->id,
             'letter_number' => '001/IX/2026/OL',
             'offer_date' => '2026-09-21',
             'contract_type' => 'PKWT',
@@ -65,7 +78,7 @@ class OfferingLetterTest extends TestCase
             'terms' => 'Ketentuan jam kerja 40 jam per minggu.',
         ];
 
-        $response = $this->post(route('offering-letters.store', $this->employee), $payload);
+        $response = $this->post(route('offering-letters.store'), $payload);
 
         $this->assertDatabaseHas('offering_letters', [
             'employee_id' => $this->employee->id,
@@ -77,6 +90,24 @@ class OfferingLetterTest extends TestCase
 
         $ol = OfferingLetter::where('letter_number', '001/IX/2026/OL')->first();
         $response->assertRedirect(route('offering-letters.show', $ol));
+    }
+
+    public function test_employee_id_is_required_when_storing_offering_letter(): void
+    {
+        $payload = [
+            'letter_number' => '002/IX/2026/OL',
+            'offer_date' => '2026-09-21',
+            'contract_type' => 'PKWT',
+            'position' => 'UI/UX Designer',
+            'branch' => 'Jakarta',
+            'proposed_start_date' => '2026-10-01',
+            'proposed_end_date' => '2027-09-30',
+            'basic_salary' => 8500000,
+        ];
+
+        $response = $this->post(route('offering-letters.store'), $payload);
+
+        $response->assertSessionHasErrors('employee_id');
     }
 
     public function test_can_update_offering_letter_status(): void

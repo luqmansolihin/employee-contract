@@ -13,12 +13,12 @@
             </div>
 
             <div class="flex items-center gap-3 shrink-0">
-                <a href="{{ route('employees.create') }}"
+                <a href="{{ route('offering-letters.create') }}"
                     class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#3C50E0] text-white text-xs font-semibold hover:bg-[#2F40BD] shadow-lg shadow-[#3C50E0]/25 transition">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                     </svg>
-                    <span>Input Karyawan & Buat OL</span>
+                    <span>Buat Offering Letter</span>
                 </a>
             </div>
         </div>

@@ -28,8 +28,10 @@ Route::middleware('auth')->group(function () {
 
     // 2. Offering Letters (Surat Penawaran Kerja)
     Route::get('offering-letters', [OfferingLetterController::class, 'index'])->name('offering-letters.index');
-    Route::get('employees/{employee}/offering-letters/create', [OfferingLetterController::class, 'create'])->name('offering-letters.create');
-    Route::post('employees/{employee}/offering-letters', [OfferingLetterController::class, 'store'])->name('offering-letters.store');
+    Route::get('offering-letters/create', [OfferingLetterController::class, 'create'])->name('offering-letters.create');
+    Route::post('offering-letters', [OfferingLetterController::class, 'store'])->name('offering-letters.store');
+    Route::get('employees/{employee}/offering-letters/create', [OfferingLetterController::class, 'create'])->name('employees.offering-letters.create');
+    Route::post('employees/{employee}/offering-letters', [OfferingLetterController::class, 'store']);
     Route::get('offering-letters/{offering_letter}', [OfferingLetterController::class, 'show'])->name('offering-letters.show');
     Route::get('offering-letters/{offering_letter}/edit', [OfferingLetterController::class, 'edit'])->name('offering-letters.edit');
     Route::put('offering-letters/{offering_letter}', [OfferingLetterController::class, 'update'])->name('offering-letters.update');
