@@ -26,7 +26,8 @@
         <!-- Filter & Search Bar -->
         <div
             class="p-4 rounded-2xl bg-white border border-[#E2E8F0] shadow-xs flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-            <form action="{{ route('offering-letters.index') }}" method="GET" class="w-full lg:w-80 relative">
+            <form action="{{ route('offering-letters.index') }}" method="GET" class="w-full lg:w-80 relative"
+                autocomplete="off">
                 @if (request('status'))
                     <input type="hidden" name="status" value="{{ request('status') }}">
                 @endif
@@ -36,7 +37,7 @@
                             d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                     </svg>
                 </div>
-                <input type="text" name="search" value="{{ request('search') }}"
+                <input type="text" name="search" value="{{ request('search') }}" autocomplete="off"
                     placeholder="Cari nomor surat, nama, posisi..."
                     class="w-full pl-9 pr-4 py-2 text-xs rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
             </form>

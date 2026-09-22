@@ -61,7 +61,7 @@
 
         <!-- Form Card -->
         <div class="p-6 sm:p-8 rounded-2xl bg-white border border-[#E2E8F0] shadow-xs">
-            <form action="{{ route('contracts.store') }}" method="POST" class="space-y-6">
+            <form action="{{ route('contracts.store') }}" method="POST" class="space-y-6" autocomplete="off">
                 @csrf
 
                 @if ($offeringLetter)
@@ -83,7 +83,7 @@
                                 <label for="employee_id" class="block text-xs font-bold text-[#1C2434] mb-1">
                                     Pilih Karyawan <span class="text-rose-500">*</span>
                                 </label>
-                                <select name="employee_id" id="employee_id" required
+                                <select name="employee_id" id="employee_id" required autocomplete="off"
                                     class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('employee_id') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
                                     <option value="">-- Pilih Karyawan --</option>
                                     @foreach ($employees as $emp)
@@ -114,7 +114,7 @@
                             <label for="contract_type" class="block text-xs font-bold text-[#1C2434] mb-1">
                                 Tipe Kontrak Kerja <span class="text-rose-500">*</span>
                             </label>
-                            <select name="contract_type" id="contract_type" required
+                            <select name="contract_type" id="contract_type" required autocomplete="off"
                                 onchange="updateContractNumberSuggestion()"
                                 class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('contract_type') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
                                 <option value="PKWT"
@@ -137,7 +137,7 @@
                                 Nomor Kontrak Kerja <span class="text-rose-500">*</span>
                             </label>
                             <input type="text" name="contract_number" id="contract_number"
-                                value="{{ old('contract_number', $suggestedNumber) }}" required
+                                value="{{ old('contract_number', $suggestedNumber) }}" required autocomplete="off"
                                 class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('contract_number') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] font-mono outline-hidden transition">
                             <p class="text-[10px] text-slate-400 mt-1">Format: Nomor/Bulan Romawi/Tahun/{PKWT|MT|MAGANG}.
                                 Nomor reset ke 1 setiap tahun baru.</p>
@@ -163,7 +163,7 @@
                             </label>
                             <input type="text" name="position" id="position"
                                 value="{{ old('position', $offeringLetter ? $offeringLetter->position : $employee?->current_position) }}"
-                                required
+                                required autocomplete="off"
                                 class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('position') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
                             @error('position')
                                 <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
@@ -177,7 +177,7 @@
                             </label>
                             <input type="text" name="branch" id="branch"
                                 value="{{ old('branch', $offeringLetter ? $offeringLetter->branch : $employee?->current_branch) }}"
-                                required
+                                required autocomplete="off"
                                 class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('branch') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
                             @error('branch')
                                 <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
@@ -191,7 +191,7 @@
                             </label>
                             <input type="date" name="start_date" id="start_date"
                                 value="{{ old('start_date', $offeringLetter ? $offeringLetter->proposed_start_date->format('Y-m-d') : ($employee?->first_join_date ? $employee->first_join_date->format('Y-m-d') : date('Y-m-d'))) }}"
-                                required
+                                required autocomplete="off"
                                 class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('start_date') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
                             @error('start_date')
                                 <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
@@ -205,7 +205,7 @@
                             </label>
                             <input type="date" name="end_date" id="end_date"
                                 value="{{ old('end_date', $offeringLetter ? $offeringLetter->proposed_end_date->format('Y-m-d') : date('Y-m-d', strtotime('+1 year -1 day'))) }}"
-                                required
+                                required autocomplete="off"
                                 class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('end_date') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
                             @error('end_date')
                                 <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
@@ -229,6 +229,7 @@
                             </label>
                             <input type="number" name="basic_salary" id="basic_salary" step="1000" min="0"
                                 value="{{ old('basic_salary', $offeringLetter ? (float) $offeringLetter->basic_salary : 0) }}"
+                                autocomplete="off"
                                 class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('basic_salary') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] font-mono outline-hidden transition">
                             @error('basic_salary')
                                 <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
@@ -242,6 +243,7 @@
                             </label>
                             <input type="number" name="allowance" id="allowance" step="1000" min="0"
                                 value="{{ old('allowance', $offeringLetter ? (float) $offeringLetter->allowance : 0) }}"
+                                autocomplete="off"
                                 class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('allowance') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] font-mono outline-hidden transition">
                             @error('allowance')
                                 <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>

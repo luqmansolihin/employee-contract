@@ -24,7 +24,7 @@
 
         <!-- Filter & Search Toolbar (TailAdmin Style) -->
         <div class="p-5 rounded-2xl bg-white border border-[#E2E8F0] shadow-xs">
-            <form method="GET" action="{{ route('employees.index') }}"
+            <form method="GET" action="{{ route('employees.index') }}" autocomplete="off"
                 class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
                 <!-- Search Keyword -->
                 <div class="lg:col-span-2">
@@ -38,7 +38,7 @@
                             </svg>
                         </span>
                         <input type="text" name="search" id="search" value="{{ request('search') }}"
-                            placeholder="Nama, NIK, jabatan, cabang..."
+                            placeholder="Nama, NIK, jabatan, cabang..." autocomplete="off"
                             class="w-full pl-9 pr-3 py-2 text-xs rounded-xl border border-[#E2E8F0] focus:border-[#3C50E0] focus:ring-2 focus:ring-[#3C50E0]/20 outline-hidden transition bg-[#F7F9FC]">
                     </div>
                 </div>

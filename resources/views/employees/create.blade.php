@@ -18,7 +18,7 @@
         </div>
 
         <!-- Main Form Card -->
-        <form action="{{ route('employees.store') }}" method="POST" class="space-y-6">
+        <form action="{{ route('employees.store') }}" method="POST" class="space-y-6" autocomplete="off">
             @csrf
 
             <!-- Section: Data Pribadi Karyawan -->
@@ -41,7 +41,7 @@
                             Nama Lengkap <span class="text-rose-500">*</span>
                         </label>
                         <input type="text" name="name" id="name" value="{{ old('name') }}" required
-                            placeholder="Contoh: Budi Santoso"
+                            placeholder="Contoh: Budi Santoso" autocomplete="off"
                             class="w-full px-4 py-2.5 text-sm rounded-lg border {{ $errors->has('name') ? 'border-rose-400 focus:border-rose-500 focus:ring-rose-200' : 'border-[#E2E8F0] focus:border-[#3C50E0] focus:ring-[#3C50E0]/20' }} focus:ring-2 outline-hidden transition bg-white">
                         @error('name')
                             <p class="text-xs text-rose-600 mt-1 font-medium">{{ $message }}</p>
@@ -55,7 +55,7 @@
                             Nomor KTP / NIK (16 Digit) <span class="text-rose-500">*</span>
                         </label>
                         <input type="text" name="ktp_number" id="ktp_number" value="{{ old('ktp_number') }}" required
-                            maxlength="16" pattern="[0-9]{16}" placeholder="Contoh: 3201012345670001"
+                            maxlength="16" pattern="[0-9]{16}" placeholder="Contoh: 3201012345670001" autocomplete="off"
                             class="w-full px-4 py-2.5 text-sm font-mono rounded-lg border {{ $errors->has('ktp_number') ? 'border-rose-400 focus:border-rose-500 focus:ring-rose-200' : 'border-[#E2E8F0] focus:border-[#3C50E0] focus:ring-[#3C50E0]/20' }} focus:ring-2 outline-hidden transition bg-white">
                         <p class="text-xs text-slate-400 mt-1">Harus tepat 16 angka numerik sesuai KTP.</p>
                         @error('ktp_number')
@@ -69,7 +69,7 @@
                             class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                             Jenis Kelamin <span class="text-rose-500">*</span>
                         </label>
-                        <select name="gender" id="gender" required
+                        <select name="gender" id="gender" required autocomplete="off"
                             class="w-full px-4 py-2.5 text-sm rounded-lg border {{ $errors->has('gender') ? 'border-rose-400 focus:border-rose-500 focus:ring-rose-200' : 'border-[#E2E8F0] focus:border-[#3C50E0] focus:ring-[#3C50E0]/20' }} focus:ring-2 outline-hidden transition bg-white">
                             <option value="">-- Pilih Jenis Kelamin --</option>
                             <option value="Laki-laki" {{ old('gender') === 'Laki-laki' ? 'selected' : '' }}>Laki-laki
@@ -89,7 +89,7 @@
                             Email Karyawan <span class="text-slate-400 font-normal">(Opsional)</span>
                         </label>
                         <input type="email" name="email" id="email" value="{{ old('email') }}"
-                            placeholder="nama@email.com"
+                            placeholder="nama@email.com" autocomplete="off"
                             class="w-full px-4 py-2.5 text-sm rounded-lg border border-[#E2E8F0] focus:border-[#3C50E0] focus:ring-2 focus:ring-[#3C50E0]/20 outline-hidden transition bg-white">
                         @error('email')
                             <p class="text-xs text-rose-600 mt-1 font-medium">{{ $message }}</p>
@@ -103,7 +103,7 @@
                             No. Telepon / WhatsApp <span class="text-slate-400 font-normal">(Opsional)</span>
                         </label>
                         <input type="text" name="phone" id="phone" value="{{ old('phone') }}"
-                            placeholder="Contoh: 081234567890"
+                            placeholder="Contoh: 081234567890" autocomplete="off"
                             class="w-full px-4 py-2.5 text-sm rounded-lg border border-[#E2E8F0] focus:border-[#3C50E0] focus:ring-2 focus:ring-[#3C50E0]/20 outline-hidden transition bg-white">
                         @error('phone')
                             <p class="text-xs text-rose-600 mt-1 font-medium">{{ $message }}</p>
@@ -117,7 +117,7 @@
                             Tempat Lahir <span class="text-rose-500">*</span>
                         </label>
                         <input type="text" name="birth_place" id="birth_place" value="{{ old('birth_place') }}" required
-                            placeholder="Contoh: Jakarta"
+                            placeholder="Contoh: Jakarta" autocomplete="off"
                             class="w-full px-4 py-2.5 text-sm rounded-lg border {{ $errors->has('birth_place') ? 'border-rose-400 focus:border-rose-500 focus:ring-rose-200' : 'border-[#E2E8F0] focus:border-[#3C50E0] focus:ring-[#3C50E0]/20' }} focus:ring-2 outline-hidden transition bg-white">
                         @error('birth_place')
                             <p class="text-xs text-rose-600 mt-1 font-medium">{{ $message }}</p>
@@ -131,7 +131,7 @@
                             Tanggal Lahir <span class="text-rose-500">*</span>
                         </label>
                         <input type="date" name="birth_date" id="birth_date" value="{{ old('birth_date') }}" required
-                            max="{{ now()->subYears(15)->toDateString() }}"
+                            max="{{ now()->subYears(15)->toDateString() }}" autocomplete="off"
                             class="w-full px-4 py-2.5 text-sm rounded-lg border {{ $errors->has('birth_date') ? 'border-rose-400 focus:border-rose-500 focus:ring-rose-200' : 'border-[#E2E8F0] focus:border-[#3C50E0] focus:ring-[#3C50E0]/20' }} focus:ring-2 outline-hidden transition bg-white">
                         @error('birth_date')
                             <p class="text-xs text-rose-600 mt-1 font-medium">{{ $message }}</p>

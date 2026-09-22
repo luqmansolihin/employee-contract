@@ -54,7 +54,7 @@
         @endif
 
         <!-- Form Perpanjangan -->
-        <form action="{{ route('employees.renew.store', $employee) }}" method="POST" class="space-y-6">
+        <form action="{{ route('employees.renew.store', $employee) }}" method="POST" class="space-y-6" autocomplete="off">
             @csrf
 
             <div class="bg-white rounded-xl border border-[#E2E8F0] shadow-xs overflow-hidden">
@@ -85,6 +85,7 @@
                         </label>
                         <input type="text" name="contract_number" id="contract_number"
                             value="{{ old('contract_number') }}" placeholder="Contoh: 042/HRD-PKWT/EXT/2026"
+                            autocomplete="off"
                             class="w-full px-4 py-2.5 text-sm rounded-lg border border-[#E2E8F0] focus:border-[#3C50E0] focus:ring-2 focus:ring-[#3C50E0]/20 outline-hidden transition bg-white">
                         @error('contract_number')
                             <p class="text-xs text-rose-600 mt-1 font-medium">{{ $message }}</p>
@@ -98,7 +99,7 @@
                             Tanggal Mulai Perpanjangan <span class="text-rose-500">*</span>
                         </label>
                         <input type="date" name="start_date" id="start_date"
-                            value="{{ old('start_date', $suggestedStartDate) }}" required
+                            value="{{ old('start_date', $suggestedStartDate) }}" required autocomplete="off"
                             class="w-full px-4 py-2.5 text-sm rounded-lg border {{ $errors->has('start_date') ? 'border-rose-400 focus:border-rose-500 focus:ring-rose-200' : 'border-[#E2E8F0] focus:border-[#3C50E0] focus:ring-[#3C50E0]/20' }} focus:ring-2 outline-hidden transition bg-white">
                         <p class="text-xs text-slate-400 mt-1">Disarankan H+1 setelah kontrak sebelumnya berakhir.</p>
                         @error('start_date')
@@ -113,7 +114,7 @@
                             Tanggal Selesai Perpanjangan <span class="text-rose-500">*</span>
                         </label>
                         <input type="date" name="end_date" id="end_date"
-                            value="{{ old('end_date', $suggestedEndDate) }}" required
+                            value="{{ old('end_date', $suggestedEndDate) }}" required autocomplete="off"
                             class="w-full px-4 py-2.5 text-sm rounded-lg border {{ $errors->has('end_date') ? 'border-rose-400 focus:border-rose-500 focus:ring-rose-200' : 'border-[#E2E8F0] focus:border-[#3C50E0] focus:ring-[#3C50E0]/20' }} focus:ring-2 outline-hidden transition bg-white">
                         @error('end_date')
                             <p class="text-xs text-rose-600 mt-1 font-medium">{{ $message }}</p>
@@ -127,7 +128,7 @@
                             Jabatan / Posisi <span class="text-rose-500">*</span>
                         </label>
                         <input type="text" name="position" id="position"
-                            value="{{ old('position', $employee->current_position) }}" required
+                            value="{{ old('position', $employee->current_position) }}" required autocomplete="off"
                             placeholder="Contoh: Senior Staff IT"
                             class="w-full px-4 py-2.5 text-sm rounded-lg border {{ $errors->has('position') ? 'border-rose-400 focus:border-rose-500 focus:ring-rose-200' : 'border-[#E2E8F0] focus:border-[#3C50E0] focus:ring-[#3C50E0]/20' }} focus:ring-2 outline-hidden transition bg-white">
                         <p class="text-xs text-slate-400 mt-1">Dapat diubah jika ada kenaikan jabatan/promosi.</p>
@@ -144,6 +145,7 @@
                         </label>
                         <input type="text" name="branch" id="branch"
                             value="{{ old('branch', $employee->current_branch) }}" required placeholder="Contoh: Surabaya"
+                            autocomplete="off"
                             class="w-full px-4 py-2.5 text-sm rounded-lg border {{ $errors->has('branch') ? 'border-rose-400 focus:border-rose-500 focus:ring-rose-200' : 'border-[#E2E8F0] focus:border-[#3C50E0] focus:ring-[#3C50E0]/20' }} focus:ring-2 outline-hidden transition bg-white">
                         <p class="text-xs text-slate-400 mt-1">Dapat diubah jika ada mutasi penempatan cabang.</p>
                         @error('branch')

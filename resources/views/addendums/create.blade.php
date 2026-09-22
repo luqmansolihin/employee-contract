@@ -46,7 +46,7 @@
 
         <!-- Form Card -->
         <div class="p-6 sm:p-8 rounded-2xl bg-white border border-[#E2E8F0] shadow-xs">
-            <form action="{{ route('addendums.store', $contract) }}" method="POST" class="space-y-6">
+            <form action="{{ route('addendums.store', $contract) }}" method="POST" class="space-y-6" autocomplete="off">
                 @csrf
 
                 <!-- Section 1: Informasi Adendum -->
@@ -63,7 +63,7 @@
                                 Nomor Surat Adendum <span class="text-rose-500">*</span>
                             </label>
                             <input type="text" name="addendum_number" id="addendum_number"
-                                value="{{ old('addendum_number', $suggestedNumber) }}" required
+                                value="{{ old('addendum_number', $suggestedNumber) }}" required autocomplete="off"
                                 class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('addendum_number') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] font-mono outline-hidden transition">
                             <p class="text-[10px] text-slate-400 mt-1">Format: Nomor/Bulan
                                 Romawi/Tahun/A-{{ $contract->contract_type }}</p>
@@ -78,7 +78,7 @@
                                 Tanggal Penerbitan Adendum <span class="text-rose-500">*</span>
                             </label>
                             <input type="date" name="issue_date" id="issue_date"
-                                value="{{ old('issue_date', date('Y-m-d')) }}" required
+                                value="{{ old('issue_date', date('Y-m-d')) }}" required autocomplete="off"
                                 class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('issue_date') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
                             @error('issue_date')
                                 <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
@@ -102,6 +102,7 @@
                             </label>
                             <input type="date" name="effective_date" id="effective_date"
                                 value="{{ old('effective_date', $defaultEffectiveDate->format('Y-m-d')) }}" required
+                                autocomplete="off"
                                 class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('effective_date') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
                             <p class="text-[10px] text-slate-400 mt-1">Masa berakhir kontrak sebelumnya:
                                 {{ $contract->end_date->format('d/m/Y') }}</p>
@@ -117,6 +118,7 @@
                             </label>
                             <input type="date" name="new_end_date" id="new_end_date"
                                 value="{{ old('new_end_date', $defaultNewEndDate->format('Y-m-d')) }}" required
+                                autocomplete="off"
                                 class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('new_end_date') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
                             @error('new_end_date')
                                 <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
@@ -139,7 +141,7 @@
                                 Jabatan Baru (Bila Terjadi Promosi / Mutasi)
                             </label>
                             <input type="text" name="new_position" id="new_position"
-                                value="{{ old('new_position', $contract->position) }}"
+                                value="{{ old('new_position', $contract->position) }}" autocomplete="off"
                                 placeholder="Biarkan sama jika tidak ada perubahan"
                                 class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('new_position') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
                             <p class="text-[10px] text-slate-400 mt-1">Jabatan sebelumnya:
@@ -157,6 +159,7 @@
                             </label>
                             <input type="number" name="new_salary" id="new_salary" step="1000" min="0"
                                 value="{{ old('new_salary', $contract->basic_salary ? (float) $contract->basic_salary : 0) }}"
+                                autocomplete="off"
                                 class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('new_salary') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] font-mono outline-hidden transition">
                             <p class="text-[10px] text-slate-400 mt-1">Gaji sebelumnya:
                                 <strong>{{ $contract->formatted_salary ?: 'Belum diatur' }}</strong>
@@ -183,6 +186,7 @@
                             <input type="text" name="amendment_reason" id="amendment_reason"
                                 value="{{ old('amendment_reason', 'Perpanjangan Masa Berlaku Perjanjian Kerja & Penyesuaian Remunerasi') }}"
                                 required placeholder="Contoh: Perpanjangan Masa Berlaku Kontrak Kerja 1 Tahun"
+                                autocomplete="off"
                                 class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('amendment_reason') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
                             @error('amendment_reason')
                                 <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>

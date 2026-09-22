@@ -33,7 +33,7 @@
                 </div>
             </div>
 
-            <form action="{{ route('users.store') }}" method="POST" class="p-6 space-y-6">
+            <form action="{{ route('users.store') }}" method="POST" class="p-6 space-y-6" autocomplete="off">
                 @csrf
 
                 <!-- Section 1: Informasi Pengguna -->
@@ -49,7 +49,7 @@
                                 Nama Lengkap <span class="text-rose-500">*</span>
                             </label>
                             <input type="text" name="name" id="name" value="{{ old('name') }}" required
-                                placeholder="Contoh: Budi Santoso, S.Kom"
+                                autocomplete="off" placeholder="Contoh: Budi Santoso, S.Kom"
                                 class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('name') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
                             @error('name')
                                 <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
@@ -62,7 +62,7 @@
                                 Alamat Email <span class="text-rose-500">*</span>
                             </label>
                             <input type="email" name="email" id="email" value="{{ old('email') }}" required
-                                placeholder="user@company.com"
+                                autocomplete="off" placeholder="user@company.com"
                                 class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('email') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
                             @error('email')
                                 <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
@@ -74,7 +74,7 @@
                             <label for="role" class="block text-xs font-bold text-[#1C2434] mb-1">
                                 Peran Akses (Role) <span class="text-rose-500">*</span>
                             </label>
-                            <select name="role" id="role" required
+                            <select name="role" id="role" required autocomplete="off"
                                 class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('role') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
                                 <option value="staff" {{ old('role', 'staff') === 'staff' ? 'selected' : '' }}>
                                     Staff HRD (Akses Operasional Kontrak)
@@ -103,6 +103,7 @@
                                 Kata Sandi Baru <span class="text-rose-500">*</span>
                             </label>
                             <input type="password" name="password" id="password" required placeholder="Minimal 8 karakter"
+                                autocomplete="off"
                                 class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('password') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
                             @error('password')
                                 <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
@@ -115,7 +116,7 @@
                                 Konfirmasi Kata Sandi <span class="text-rose-500">*</span>
                             </label>
                             <input type="password" name="password_confirmation" id="password_confirmation" required
-                                placeholder="Ulangi kata sandi di atas"
+                                autocomplete="off" placeholder="Ulangi kata sandi di atas"
                                 class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
                         </div>
                     </div>

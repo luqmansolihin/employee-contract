@@ -294,8 +294,16 @@
             }, 500);
         }
 
-        // Auto-dismiss notification after 4 seconds
+        // Auto-dismiss notification after 4 seconds and enforce autocomplete off
         document.addEventListener('DOMContentLoaded', () => {
+            // Enforce autocomplete="off" on all forms and inputs
+            document.querySelectorAll('form').forEach(form => form.setAttribute('autocomplete', 'off'));
+            document.querySelectorAll(
+                'input:not([type="hidden"]):not([type="submit"]):not([type="checkbox"]):not([type="radio"]), select, textarea'
+                ).forEach(input => {
+                input.setAttribute('autocomplete', 'off');
+            });
+
             const flashSuccess = document.getElementById('flash-success');
             if (flashSuccess) {
                 setTimeout(() => {

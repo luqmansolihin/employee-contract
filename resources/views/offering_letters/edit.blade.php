@@ -22,7 +22,8 @@
             <p class="text-xs text-slate-500 mb-6">Perbarui data penawaran untuk kandidat
                 {{ $offeringLetter->employee->name }}.</p>
 
-            <form action="{{ route('offering-letters.update', $offeringLetter) }}" method="POST" class="space-y-6">
+            <form action="{{ route('offering-letters.update', $offeringLetter) }}" method="POST" class="space-y-6"
+                autocomplete="off">
                 @csrf
                 @method('PUT')
 
@@ -31,7 +32,7 @@
                         <label for="letter_number" class="block text-xs font-bold text-[#1C2434] mb-1">Nomor Surat
                             Penawaran</label>
                         <input type="text" name="letter_number" id="letter_number"
-                            value="{{ old('letter_number', $offeringLetter->letter_number) }}" required
+                            value="{{ old('letter_number', $offeringLetter->letter_number) }}" required autocomplete="off"
                             class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] focus:bg-white focus:border-[#3C50E0] outline-hidden transition font-mono">
                         @error('letter_number')
                             <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
@@ -43,6 +44,7 @@
                             Penawaran</label>
                         <input type="date" name="offer_date" id="offer_date"
                             value="{{ old('offer_date', $offeringLetter->offer_date->format('Y-m-d')) }}" required
+                            autocomplete="off"
                             class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] focus:bg-white focus:border-[#3C50E0] outline-hidden transition">
                         @error('offer_date')
                             <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
@@ -52,7 +54,7 @@
                     <div>
                         <label for="contract_type" class="block text-xs font-bold text-[#1C2434] mb-1">Rencana Tipe
                             Kontrak</label>
-                        <select name="contract_type" id="contract_type" required
+                        <select name="contract_type" id="contract_type" required autocomplete="off"
                             class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] focus:bg-white focus:border-[#3C50E0] outline-hidden transition">
                             <option value="PKWT"
                                 {{ old('contract_type', $offeringLetter->contract_type) == 'PKWT' ? 'selected' : '' }}>PKWT
@@ -71,7 +73,7 @@
 
                     <div>
                         <label for="status" class="block text-xs font-bold text-[#1C2434] mb-1">Status Penawaran</label>
-                        <select name="status" id="status" required
+                        <select name="status" id="status" required autocomplete="off"
                             class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] focus:bg-white focus:border-[#3C50E0] outline-hidden transition">
                             <option value="draft"
                                 {{ old('status', $offeringLetter->status) == 'draft' ? 'selected' : '' }}>Draft</option>
@@ -92,7 +94,7 @@
                     <div>
                         <label for="position" class="block text-xs font-bold text-[#1C2434] mb-1">Posisi / Jabatan</label>
                         <input type="text" name="position" id="position"
-                            value="{{ old('position', $offeringLetter->position) }}" required
+                            value="{{ old('position', $offeringLetter->position) }}" required autocomplete="off"
                             class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] focus:bg-white focus:border-[#3C50E0] outline-hidden transition">
                         @error('position')
                             <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
@@ -103,7 +105,7 @@
                         <label for="branch" class="block text-xs font-bold text-[#1C2434] mb-1">Cabang /
                             Penempatan</label>
                         <input type="text" name="branch" id="branch"
-                            value="{{ old('branch', $offeringLetter->branch) }}" required
+                            value="{{ old('branch', $offeringLetter->branch) }}" required autocomplete="off"
                             class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] focus:bg-white focus:border-[#3C50E0] outline-hidden transition">
                         @error('branch')
                             <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
@@ -115,7 +117,7 @@
                             Mulai</label>
                         <input type="date" name="proposed_start_date" id="proposed_start_date"
                             value="{{ old('proposed_start_date', $offeringLetter->proposed_start_date->format('Y-m-d')) }}"
-                            required
+                            required autocomplete="off"
                             class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] focus:bg-white focus:border-[#3C50E0] outline-hidden transition">
                         @error('proposed_start_date')
                             <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
@@ -127,7 +129,7 @@
                             Selesai</label>
                         <input type="date" name="proposed_end_date" id="proposed_end_date"
                             value="{{ old('proposed_end_date', $offeringLetter->proposed_end_date->format('Y-m-d')) }}"
-                            required
+                            required autocomplete="off"
                             class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] focus:bg-white focus:border-[#3C50E0] outline-hidden transition">
                         @error('proposed_end_date')
                             <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
@@ -139,6 +141,7 @@
                             (Rp)</label>
                         <input type="number" name="basic_salary" id="basic_salary"
                             value="{{ old('basic_salary', (float) $offeringLetter->basic_salary) }}" required
+                            autocomplete="off"
                             class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] focus:bg-white focus:border-[#3C50E0] outline-hidden transition font-mono">
                         @error('basic_salary')
                             <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
@@ -148,7 +151,7 @@
                     <div>
                         <label for="allowance" class="block text-xs font-bold text-[#1C2434] mb-1">Tunjangan (Rp)</label>
                         <input type="number" name="allowance" id="allowance"
-                            value="{{ old('allowance', (float) $offeringLetter->allowance) }}"
+                            value="{{ old('allowance', (float) $offeringLetter->allowance) }}" autocomplete="off"
                             class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] focus:bg-white focus:border-[#3C50E0] outline-hidden transition font-mono">
                         @error('allowance')
                             <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
@@ -160,6 +163,7 @@
                             Konfirmasi)</label>
                         <input type="date" name="valid_until" id="valid_until"
                             value="{{ old('valid_until', $offeringLetter->valid_until ? $offeringLetter->valid_until->format('Y-m-d') : '') }}"
+                            autocomplete="off"
                             class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] focus:bg-white focus:border-[#3C50E0] outline-hidden transition">
                         @error('valid_until')
                             <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
@@ -176,7 +180,7 @@
                     <div class="sm:col-span-2">
                         <label for="notes" class="block text-xs font-bold text-[#1C2434] mb-1">Catatan Internal</label>
                         <input type="text" name="notes" id="notes"
-                            value="{{ old('notes', $offeringLetter->notes) }}"
+                            value="{{ old('notes', $offeringLetter->notes) }}" autocomplete="off"
                             class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] focus:bg-white focus:border-[#3C50E0] outline-hidden transition">
                     </div>
                 </div>

@@ -198,8 +198,15 @@ class EmployeeTest extends TestCase
 
         $response->assertOk();
         $response->assertSee('Rina Wijaya');
+        $response->assertSee('DETAIL EMPLOYEE');
+        $response->assertSee('Biodata Pribadi');
         $response->assertSee('Riwayat Seluruh Kontrak Kerja');
         $response->assertSee($employee->ktp_number);
+        $response->assertDontSee('Status Tahapan Alur Kerja Karyawan');
+        $response->assertDontSee('Siklus Hidup: Input Data');
+        $response->assertDontSee('+ Offering Letter');
+        $response->assertDontSee('+ Kontrak Baru');
+        $response->assertDontSee('+ Buat Adendum');
     }
 
     public function test_can_render_edit_page(): void

@@ -16,14 +16,14 @@
         <!-- Search Bar -->
         <div
             class="p-4 rounded-2xl bg-white border border-[#E2E8F0] shadow-xs flex flex-col sm:flex-row items-center justify-between gap-4">
-            <form action="{{ route('addendums.index') }}" method="GET" class="w-full sm:w-80 relative">
+            <form action="{{ route('addendums.index') }}" method="GET" class="w-full sm:w-80 relative" autocomplete="off">
                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                     </svg>
                 </div>
-                <input type="text" name="search" value="{{ request('search') }}"
+                <input type="text" name="search" value="{{ request('search') }}" autocomplete="off"
                     placeholder="Cari nomor adendum, karyawan, alasan..."
                     class="w-full pl-9 pr-4 py-2 text-xs rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
             </form>

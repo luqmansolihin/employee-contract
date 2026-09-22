@@ -80,7 +80,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('login.submit') }}" method="POST" class="space-y-4">
+            <form action="{{ route('login.submit') }}" method="POST" class="space-y-4" autocomplete="off">
                 @csrf
 
                 <!-- Email Input -->
@@ -99,7 +99,7 @@
                             </svg>
                         </span>
                         <input type="email" name="email" id="email" value="{{ old('email') }}" required
-                            autofocus placeholder="nama@perusahaan.com"
+                            autofocus placeholder="nama@perusahaan.com" autocomplete="off"
                             class="w-full pl-10 pr-3.5 py-2.5 text-sm rounded-xl border border-[#E2E8F0] focus:border-[#3C50E0] focus:ring-2 focus:ring-[#3C50E0]/20 outline-hidden transition bg-[#F7F9FC]">
                     </div>
                 </div>
@@ -120,7 +120,7 @@
                             </svg>
                         </span>
                         <input type="password" name="password" id="password" required
-                            placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
+                            placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" autocomplete="off"
                             class="w-full pl-10 pr-3.5 py-2.5 text-sm rounded-xl border border-[#E2E8F0] focus:border-[#3C50E0] focus:ring-2 focus:ring-[#3C50E0]/20 outline-hidden transition bg-[#F7F9FC]">
                     </div>
                 </div>
@@ -161,6 +161,13 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('form').forEach(form => form.setAttribute('autocomplete', 'off'));
+            document.querySelectorAll(
+                    'input:not([type="hidden"]):not([type="submit"]):not([type="checkbox"]):not([type="radio"])')
+                .forEach(input => {
+                    input.setAttribute('autocomplete', 'off');
+                });
+
             const flashSuccess = document.getElementById('flash-success');
             if (flashSuccess) {
                 setTimeout(() => {

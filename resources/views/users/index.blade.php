@@ -24,7 +24,8 @@
 
         <!-- Filter & Search Bar -->
         <div class="p-4 rounded-2xl bg-white border border-[#E2E8F0] shadow-xs">
-            <form action="{{ route('users.index') }}" method="GET" class="flex flex-col sm:flex-row items-center gap-3">
+            <form action="{{ route('users.index') }}" method="GET" autocomplete="off"
+                class="flex flex-col sm:flex-row items-center gap-3">
                 <div class="relative grow w-full sm:w-auto">
                     <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -32,7 +33,7 @@
                                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                         </svg>
                     </span>
-                    <input type="text" name="search" value="{{ request('search') }}"
+                    <input type="text" name="search" value="{{ request('search') }}" autocomplete="off"
                         placeholder="Cari berdasarkan nama atau alamat email..."
                         class="w-full pl-10 pr-4 py-2 text-xs rounded-xl border border-[#E2E8F0] focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition bg-[#F8FAFC]">
                 </div>

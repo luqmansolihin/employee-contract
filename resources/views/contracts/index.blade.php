@@ -26,7 +26,7 @@
         <!-- Filter & Search Bar -->
         <div
             class="p-4 rounded-2xl bg-white border border-[#E2E8F0] shadow-xs flex flex-col xl:flex-row xl:items-center justify-between gap-4">
-            <form action="{{ route('contracts.index') }}" method="GET" class="w-full xl:w-80 relative">
+            <form action="{{ route('contracts.index') }}" method="GET" class="w-full xl:w-80 relative" autocomplete="off">
                 @if (request('type'))
                     <input type="hidden" name="type" value="{{ request('type') }}">
                 @endif
@@ -39,7 +39,7 @@
                             d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                     </svg>
                 </div>
-                <input type="text" name="search" value="{{ request('search') }}"
+                <input type="text" name="search" value="{{ request('search') }}" autocomplete="off"
                     placeholder="Cari nomor kontrak, nama karyawan..."
                     class="w-full pl-9 pr-4 py-2 text-xs rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
             </form>
@@ -165,7 +165,8 @@
                                         <a href="{{ route('contracts.show', $c) }}"
                                             class="p-1.5 rounded-lg text-[#8A99AD] hover:text-[#3C50E0] hover:bg-[#3C50E0]/10 transition"
                                             title="Lihat Detail Kontrak">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
