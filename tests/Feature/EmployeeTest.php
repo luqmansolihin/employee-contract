@@ -28,7 +28,8 @@ class EmployeeTest extends TestCase
         $response = $this->get(route('employees.index'));
 
         $response->assertOk();
-        $response->assertSee('Pencatatan Karyawan Kontrak');
+        $response->assertSee('SI-KONTRAK /');
+        $response->assertSee('EMPLOYEE');
         $response->assertSee('Tambah Karyawan');
     }
 
@@ -37,7 +38,8 @@ class EmployeeTest extends TestCase
         $response = $this->get('/employees');
 
         $response->assertOk();
-        $response->assertSee('Pencatatan Karyawan Kontrak');
+        $response->assertSee('SI-KONTRAK /');
+        $response->assertSee('EMPLOYEE');
     }
 
     public function test_contract_employees_url_redirects_to_employees(): void

@@ -54,7 +54,8 @@ class UserManagementTest extends TestCase
         $response = $this->actingAs($admin)->get(route('users.index'));
 
         $response->assertOk();
-        $response->assertSee('Manajemen Pengguna');
+        $response->assertSee('SI-KONTRAK /');
+        $response->assertSee('KELOLA USER');
         $response->assertSee('Main Admin');
         $response->assertSee('Staff Member');
         $response->assertSee('Super Admin');

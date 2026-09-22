@@ -4,16 +4,11 @@
 
 @section('content')
     <div class="space-y-6">
-        <!-- Top Breadcrumb & Header -->
+        <!-- Header & Actions -->
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-                <div class="flex items-center gap-2 text-xs text-[#8A99AD] mb-1">
-                    <a href="{{ route('dashboard') }}" class="hover:text-[#3C50E0] transition">Dashboard</a>
-                    <span>/</span>
-                    <span class="text-slate-800 font-medium">Kontrak Kerja</span>
-                </div>
-                <h1 class="text-2xl font-extrabold tracking-tight text-[#1C2434]">
-                    Kontrak Kerja Karyawan
+                <h1 class="text-xl font-extrabold tracking-tight text-[#1C2434]">
+                    <span class="text-slate-400">SI-KONTRAK /</span> KONTRAK
                 </h1>
             </div>
 
@@ -170,8 +165,7 @@
                                         <a href="{{ route('contracts.show', $c) }}"
                                             class="p-1.5 rounded-lg text-[#8A99AD] hover:text-[#3C50E0] hover:bg-[#3C50E0]/10 transition"
                                             title="Lihat Detail Kontrak">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

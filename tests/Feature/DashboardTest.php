@@ -70,7 +70,8 @@ class DashboardTest extends TestCase
         $response = $this->actingAs($user)->get(route('dashboard'));
 
         $response->assertOk();
-        $response->assertSee('Dashboard Ringkasan');
+        $response->assertSee('SI-KONTRAK /');
+        $response->assertSee('DASHBOARD');
         $response->assertSeeText('Alur Siklus Kepegawaian');
         $response->assertSee('Total Karyawan Terdaftar');
         $response->assertSee('Offering Letter');
@@ -86,6 +87,7 @@ class DashboardTest extends TestCase
         $response = $this->actingAs($user)->get('/');
 
         $response->assertOk();
-        $response->assertSee('Dashboard Ringkasan');
+        $response->assertSee('SI-KONTRAK /');
+        $response->assertSee('DASHBOARD');
     }
 }

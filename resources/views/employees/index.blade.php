@@ -4,15 +4,12 @@
 
 @section('content')
     <div class="space-y-6">
-        <!-- Breadcrumb & Header -->
+        <!-- Header & Actions -->
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-                <div class="flex items-center gap-2 text-xs text-slate-400 mb-1">
-                    <a href="{{ route('dashboard') }}" class="hover:text-[#3C50E0] transition">Dashboard</a>
-                    <span>/</span>
-                    <span class="text-[#1C2434] font-semibold">Employee</span>
-                </div>
-                <h1 class="text-2xl font-extrabold text-[#1C2434] tracking-tight">Pencatatan Karyawan Kontrak</h1>
+                <h1 class="text-xl font-extrabold tracking-tight text-[#1C2434]">
+                    <span class="text-slate-400">SI-KONTRAK /</span> EMPLOYEE
+                </h1>
             </div>
             <div class="flex items-center gap-3">
                 <a href="{{ route('employees.create') }}"

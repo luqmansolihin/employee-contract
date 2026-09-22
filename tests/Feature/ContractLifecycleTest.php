@@ -35,7 +35,8 @@ class ContractLifecycleTest extends TestCase
         $response = $this->get(route('contracts.index'));
 
         $response->assertOk();
-        $response->assertSee('Kontrak Kerja Karyawan');
+        $response->assertSee('SI-KONTRAK /');
+        $response->assertSee('KONTRAK');
         $response->assertSee('PKWT');
         $response->assertSee('MT');
         $response->assertSee('MAGANG');

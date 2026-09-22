@@ -52,7 +52,8 @@ class ContractAddendumTest extends TestCase
         $response = $this->get(route('addendums.index'));
 
         $response->assertOk();
-        $response->assertSee('Adendum Perjanjian Kerja');
+        $response->assertSee('SI-KONTRAK /');
+        $response->assertSee('ADENDUM');
     }
 
     public function test_can_render_create_addendum_page(): void

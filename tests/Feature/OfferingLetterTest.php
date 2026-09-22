@@ -34,7 +34,8 @@ class OfferingLetterTest extends TestCase
         $response = $this->get(route('offering-letters.index'));
 
         $response->assertOk();
-        $response->assertSee('Surat Penawaran Kerja (Offering Letter)');
+        $response->assertSee('SI-KONTRAK /');
+        $response->assertSee('OFFERING LETTER');
         $response->assertSee('Filter Status:');
     }
 

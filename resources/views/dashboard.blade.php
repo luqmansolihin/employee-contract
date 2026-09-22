@@ -7,12 +7,9 @@
         <!-- Dashboard Header & Quick Actions -->
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-                <div class="flex items-center gap-2 text-xs text-slate-400 mb-1">
-                    <span>SI-KONTRAK</span>
-                    <span>/</span>
-                    <span class="text-[#1C2434] font-semibold">Dashboard</span>
-                </div>
-                <h1 class="text-2xl font-extrabold text-[#1C2434] tracking-tight">Dashboard Ringkasan</h1>
+                <h1 class="text-xl font-extrabold tracking-tight text-[#1C2434]">
+                    <span class="text-slate-400">SI-KONTRAK /</span> DASHBOARD
+                </h1>
             </div>
             <div class="flex flex-wrap items-center gap-2">
                 <a href="{{ route('employees.create') }}"
@@ -55,54 +52,35 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                 <!-- Tahap 1 -->
                 <a href="{{ route('employees.index') }}"
-                    class="p-3 rounded-xl bg-[#24303F] border border-[#2E3A47] hover:border-[#3C50E0] transition group">
-                    <div class="flex items-center gap-2.5 mb-1.5">
-                        <span
-                            class="w-6 h-6 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs font-bold shrink-0">1</span>
-                        <p class="text-xs font-bold text-white group-hover:text-indigo-400 transition truncate">Input
-                            Employee</p>
-                    </div>
-                    <p class="text-[11px] text-[#8A99AD] leading-relaxed">Pencatatan data identitas, KTP, dan penempatan
-                        cabang.</p>
+                    class="p-3 rounded-xl bg-[#24303F] border border-[#2E3A47] hover:border-[#3C50E0] transition group flex items-center gap-2.5">
+                    <span
+                        class="w-6 h-6 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs font-bold shrink-0">1</span>
+                    <p class="text-xs font-bold text-white group-hover:text-indigo-400 transition truncate">Employee</p>
                 </a>
 
                 <!-- Tahap 2 -->
                 <a href="{{ route('offering-letters.index') }}"
-                    class="p-3 rounded-xl bg-[#24303F] border border-[#2E3A47] hover:border-amber-400 transition group">
-                    <div class="flex items-center gap-2.5 mb-1.5">
-                        <span
-                            class="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold shrink-0">2</span>
-                        <p class="text-xs font-bold text-white group-hover:text-amber-400 transition truncate">Offering
-                            Letter</p>
-                    </div>
-                    <p class="text-[11px] text-[#8A99AD] leading-relaxed">Penerbitan surat penawaran kerja (OL) pra-kontrak.
+                    class="p-3 rounded-xl bg-[#24303F] border border-[#2E3A47] hover:border-amber-400 transition group flex items-center gap-2.5">
+                    <span
+                        class="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold shrink-0">2</span>
+                    <p class="text-xs font-bold text-white group-hover:text-amber-400 transition truncate">Offering Letter
                     </p>
                 </a>
 
                 <!-- Tahap 3 -->
                 <a href="{{ route('contracts.index') }}"
-                    class="p-3 rounded-xl bg-[#24303F] border border-[#2E3A47] hover:border-emerald-400 transition group">
-                    <div class="flex items-center gap-2.5 mb-1.5">
-                        <span
-                            class="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs font-bold shrink-0">3</span>
-                        <p class="text-xs font-bold text-white group-hover:text-emerald-400 transition truncate">Kontrak
-                            Kerja</p>
-                    </div>
-                    <p class="text-[11px] text-[#8A99AD] leading-relaxed">Perjanjian PKWT, Management Trainee (MT), atau
-                        Magang.</p>
+                    class="p-3 rounded-xl bg-[#24303F] border border-[#2E3A47] hover:border-emerald-400 transition group flex items-center gap-2.5">
+                    <span
+                        class="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs font-bold shrink-0">3</span>
+                    <p class="text-xs font-bold text-white group-hover:text-emerald-400 transition truncate">Kontrak</p>
                 </a>
 
                 <!-- Tahap 4 -->
                 <a href="{{ route('addendums.index') }}"
-                    class="p-3 rounded-xl bg-[#24303F] border border-[#2E3A47] hover:border-purple-400 transition group">
-                    <div class="flex items-center gap-2.5 mb-1.5">
-                        <span
-                            class="w-6 h-6 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center text-xs font-bold shrink-0">4</span>
-                        <p class="text-xs font-bold text-white group-hover:text-purple-400 transition truncate">Adendum
-                            Kontrak</p>
-                    </div>
-                    <p class="text-[11px] text-[#8A99AD] leading-relaxed">Amandemen perpanjangan masa berlaku atau gaji
-                        berkala.</p>
+                    class="p-3 rounded-xl bg-[#24303F] border border-[#2E3A47] hover:border-purple-400 transition group flex items-center gap-2.5">
+                    <span
+                        class="w-6 h-6 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center text-xs font-bold shrink-0">4</span>
+                    <p class="text-xs font-bold text-white group-hover:text-purple-400 transition truncate">Adendum</p>
                 </a>
             </div>
         </div>
