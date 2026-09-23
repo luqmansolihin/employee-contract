@@ -76,7 +76,7 @@ class OfferingLetterTest extends TestCase
         $response->assertSee('Kode');
         $response->assertSee('Bidang');
         $response->assertDontSee('id="bidang_suggestions"');
-        $response->assertSee('Nama Atasan yang TTD');
+        $response->assertSee('Nama Atasan');
         $response->assertSee('Jabatan Atasan');
         $response->assertSee('Alamat Kantor');
         $response->assertSee('Tanggal Awal Kontrak');
@@ -274,7 +274,7 @@ class OfferingLetterTest extends TestCase
         $editResponse->assertSee('Kode');
         $editResponse->assertSee('Bidang');
         $editResponse->assertDontSee('id="bidang_suggestions"');
-        $editResponse->assertSee('Nama Atasan yang TTD');
+        $editResponse->assertSee('Nama Atasan');
         $editResponse->assertSee('Jabatan Atasan');
         $editResponse->assertSee('Alamat Kantor');
 

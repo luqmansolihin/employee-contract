@@ -46,7 +46,6 @@
                     <div>
                         <h4 class="text-xs font-bold text-[#3C50E0]">Merujuk ke Offering Letter
                             #{{ $offeringLetter->letter_number }}</h4>
-                        <h4 class="text-xs font-bold text-[#3C50E0]">Merujuk ke Offering Letter #{{ $offeringLetter->letter_number }}</h4>
                         <p class="text-[11px] text-slate-500 mt-0.5">
                             Data kandidat, penempatan, dan remunerasi telah dimuat secara otomatis dari penawaran kerja yang
                             telah diterima.
@@ -235,7 +234,6 @@
                                         <span class="text-slate-400 block text-[10px] uppercase font-semibold">Jenis
                                             Kelamin</span>
                                         <span
-                                            class="font-bold text-slate-700">{{ $employee->gender == 'female' ? 'Perempuan' : ($employee->gender == 'male' ? 'Laki-laki' : '-') }}</span>
                                             class="font-bold text-slate-700">{{ in_array(strtolower($employee->gender ?? ''), ['laki-laki', 'male', 'l']) ? 'Laki-laki' : (in_array(strtolower($employee->gender ?? ''), ['perempuan', 'female', 'p']) ? 'Perempuan' : ($employee->gender ?: '-')) }}</span>
                                     </div>
                                     <div>

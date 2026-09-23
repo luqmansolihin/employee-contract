@@ -235,11 +235,11 @@
 
                     <div>
                         <label for="supervisor_name" class="block text-xs font-bold text-[#1C2434] mb-1">
-                            Nama Atasan yang TTD <span class="text-rose-500">*</span>
+                            Nama Atasan <span class="text-rose-500">*</span>
                         </label>
                         <input type="text" name="supervisor_name" id="supervisor_name"
-                            value="{{ old('supervisor_name', $offeringLetter->supervisor_name ?: 'Hendra Wijaya, S.Psi.') }}"
-                            required autocomplete="off" placeholder="Contoh: Hendra Wijaya, S.Psi."
+                            value="{{ old('supervisor_name', $offeringLetter->supervisor_name) }}" required
+                            autocomplete="off" placeholder="Contoh: Hendra Wijaya, S.Psi."
                             class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('supervisor_name') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] outline-hidden transition">
                         @error('supervisor_name')
                             <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
@@ -251,8 +251,8 @@
                             Jabatan Atasan <span class="text-rose-500">*</span>
                         </label>
                         <input type="text" name="supervisor_position" id="supervisor_position"
-                            value="{{ old('supervisor_position', $offeringLetter->supervisor_position ?: 'Human Resources Manager') }}"
-                            required autocomplete="off" placeholder="Contoh: Human Resources Manager"
+                            value="{{ old('supervisor_position', $offeringLetter->supervisor_position) }}" required
+                            autocomplete="off" placeholder="Contoh: Human Resources Manager"
                             class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('supervisor_position') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] outline-hidden transition">
                         @error('supervisor_position')
                             <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
@@ -264,8 +264,8 @@
                             Alamat Kantor <span class="text-rose-500">*</span>
                         </label>
                         <input type="text" name="office_address" id="office_address"
-                            value="{{ old('office_address', $offeringLetter->office_address ?: 'Gedung Perkantoran Sudirman Central, Lantai 12, Jakarta Pusat') }}"
-                            required autocomplete="off"
+                            value="{{ old('office_address', $offeringLetter->office_address) }}" required
+                            autocomplete="off"
                             placeholder="Contoh: Gedung Perkantoran Sudirman Central, Lantai 12, Jakarta Pusat"
                             class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('office_address') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] outline-hidden transition">
                         @error('office_address')

@@ -51,34 +51,28 @@
                                 <div>
                                     <span class="text-slate-400 block text-[10px] uppercase font-semibold">Posisi /
                                         Jabatan</span>
-                                    <span class="text-slate-400 block text-[10px] uppercase font-semibold">Posisi / Jabatan</span>
                                     <span class="font-bold text-slate-700">{{ $employee->current_position ?: '-' }}</span>
                                 </div>
                                 <div>
                                     <span class="text-slate-400 block text-[10px] uppercase font-semibold">Cabang /
                                         Lokasi</span>
-                                    <span class="text-slate-400 block text-[10px] uppercase font-semibold">Cabang / Lokasi</span>
                                     <span class="font-bold text-slate-700">{{ $employee->current_branch ?: '-' }}</span>
                                 </div>
                                 <div>
                                     <span class="text-slate-400 block text-[10px] uppercase font-semibold">Jenis
                                         Kelamin</span>
-                                    <span class="text-slate-400 block text-[10px] uppercase font-semibold">Jenis Kelamin</span>
                                     <span
-                                        class="font-bold text-slate-700">{{ $employee->gender == 'female' ? 'Perempuan' : ($employee->gender == 'male' ? 'Laki-laki' : '-') }}</span>
                                         class="font-bold text-slate-700">{{ in_array(strtolower($employee->gender ?? ''), ['laki-laki', 'male', 'l']) ? 'Laki-laki' : (in_array(strtolower($employee->gender ?? ''), ['perempuan', 'female', 'p']) ? 'Perempuan' : ($employee->gender ?: '-')) }}</span>
                                 </div>
                                 <div>
                                     <span class="text-slate-400 block text-[10px] uppercase font-semibold">Tgl Pertama
                                         Masuk</span>
-                                    <span class="text-slate-400 block text-[10px] uppercase font-semibold">Tgl Pertama Masuk</span>
                                     <span
                                         class="font-bold text-slate-700">{{ $employee->first_join_date ? $employee->first_join_date->format('d M Y') : '-' }}</span>
                                 </div>
                                 <div class="sm:col-span-2">
                                     <span class="text-slate-400 block text-[10px] uppercase font-semibold">Tempat, Tanggal
                                         Lahir</span>
-                                    <span class="text-slate-400 block text-[10px] uppercase font-semibold">Tempat, Tanggal Lahir</span>
                                     <span class="font-medium text-slate-700">
                                         {{ $employee->birth_place ? $employee->birth_place . ($employee->birth_date ? ', ' . $employee->birth_date->format('d M Y') : '') : '-' }}
                                     </span>
@@ -208,25 +202,21 @@
                                     <div>
                                         <span class="text-slate-400 block text-[10px] uppercase font-semibold">Cabang /
                                             Lokasi</span>
-                                        <span class="text-slate-400 block text-[10px] uppercase font-semibold">Cabang / Lokasi</span>
                                         <span class="font-bold text-slate-700" id="detail_emp_branch">-</span>
                                     </div>
                                     <div>
                                         <span class="text-slate-400 block text-[10px] uppercase font-semibold">Jenis
                                             Kelamin</span>
-                                        <span class="text-slate-400 block text-[10px] uppercase font-semibold">Jenis Kelamin</span>
                                         <span class="font-bold text-slate-700" id="detail_emp_gender">-</span>
                                     </div>
                                     <div>
                                         <span class="text-slate-400 block text-[10px] uppercase font-semibold">Tgl Pertama
                                             Masuk</span>
-                                        <span class="text-slate-400 block text-[10px] uppercase font-semibold">Tgl Pertama Masuk</span>
                                         <span class="font-bold text-slate-700" id="detail_emp_join_date">-</span>
                                     </div>
                                     <div class="sm:col-span-2">
                                         <span class="text-slate-400 block text-[10px] uppercase font-semibold">Tempat,
                                             Tanggal Lahir</span>
-                                        <span class="text-slate-400 block text-[10px] uppercase font-semibold">Tempat, Tanggal Lahir</span>
                                         <span class="font-medium text-slate-700" id="detail_emp_birth">-</span>
                                     </div>
                                     <div class="sm:col-span-2">
@@ -280,8 +270,8 @@
                             <label for="offer_date" class="block text-xs font-bold text-[#1C2434] mb-1">
                                 Tanggal Surat <span class="text-rose-500">*</span>
                             </label>
-                            <input type="date" name="offer_date" id="offer_date"
-                                value="{{ old('offer_date', date('Y-m-d')) }}" required autocomplete="off"
+                            <input type="date" name="offer_date" id="offer_date" value="{{ old('offer_date') }}"
+                                required autocomplete="off"
                                 class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('offer_date') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
                             @error('offer_date')
                                 <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
@@ -335,8 +325,7 @@
                                 Tanggal Awal Kontrak <span class="text-rose-500">*</span>
                             </label>
                             <input type="date" name="proposed_start_date" id="proposed_start_date"
-                                value="{{ old('proposed_start_date', $employee?->first_join_date ? $employee->first_join_date->format('Y-m-d') : date('Y-m-d')) }}"
-                                required autocomplete="off"
+                                value="{{ old('proposed_start_date') }}" required autocomplete="off"
                                 class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('proposed_start_date') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
                             @error('proposed_start_date')
                                 <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
@@ -349,21 +338,20 @@
                                 Tanggal Akhir Kontrak <span class="text-rose-500">*</span>
                             </label>
                             <input type="date" name="proposed_end_date" id="proposed_end_date"
-                                value="{{ old('proposed_end_date', date('Y-m-d', strtotime('+1 year -1 day'))) }}"
-                                required autocomplete="off"
+                                value="{{ old('proposed_end_date') }}" required autocomplete="off"
                                 class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('proposed_end_date') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
                             @error('proposed_end_date')
                                 <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
                             @enderror
                         </div>
 
-                        <!-- Nama Atasan yang TTD -->
+                        <!-- Nama Atasan -->
                         <div>
                             <label for="supervisor_name" class="block text-xs font-bold text-[#1C2434] mb-1">
-                                Nama Atasan yang TTD <span class="text-rose-500">*</span>
+                                Nama Atasan <span class="text-rose-500">*</span>
                             </label>
                             <input type="text" name="supervisor_name" id="supervisor_name"
-                                value="{{ old('supervisor_name', 'Hendra Wijaya, S.Psi.') }}" required autocomplete="off"
+                                value="{{ old('supervisor_name') }}" required autocomplete="off"
                                 placeholder="Contoh: Hendra Wijaya, S.Psi."
                                 class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('supervisor_name') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
                             @error('supervisor_name')
@@ -377,8 +365,8 @@
                                 Jabatan Atasan <span class="text-rose-500">*</span>
                             </label>
                             <input type="text" name="supervisor_position" id="supervisor_position"
-                                value="{{ old('supervisor_position', 'Human Resources Manager') }}" required
-                                autocomplete="off" placeholder="Contoh: Human Resources Manager"
+                                value="{{ old('supervisor_position') }}" required autocomplete="off"
+                                placeholder="Contoh: Human Resources Manager"
                                 class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('supervisor_position') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
                             @error('supervisor_position')
                                 <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
@@ -391,8 +379,7 @@
                                 Alamat Kantor <span class="text-rose-500">*</span>
                             </label>
                             <input type="text" name="office_address" id="office_address"
-                                value="{{ old('office_address', 'Gedung Perkantoran Sudirman Central, Lantai 12, Jakarta Pusat') }}"
-                                required autocomplete="off"
+                                value="{{ old('office_address') }}" required autocomplete="off"
                                 placeholder="Contoh: Gedung Perkantoran Sudirman Central, Lantai 12, Jakarta Pusat"
                                 class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('office_address') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
                             @error('office_address')
@@ -561,13 +548,9 @@
                 if (triggerFill) {
                     const posInput = document.getElementById('position');
                     const branchInput = document.getElementById('branch');
-                    const startDateInput = document.getElementById('proposed_start_date');
 
                     if (posInput && emp.current_position) posInput.value = emp.current_position;
                     if (branchInput && emp.current_branch) branchInput.value = emp.current_branch;
-                    if (startDateInput && emp.first_join_date && !startDateInput.value) {
-                        startDateInput.value = emp.first_join_date.substring(0, 10);
-                    }
                 }
 
                 closeDropdown();

@@ -67,7 +67,7 @@ class StoreOfferingLetterRequest extends FormRequest
             'valid_until' => 'berlaku hingga',
             'terms' => 'syarat & ketentuan',
             'notes' => 'catatan tambahan',
-            'supervisor_name' => 'nama atasan yang ttd',
+            'supervisor_name' => 'nama atasan',
             'supervisor_position' => 'jabatan atasan',
             'office_address' => 'alamat kantor',
         ];
