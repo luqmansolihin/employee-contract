@@ -38,10 +38,11 @@ class LetterNumberService
     }
 
     /**
-     * Generate Offering Letter Number: {Angka}/{Bulan Romawi}/{Tahun YYYY}/OL
+     * Generate Offering Letter Number: {Angka}/{Bulan Romawi}/{Tahun YYYY}/OL[/{KODE}]
      * Sequence resets to 1 each year.
+     * Kode merupakan tambahan dinamis di bagian paling belakang.
      */
-    public static function generateOfferingLetterNumber(?Carbon $date = null): string
+    public static function generateOfferingLetterNumber(?Carbon $date = null, ?string $code = null): string
     {
         $date = $date ?? Carbon::today();
         $year = $date->year;
@@ -52,8 +53,13 @@ class LetterNumberService
             ->count();
 
         $sequence = $count + 1;
+        $base = sprintf('%03d/%s/%d/OL', $sequence, $romanMonth, $year);
 
-        return sprintf('%03d/%s/%d/OL', $sequence, $romanMonth, $year);
+        if (! empty($code)) {
+            return sprintf('%s/%s', $base, strtoupper(trim($code)));
+        }
+
+        return $base;
     }
 
     /**

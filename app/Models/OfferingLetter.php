@@ -15,9 +15,11 @@ class OfferingLetter extends Model
     protected $fillable = [
         'employee_id',
         'letter_number',
+        'kode',
         'offer_date',
         'contract_type',
         'position',
+        'bidang',
         'branch',
         'proposed_start_date',
         'proposed_end_date',
@@ -27,6 +29,9 @@ class OfferingLetter extends Model
         'status',
         'terms',
         'notes',
+        'supervisor_name',
+        'supervisor_position',
+        'office_address',
     ];
 
     protected function casts(): array

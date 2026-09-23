@@ -42,6 +42,17 @@ class ContractLifecycleTest extends TestCase
         $response->assertSee('MAGANG');
     }
 
+    public function test_can_render_standalone_create_contract_page_with_searchable_combobox(): void
+    {
+        $response = $this->get(route('contracts.create'));
+
+        $response->assertOk();
+        $response->assertSee('Pilih Karyawan');
+        $response->assertSee('employee-combobox-wrapper');
+        $response->assertSee('selected_employee_card');
+        $response->assertSee($this->employee->name);
+    }
+
     public function test_can_create_contract_from_accepted_offering_letter(): void
     {
         $ol = OfferingLetter::create([
@@ -60,6 +71,8 @@ class ContractLifecycleTest extends TestCase
         $createResponse = $this->get(route('contracts.create', ['offering_letter_id' => $ol->id]));
         $createResponse->assertOk();
         $createResponse->assertSee('Merujuk ke Offering Letter #001/IX/2026/OL');
+        $createResponse->assertSee('Merujuk ke Offering Letter');
+        $createResponse->assertSee('001/IX/2026/OL');
         $createResponse->assertSee('Management Trainee HR');
 
         $payload = [

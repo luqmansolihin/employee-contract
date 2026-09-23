@@ -140,11 +140,17 @@
                 <div class="sm:text-right">
                     <p class="text-xs text-slate-400 font-medium">Nomor Surat Penawaran</p>
                     <p class="text-base font-bold font-mono text-[#1C2434] mt-0.5">{{ $offeringLetter->letter_number }}</p>
+                    @if ($offeringLetter->kode)
+                        <p class="text-[11px] text-slate-500 font-mono">Kode Surat: <span
+                                class="font-bold text-[#3C50E0]">{{ $offeringLetter->kode }}</span></p>
+                    @endif
                     <p class="text-xs text-slate-500 mt-1">Tanggal Surat:
-                        <strong>{{ $offeringLetter->offer_date->format('d F Y') }}</strong></p>
+                        <strong>{{ $offeringLetter->offer_date->format('d F Y') }}</strong>
+                    </p>
                     @if ($offeringLetter->valid_until)
                         <p class="text-xs text-amber-600 mt-0.5">Batas Konfirmasi:
-                            <strong>{{ $offeringLetter->valid_until->format('d F Y') }}</strong></p>
+                            <strong>{{ $offeringLetter->valid_until->format('d F Y') }}</strong>
+                        </p>
                     @endif
                 </div>
             </div>
@@ -152,9 +158,13 @@
             <!-- Position & Terms -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 pb-6 border-b border-[#E2E8F0]">
                 <div>
-                    <span class="text-xs text-slate-400 block font-medium">Jabatan Ditawarkan</span>
+                    <span class="text-xs text-slate-400 block font-medium">Jabatan & Bidang</span>
                     <span class="text-sm font-bold text-[#1C2434] block mt-0.5">{{ $offeringLetter->position }}</span>
-                    <span class="text-xs text-slate-500 block">{{ $offeringLetter->branch }}</span>
+                    @if ($offeringLetter->bidang)
+                        <span class="text-xs font-semibold text-[#3C50E0] block mt-0.5">Bidang:
+                            {{ $offeringLetter->bidang }}</span>
+                    @endif
+                    <span class="text-xs text-slate-500 block mt-0.5">{{ $offeringLetter->branch }}</span>
                 </div>
 
                 <div>
@@ -175,6 +185,22 @@
                         Gaji: {{ $offeringLetter->formatted_salary }} | Tunjangan:
                         {{ $offeringLetter->formatted_allowance }}
                     </span>
+                </div>
+            </div>
+
+            <!-- Signer & Office Details -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 pb-6 border-b border-[#E2E8F0]">
+                <div>
+                    <span class="text-xs text-slate-400 block font-medium">Penandatangan Surat</span>
+                    <span
+                        class="text-sm font-bold text-[#1C2434] block mt-0.5">{{ $offeringLetter->supervisor_name ?: 'Hendra Wijaya, S.Psi.' }}</span>
+                    <span
+                        class="text-xs text-slate-500 block">{{ $offeringLetter->supervisor_position ?: 'Human Resources Manager' }}</span>
+                </div>
+                <div>
+                    <span class="text-xs text-slate-400 block font-medium">Alamat Kantor</span>
+                    <span
+                        class="text-xs text-slate-700 block mt-0.5">{{ $offeringLetter->office_address ?: 'Gedung Perkantoran Sudirman Central, Lantai 12, Jakarta Pusat' }}</span>
                 </div>
             </div>
 

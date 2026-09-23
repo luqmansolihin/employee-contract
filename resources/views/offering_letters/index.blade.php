@@ -101,7 +101,11 @@
                                 </td>
                                 <td class="py-3.5 px-4">
                                     <span class="font-medium text-slate-800 block">{{ $ol->position }}</span>
-                                    <span class="text-[11px] text-slate-400 block">{{ $ol->branch }}</span>
+                                    <span class="text-[11px] text-slate-400 block">
+                                        {{ $ol->branch }}@if ($ol->bidang)
+                                            &bull; <span class="text-indigo-600 font-medium">{{ $ol->bidang }}</span>
+                                        @endif
+                                    </span>
                                 </td>
                                 <td class="py-3.5 px-4">
                                     <span
@@ -162,22 +166,22 @@
                                     </div>
                                 </td>
                             </tr>
-                        @empty
-                            <tr>
-                                <td colspan="7" class="py-8 text-center text-slate-400">
-                                    Belum ada data Offering Letter yang diterbitkan.
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-
-            @if ($offeringLetters->hasPages())
-                <div class="p-4 border-t border-[#E2E8F0]">
-                    {{ $offeringLetters->links() }}
+                            @empty
+                                <tr>
+                                    <td colspan="7" class="py-8 text-center text-slate-400">
+                                        Belum ada data Offering Letter yang diterbitkan.
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
-            @endif
+
+                @if ($offeringLetters->hasPages())
+                    <div class="p-4 border-t border-[#E2E8F0]">
+                        {{ $offeringLetters->links() }}
+                    </div>
+                @endif
+            </div>
         </div>
-    </div>
-@endsection
+    @endsection

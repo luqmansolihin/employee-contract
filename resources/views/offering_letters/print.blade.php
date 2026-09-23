@@ -136,8 +136,9 @@
     <!-- Letterhead -->
     <div class="header-logo">
         <h1 class="company-name">PT. CIPTA KARYA UTAMA</h1>
-        <p class="company-sub">Gedung Perkantoran Sudirman Central, Lantai 12, Jakarta Pusat • Telp: (021) 555-0199 •
-            Email: hrd@ciptakarya.co.id</p>
+        <p class="company-sub">
+            {{ $offeringLetter->office_address ?: 'Gedung Perkantoran Sudirman Central, Lantai 12, Jakarta Pusat' }} •
+            Telp: (021) 555-0199 • Email: hrd@ciptakarya.co.id</p>
     </div>
 
     <!-- Title & Reference -->
@@ -164,6 +165,13 @@
             <td style="width: 3%;">:</td>
             <td style="width: 72%;"><strong>{{ $offeringLetter->position }}</strong></td>
         </tr>
+        @if ($offeringLetter->bidang)
+            <tr>
+                <td>Bidang / Unit Kerja</td>
+                <td>:</td>
+                <td><strong>{{ $offeringLetter->bidang }}</strong></td>
+            </tr>
+        @endif
         <tr>
             <td>Lokasi Penempatan</td>
             <td>:</td>
@@ -173,7 +181,8 @@
             <td>Tipe Hubungan Kerja</td>
             <td>:</td>
             <td>{{ $offeringLetter->contract_type }} (Rencana
-                {{ $offeringLetter->proposed_start_date->diffInMonths($offeringLetter->proposed_end_date) }} Bulan)</td>
+                {{ $offeringLetter->proposed_start_date->diffInMonths($offeringLetter->proposed_end_date) }} Bulan)
+            </td>
         </tr>
         <tr>
             <td>Periode Masa Kerja</td>
@@ -231,8 +240,10 @@
         <div class="sig-col">
             <p>Hormat kami,<br><strong>PT. CIPTA KARYA UTAMA</strong></p>
             <div class="sig-space"></div>
-            <p style="text-decoration: underline; font-weight: bold; margin-bottom: 2px;">Hendra Wijaya, S.Psi.</p>
-            <p style="font-size: 10pt; color: #4B5563; margin-top: 0;">Human Resources Manager</p>
+            <p style="text-decoration: underline; font-weight: bold; margin-bottom: 2px;">
+                {{ $offeringLetter->supervisor_name ?: 'Hendra Wijaya, S.Psi.' }}</p>
+            <p style="font-size: 10pt; color: #4B5563; margin-top: 0;">
+                {{ $offeringLetter->supervisor_position ?: 'Human Resources Manager' }}</p>
         </div>
     </div>
 

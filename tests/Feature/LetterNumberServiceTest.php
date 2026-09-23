@@ -113,4 +113,15 @@ class LetterNumberServiceTest extends TestCase
         $contract2027 = LetterNumberService::generateContractNumber('PKWT', $year2027);
         $this->assertEquals('001/I/2027/PKWT', $contract2027);
     }
+
+    public function test_generates_offering_letter_number_with_dynamic_code_suffix(): void
+    {
+        $date = Carbon::create(2026, 9, 21);
+
+        $olNumberWithCode = LetterNumberService::generateOfferingLetterNumber($date, 'HRD');
+        $this->assertEquals('001/IX/2026/OL/HRD', $olNumberWithCode);
+
+        $olNumberWithAnotherCode = LetterNumberService::generateOfferingLetterNumber($date, 'cku');
+        $this->assertEquals('001/IX/2026/OL/CKU', $olNumberWithAnotherCode);
+    }
 }

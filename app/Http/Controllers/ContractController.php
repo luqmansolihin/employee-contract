@@ -86,6 +86,19 @@ class ContractController extends Controller
 
         $suggestedNumber = $suggestedNumbers[$selectedType] ?? $suggestedNumbers['PKWT'];
         $employees = Employee::orderBy('name')->get(['id', 'name', 'ktp_number', 'current_position', 'current_branch']);
+        $employees = Employee::orderBy('name')->get([
+            'id',
+            'name',
+            'ktp_number',
+            'gender',
+            'birth_place',
+            'birth_date',
+            'address',
+            'current_position',
+            'current_branch',
+            'first_join_date',
+            'current_contract_end_date',
+        ]);
 
         return view('contracts.create', compact('employee', 'offeringLetter', 'suggestedNumber', 'suggestedNumbers', 'selectedType', 'employees'));
     }
