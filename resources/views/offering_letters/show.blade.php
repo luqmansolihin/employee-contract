@@ -26,15 +26,21 @@
                         class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border {{ $offeringLetter->status_badge_class }}">
                         {{ $offeringLetter->status_label }}
                     </span>
-                    <span
-                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border {{ $offeringLetter->contract_type_badge_class }}">
-                        {{ $offeringLetter->contract_type }}
-                    </span>
                 </div>
             </div>
 
             <!-- Action Buttons -->
             <div class="flex items-center gap-2 shrink-0">
+                <a href="{{ route('offering-letters.edit', $offeringLetter) }}"
+                    class="px-3.5 py-2 rounded-xl bg-white border border-[#E2E8F0] hover:border-[#3C50E0] text-slate-700 hover:text-[#3C50E0] text-xs font-semibold transition flex items-center gap-1.5 shadow-xs">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                        </path>
+                    </svg>
+                    <span>Edit</span>
+                </a>
+
                 <a href="{{ route('offering-letters.print', $offeringLetter) }}" target="_blank"
                     class="px-3.5 py-2 rounded-xl bg-white border border-[#E2E8F0] hover:border-[#3C50E0] text-slate-700 hover:text-[#3C50E0] text-xs font-semibold transition flex items-center gap-2 shadow-xs">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -124,101 +130,101 @@
 
         <!-- Detail Information Card -->
         <div class="p-6 sm:p-8 rounded-2xl bg-white border border-[#E2E8F0] shadow-xs space-y-6">
-            <!-- Candidate & Letter Header -->
+            <!-- 1. Karyawan Penerima Penawaran & Nomor Surat Header -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 pb-6 border-b border-[#E2E8F0]">
                 <div>
-                    <p class="text-xs text-slate-400 font-medium">Informasi Kandidat / Karyawan</p>
-                    <h3 class="text-lg font-bold text-[#1C2434] mt-0.5">{{ $offeringLetter->employee->name }}</h3>
-                    <p class="text-xs text-slate-500 mt-1 font-mono">NIK: {{ $offeringLetter->employee->ktp_number }}</p>
-                    <p class="text-xs text-slate-500 mt-0.5">{{ $offeringLetter->employee->address }}</p>
+                    <p class="text-xs text-slate-400 font-medium uppercase tracking-wider">1. Karyawan Penerima Penawaran
+                    </p>
+                    <h3 class="text-lg font-bold text-[#1C2434] mt-1">{{ $offeringLetter->employee->name }}</h3>
+                    <div class="mt-2 space-y-1 text-xs text-slate-600">
+                        <p><span class="text-slate-400">NIK:</span> <span
+                                class="font-mono font-medium">{{ $offeringLetter->employee->ktp_number }}</span></p>
+                        <p><span class="text-slate-400">Jenis Kelamin:</span> <span
+                                class="font-medium">{{ $offeringLetter->employee->gender ?: '-' }}</span></p>
+                        <p><span class="text-slate-400">Alamat:</span> <span
+                                class="font-medium">{{ $offeringLetter->employee->address ?: '-' }}</span></p>
+                    </div>
                     <a href="{{ route('employees.show', $offeringLetter->employee) }}"
-                        class="text-xs text-[#3C50E0] hover:underline mt-2 inline-block font-semibold">
+                        class="text-xs text-[#3C50E0] hover:underline mt-3 inline-block font-semibold">
                         Lihat Profil Karyawan &rarr;
                     </a>
                 </div>
 
                 <div class="sm:text-right">
-                    <p class="text-xs text-slate-400 font-medium">Nomor Surat Penawaran</p>
-                    <p class="text-base font-bold font-mono text-[#1C2434] mt-0.5">{{ $offeringLetter->letter_number }}</p>
-                    @if ($offeringLetter->kode)
-                        <p class="text-[11px] text-slate-500 font-mono">Kode Surat: <span
-                                class="font-bold text-[#3C50E0]">{{ $offeringLetter->kode }}</span></p>
-                    @endif
-                    <p class="text-xs text-slate-500 mt-1">Tanggal Surat:
-                        <strong>{{ $offeringLetter->offer_date->format('d F Y') }}</strong>
-                    </p>
-                    @if ($offeringLetter->valid_until)
-                        <p class="text-xs text-amber-600 mt-0.5">Batas Konfirmasi:
-                            <strong>{{ $offeringLetter->valid_until->format('d F Y') }}</strong>
+                    <p class="text-xs text-slate-400 font-medium uppercase tracking-wider">2. Informasi Surat</p>
+                    <p class="text-base font-bold font-mono text-[#1C2434] mt-1">{{ $offeringLetter->letter_number }}</p>
+                    <div class="mt-2 space-y-1 text-xs text-slate-600 sm:text-right">
+                        @if ($offeringLetter->kode)
+                            <p><span class="text-slate-400">Kode Surat:</span> <span
+                                    class="font-bold font-mono text-[#3C50E0]">{{ $offeringLetter->kode }}</span></p>
+                        @endif
+                        <p><span class="text-slate-400">Tanggal Surat:</span> <strong
+                                class="text-slate-800">{{ $offeringLetter->offer_date->translatedFormat('d F Y') }}</strong>
                         </p>
-                    @endif
+                    </div>
                 </div>
             </div>
 
-            <!-- Position & Terms -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 pb-6 border-b border-[#E2E8F0]">
-                <div>
-                    <span class="text-xs text-slate-400 block font-medium">Jabatan & Bidang</span>
-                    <span class="text-sm font-bold text-[#1C2434] block mt-0.5">{{ $offeringLetter->position }}</span>
-                    @if ($offeringLetter->bidang)
-                        <span class="text-xs font-semibold text-[#3C50E0] block mt-0.5">Bidang:
-                            {{ $offeringLetter->bidang }}</span>
-                    @endif
-                    <span class="text-xs text-slate-500 block mt-0.5">{{ $offeringLetter->branch }}</span>
-                </div>
+            <!-- 2. Informasi Rencana Kontrak & Penempatan -->
+            <div class="pb-6 border-b border-[#E2E8F0]">
+                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">Informasi Pekerjaan & Penempatan
+                </h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+                        <span class="text-[10px] uppercase font-semibold text-slate-400 block">Posisi / Jabatan</span>
+                        <span class="text-xs font-bold text-slate-800 block mt-1">{{ $offeringLetter->position }}</span>
+                    </div>
 
-                <div>
-                    <span class="text-xs text-slate-400 block font-medium">Rencana Masa Kerja</span>
-                    <span class="text-sm font-bold text-[#1C2434] block mt-0.5">
-                        {{ $offeringLetter->proposed_start_date->format('d M Y') }} s/d
-                        {{ $offeringLetter->proposed_end_date->format('d M Y') }}
-                    </span>
-                    <span class="text-xs text-slate-500 block">Tipe: {{ $offeringLetter->contract_type }}</span>
-                </div>
+                    <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+                        <span class="text-[10px] uppercase font-semibold text-slate-400 block">Bidang</span>
+                        <span
+                            class="text-xs font-bold text-slate-800 block mt-1">{{ $offeringLetter->bidang ?: '-' }}</span>
+                    </div>
 
-                <div>
-                    <span class="text-xs text-slate-400 block font-medium">Total Kompensasi Ditawarkan</span>
-                    <span class="text-base font-extrabold text-[#3C50E0] block mt-0.5">
-                        {{ $offeringLetter->formatted_total_compensation }}
-                    </span>
-                    <span class="text-[11px] text-slate-400 block">
-                        Gaji: {{ $offeringLetter->formatted_salary }} | Tunjangan:
-                        {{ $offeringLetter->formatted_allowance }}
-                    </span>
+                    <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+                        <span class="text-[10px] uppercase font-semibold text-slate-400 block">Cabang / Penempatan</span>
+                        <span class="text-xs font-bold text-slate-800 block mt-1">{{ $offeringLetter->branch }}</span>
+                    </div>
+
+                    <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+                        <span class="text-[10px] uppercase font-semibold text-slate-400 block">Rencana Periode
+                            Kontrak</span>
+                        <span class="text-xs font-bold text-slate-800 block mt-1">
+                            {{ $offeringLetter->proposed_start_date->translatedFormat('d M Y') }} s/d
+                            {{ $offeringLetter->proposed_end_date->translatedFormat('d M Y') }}
+                        </span>
+                        @php
+                            $months = $offeringLetter->proposed_start_date->diffInMonths(
+                                $offeringLetter->proposed_end_date,
+                            );
+                        @endphp
+                        @if ($months > 0)
+                            <span class="text-[11px] text-slate-500 block mt-0.5">({{ $months }} Bulan)</span>
+                        @endif
+                    </div>
                 </div>
             </div>
 
-            <!-- Signer & Office Details -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 pb-6 border-b border-[#E2E8F0]">
-                <div>
-                    <span class="text-xs text-slate-400 block font-medium">Penandatangan Surat</span>
-                    <span
-                        class="text-sm font-bold text-[#1C2434] block mt-0.5">{{ $offeringLetter->supervisor_name ?: 'Hendra Wijaya, S.Psi.' }}</span>
-                    <span
-                        class="text-xs text-slate-500 block">{{ $offeringLetter->supervisor_position ?: 'Human Resources Manager' }}</span>
-                </div>
-                <div>
-                    <span class="text-xs text-slate-400 block font-medium">Alamat Kantor</span>
-                    <span
-                        class="text-xs text-slate-700 block mt-0.5">{{ $offeringLetter->office_address ?: 'Gedung Perkantoran Sudirman Central, Lantai 12, Jakarta Pusat' }}</span>
-                </div>
-            </div>
-
-            <!-- Terms & Clauses -->
+            <!-- 3. Atasan & Alamat Kantor -->
             <div>
-                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Klausul Syarat & Ketentuan</h4>
-                <div
-                    class="p-4 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-xs text-slate-700 whitespace-pre-line leading-relaxed">
-                    {{ $offeringLetter->terms ?: 'Tidak ada syarat & ketentuan khusus.' }}
+                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">Penandatangan & Alamat Kantor
+                </h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                        <span class="text-[10px] uppercase font-semibold text-slate-400 block">Nama & Jabatan Atasan</span>
+                        <span
+                            class="text-sm font-bold text-slate-800 block mt-1">{{ $offeringLetter->supervisor_name ?: '-' }}</span>
+                        <span
+                            class="text-xs text-slate-500 block mt-0.5">{{ $offeringLetter->supervisor_position ?: '-' }}</span>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                        <span class="text-[10px] uppercase font-semibold text-slate-400 block">Alamat Kantor</span>
+                        <span
+                            class="text-xs font-medium text-slate-700 block mt-1 leading-relaxed">{{ $offeringLetter->office_address ?: '-' }}</span>
+                    </div>
                 </div>
             </div>
-
-            @if ($offeringLetter->notes)
-                <div>
-                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Catatan Internal</h4>
-                    <p class="text-xs text-slate-500">{{ $offeringLetter->notes }}</p>
-                </div>
-            @endif
         </div>
     </div>
 @endsection

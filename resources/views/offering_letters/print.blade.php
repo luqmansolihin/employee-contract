@@ -91,7 +91,7 @@
         }
 
         table.info-table td {
-            padding: 4px 0;
+            padding: 5px 0;
             vertical-align: top;
         }
 
@@ -137,8 +137,8 @@
     <div class="header-logo">
         <h1 class="company-name">PT. CIPTA KARYA UTAMA</h1>
         <p class="company-sub">
-            {{ $offeringLetter->office_address ?: 'Gedung Perkantoran Sudirman Central, Lantai 12, Jakarta Pusat' }} •
-            Telp: (021) 555-0199 • Email: hrd@ciptakarya.co.id</p>
+            {{ $offeringLetter->office_address ?: 'Gedung Perkantoran Sudirman Central, Lantai 12, Jakarta Pusat' }}
+        </p>
     </div>
 
     <!-- Title & Reference -->
@@ -146,7 +146,7 @@
     <div class="doc-number">Nomor: {{ $offeringLetter->letter_number }}</div>
 
     <p>
-        Jakarta, {{ $offeringLetter->offer_date->translatedFormat('d F Y') }}<br>
+        {{ $offeringLetter->branch ? $offeringLetter->branch . ', ' : '' }}{{ $offeringLetter->offer_date->translatedFormat('d F Y') }}<br>
         Kepada Yth.<br>
         <strong>Sdr/i. {{ $offeringLetter->employee->name }}</strong><br>
         Di Tempat
@@ -155,76 +155,68 @@
     <p>
         Dengan hormat,<br>
         Sehubungan dengan proses seleksi dan wawancara yang telah dilaksanakan, dengan ini Manajemen Perusahaan
-        menyampaikan penawaran kerja untuk bergabung bersama PT. Cipta Karya Utama dengan rincian ketentuan sebagai
-        berikut:
+        menyampaikan penawaran kerja untuk bergabung bersama PT. Cipta Karya Utama dengan rincian penempatan dan
+        ketentuan rencana kontrak sebagai berikut:
     </p>
 
     <table class="info-table">
         <tr>
-            <td style="width: 25%;">Posisi / Jabatan</td>
+            <td style="width: 30%;">Nama Karyawan</td>
             <td style="width: 3%;">:</td>
-            <td style="width: 72%;"><strong>{{ $offeringLetter->position }}</strong></td>
+            <td style="width: 67%;"><strong>{{ $offeringLetter->employee->name }}</strong></td>
+        </tr>
+        <tr>
+            <td>Nomor Induk Kependudukan (NIK)</td>
+            <td>:</td>
+            <td>{{ $offeringLetter->employee->ktp_number }}</td>
+        </tr>
+        <tr>
+            <td>Posisi / Jabatan Ditawarkan</td>
+            <td>:</td>
+            <td><strong>{{ $offeringLetter->position }}</strong></td>
         </tr>
         @if ($offeringLetter->bidang)
             <tr>
-                <td>Bidang / Unit Kerja</td>
+                <td>Bidang</td>
                 <td>:</td>
                 <td><strong>{{ $offeringLetter->bidang }}</strong></td>
             </tr>
         @endif
+        @if ($offeringLetter->kode)
+            <tr>
+                <td>Kode Surat</td>
+                <td>:</td>
+                <td>{{ $offeringLetter->kode }}</td>
+            </tr>
+        @endif
         <tr>
-            <td>Lokasi Penempatan</td>
+            <td>Cabang / Lokasi Penempatan</td>
             <td>:</td>
             <td>{{ $offeringLetter->branch }}</td>
         </tr>
         <tr>
-            <td>Tipe Hubungan Kerja</td>
+            <td>Tanggal Awal Kontrak</td>
             <td>:</td>
-            <td>{{ $offeringLetter->contract_type }} (Rencana
-                {{ $offeringLetter->proposed_start_date->diffInMonths($offeringLetter->proposed_end_date) }} Bulan)
+            <td>{{ $offeringLetter->proposed_start_date->translatedFormat('d F Y') }}</td>
+        </tr>
+        <tr>
+            <td>Tanggal Akhir Kontrak</td>
+            <td>:</td>
+            <td>
+                {{ $offeringLetter->proposed_end_date->translatedFormat('d F Y') }}
+                @php
+                    $duration = $offeringLetter->proposed_start_date->diffInMonths($offeringLetter->proposed_end_date);
+                @endphp
+                @if ($duration > 0)
+                    ({{ $duration }} Bulan)
+                @endif
             </td>
-        </tr>
-        <tr>
-            <td>Periode Masa Kerja</td>
-            <td>:</td>
-            <td>{{ $offeringLetter->proposed_start_date->translatedFormat('d F Y') }} s/d
-                {{ $offeringLetter->proposed_end_date->translatedFormat('d F Y') }}</td>
-        </tr>
-        <tr>
-            <td>Gaji Pokok / Uang Saku</td>
-            <td>:</td>
-            <td>{{ $offeringLetter->formatted_salary }} per bulan</td>
-        </tr>
-        @if ((float) $offeringLetter->allowance > 0)
-            <tr>
-                <td>Tunjangan / Fasilitas</td>
-                <td>:</td>
-                <td>{{ $offeringLetter->formatted_allowance }} per bulan</td>
-            </tr>
-        @endif
-        <tr>
-            <td>Total Kompensasi</td>
-            <td>:</td>
-            <td><strong>{{ $offeringLetter->formatted_total_compensation }}</strong> per bulan</td>
         </tr>
     </table>
 
-    <p><strong>Syarat & Ketentuan Tambahan:</strong></p>
-    <div style="margin-left: 16px; margin-bottom: 16px;">
-        {!! nl2br(e($offeringLetter->terms ?: 'Mengikuti peraturan dan tata tertib perusahaan yang berlaku.')) !!}
-    </div>
-
-    @if ($offeringLetter->valid_until)
-        <p>
-            Surat penawaran ini berlaku hingga tanggal
-            <strong>{{ $offeringLetter->valid_until->translatedFormat('d F Y') }}</strong>. Apabila Saudara/i
-            menyetujui penawaran ini, mohon untuk menandatangani lembar persetujuan di bawah ini dan mengembalikannya
-            kepada Divisi HRD.
-        </p>
-    @endif
-
     <p>
-        Demikian surat penawaran ini kami sampaikan. Atas perhatian dan kesediaan Saudara/i, kami ucapkan terima kasih.
+        Demikian surat penawaran kerja ini kami sampaikan. Atas perhatian dan kesediaan Saudara/i, kami ucapkan terima
+        kasih.
     </p>
 
     <!-- Signatures -->
