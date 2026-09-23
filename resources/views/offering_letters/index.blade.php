@@ -207,14 +207,6 @@
                                     </div>
                                 </td>
                             </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="7" class="py-8 text-center text-slate-400">
-                                        Belum ada data Offering Letter yang diterbitkan.
-                                    </td>
-                                </tr>
-                            @endforelse
-                        </tbody>
                         @empty
                             <tr>
                                 <td colspan="8" class="py-8 text-center text-slate-400">

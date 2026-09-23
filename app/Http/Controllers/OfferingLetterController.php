@@ -139,7 +139,6 @@ class OfferingLetterController extends Controller
             'first_join_date',
         ]);
 
-        return view('offering_letters.edit', compact('offeringLetter'));
         return view('offering_letters.edit', compact('offeringLetter', 'employees'));
     }
 
