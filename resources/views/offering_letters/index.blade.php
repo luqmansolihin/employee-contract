@@ -79,6 +79,11 @@
                             <th class="py-3.5 px-4">Posisi & Cabang</th>
                             <th class="py-3.5 px-4">Rencana Tipe</th>
                             <th class="py-3.5 px-4">Gaji / Saku</th>
+                            <th class="py-3.5 px-4">Karyawan</th>
+                            <th class="py-3.5 px-4">Bidang & Posisi</th>
+                            <th class="py-3.5 px-4">Cabang Penempatan</th>
+                            <th class="py-3.5 px-4">Periode Kontrak</th>
+                            <th class="py-3.5 px-4">Nama Atasan</th>
                             <th class="py-3.5 px-4">Status</th>
                             <th class="py-3.5 px-4 text-center">Aksi</th>
                         </tr>
@@ -88,8 +93,18 @@
                             <tr class="hover:bg-slate-50/75 transition">
                                 <td class="py-3.5 px-4 font-semibold text-[#1C2434]">
                                     <span class="font-mono text-xs block text-[#3C50E0]">{{ $ol->letter_number }}</span>
+                                    <div class="flex items-center gap-1.5 flex-wrap">
+                                        <span class="font-mono text-xs text-[#3C50E0]">{{ $ol->letter_number }}</span>
+                                        @if ($ol->kode)
+                                            <span
+                                                class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-indigo-50 text-[#3C50E0] border border-indigo-200 uppercase font-mono">
+                                                {{ $ol->kode }}
+                                            </span>
+                                        @endif
+                                    </div>
                                     <span
                                         class="text-[11px] font-normal text-slate-400">{{ $ol->offer_date->format('d M Y') }}</span>
+                                        class="text-[11px] font-normal text-slate-400 block mt-0.5">{{ $ol->offer_date->format('d M Y') }}</span>
                                 </td>
                                 <td class="py-3.5 px-4">
                                     <a href="{{ route('employees.show', $ol->employee) }}"
@@ -105,6 +120,9 @@
                                         {{ $ol->branch }}@if ($ol->bidang)
                                             &bull; <span class="text-indigo-600 font-medium">{{ $ol->bidang }}</span>
                                         @endif
+                                    <span class="font-bold text-slate-800 block">{{ $ol->position }}</span>
+                                    <span class="text-[11px] text-indigo-600 font-medium block">
+                                        {{ $ol->bidang ?: '-' }}
                                     </span>
                                 </td>
                                 <td class="py-3.5 px-4">
@@ -112,9 +130,22 @@
                                         class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold border {{ $ol->contract_type_badge_class }}">
                                         {{ $ol->contract_type }}
                                     </span>
+                                    <span class="font-medium text-slate-700 block">{{ $ol->branch }}</span>
                                 </td>
                                 <td class="py-3.5 px-4 font-semibold text-slate-800">
                                     {{ $ol->formatted_total_compensation }}
+                                <td class="py-3.5 px-4 text-slate-700">
+                                    <div class="whitespace-nowrap font-medium">
+                                        {{ $ol->proposed_start_date->format('d M Y') }}
+                                    </div>
+                                    <div class="text-[11px] text-slate-400 whitespace-nowrap">
+                                        s/d {{ $ol->proposed_end_date->format('d M Y') }}
+                                    </div>
+                                </td>
+                                <td class="py-3.5 px-4">
+                                    <span class="font-semibold text-slate-800 block">{{ $ol->supervisor_name ?: '-' }}</span>
+                                    <span class="text-[11px] text-slate-400 block truncate max-w-[150px]"
+                                        title="{{ $ol->supervisor_position }}">{{ $ol->supervisor_position ?: '-' }}</span>
                                 </td>
                                 <td class="py-3.5 px-4">
                                     <span
@@ -132,6 +163,16 @@
                                                     d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+                                                </path>
+                                            </svg>
+                                        </a>
+
+                                        <a href="{{ route('offering-letters.edit', $ol) }}"
+                                            class="p-1.5 rounded-lg text-[#8A99AD] hover:text-[#3C50E0] hover:bg-[#3C50E0]/10 transition"
+                                            title="Ubah Data">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
                                                 </path>
                                             </svg>
                                         </a>
@@ -174,6 +215,14 @@
                                 </tr>
                             @endforelse
                         </tbody>
+                        @empty
+                            <tr>
+                                <td colspan="8" class="py-8 text-center text-slate-400">
+                                    Belum ada data Offering Letter yang diterbitkan.
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
                     </table>
                 </div>
 

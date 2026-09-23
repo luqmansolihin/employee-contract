@@ -109,6 +109,7 @@ class OfferingLetterTest extends TestCase
         $this->assertDatabaseHas('offering_letters', [
             'employee_id' => $this->employee->id,
             'letter_number' => '001/IX/2026/OL',
+            'letter_number' => '001/IX/2026/OL/HRD',
             'kode' => 'HRD',
             'bidang' => 'Teknologi Informasi',
             'contract_type' => 'PKWT',
@@ -117,6 +118,7 @@ class OfferingLetterTest extends TestCase
         ]);
 
         $ol = OfferingLetter::where('letter_number', '001/IX/2026/OL')->first();
+        $ol = OfferingLetter::where('letter_number', '001/IX/2026/OL/HRD')->first();
         $response->assertRedirect(route('offering-letters.show', $ol));
     }
 
@@ -279,6 +281,7 @@ class OfferingLetterTest extends TestCase
         $editResponse->assertSee('Alamat Kantor');
 
         $updateResponse = $this->put(route('offering-letters.update', $ol), [
+            'employee_id' => $this->employee->id,
             'letter_number' => '005/IX/2026/OL/CKU',
             'kode' => 'CKU',
             'bidang' => 'Divisi Operasional',
@@ -303,6 +306,7 @@ class OfferingLetterTest extends TestCase
 
         $this->assertDatabaseHas('offering_letters', [
             'id' => $ol->id,
+            'employee_id' => $this->employee->id,
             'letter_number' => '005/IX/2026/OL/CKU',
             'kode' => 'CKU',
             'bidang' => 'Divisi Operasional',
@@ -312,6 +316,59 @@ class OfferingLetterTest extends TestCase
             'supervisor_position' => 'Direktur Operasional',
             'office_address' => 'Wisma Asri Lt. 5, Jakarta Barat',
         ]);
+    }
+
+    public function test_can_change_employee_when_updating_offering_letter(): void
+    {
+        $newEmployee = Employee::factory()->create([
+            'name' => 'Rina Wijaya',
+            'current_position' => 'HR Staff',
+            'current_branch' => 'Bandung',
+        ]);
+
+        $ol = OfferingLetter::create([
+            'employee_id' => $this->employee->id,
+            'letter_number' => '007/IX/2026/OL/HRD',
+            'kode' => 'HRD',
+            'offer_date' => '2026-09-21',
+            'contract_type' => 'PKWT',
+            'position' => 'HR Staff',
+            'bidang' => 'Human Resources',
+            'branch' => 'Jakarta',
+            'proposed_start_date' => '2026-10-01',
+            'proposed_end_date' => '2027-09-30',
+            'supervisor_name' => 'Hendra Wijaya, S.Psi.',
+            'supervisor_position' => 'Human Resources Manager',
+            'office_address' => 'Gedung Sudirman Central Lt. 12',
+            'status' => 'draft',
+        ]);
+
+        $editResponse = $this->get(route('offering-letters.edit', $ol));
+        $editResponse->assertOk();
+        $editResponse->assertSee('Rina Wijaya');
+        $editResponse->assertSee('Pilih Karyawan Terdaftar');
+        $editResponse->assertSee('value="007/IX/2026/OL"', false);
+
+        $updateResponse = $this->put(route('offering-letters.update', $ol), [
+            'employee_id' => $newEmployee->id,
+            'letter_number' => '007/IX/2026/OL',
+            'kode' => 'HRD',
+            'bidang' => 'Human Resources',
+            'offer_date' => '2026-09-22',
+            'position' => 'HR Officer',
+            'branch' => 'Bandung',
+            'proposed_start_date' => '2026-10-01',
+            'proposed_end_date' => '2027-09-30',
+            'supervisor_name' => 'Hendra Wijaya, S.Psi.',
+            'supervisor_position' => 'Human Resources Manager',
+            'office_address' => 'Gedung Sudirman Central Lt. 12',
+        ]);
+
+        $updateResponse->assertRedirect(route('offering-letters.show', $ol));
+
+        $ol->refresh();
+        $this->assertEquals($newEmployee->id, $ol->employee_id);
+        $this->assertEquals('007/IX/2026/OL/HRD', $ol->letter_number);
     }
 
     public function test_all_columns_in_offering_letter_are_required_when_updating(): void
@@ -341,6 +398,7 @@ class OfferingLetterTest extends TestCase
         $response = $this->put(route('offering-letters.update', $ol), []);
 
         $response->assertSessionHasErrors([
+            'employee_id',
             'letter_number',
             'kode',
             'offer_date',

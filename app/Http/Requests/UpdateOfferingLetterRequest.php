@@ -17,6 +17,24 @@ class UpdateOfferingLetterRequest extends FormRequest
     }
 
     /**
+     * Prepare the data for validation.
+     */
+    protected function prepareForValidation(): void
+    {
+        if ($this->filled('letter_number') && $this->filled('kode')) {
+            $kode = strtoupper(trim((string) $this->kode));
+            $letterNumber = trim((string) $this->letter_number);
+            if (! str_ends_with($letterNumber, '/'.$kode)) {
+                $letterNumber = $letterNumber.'/'.$kode;
+            }
+            $this->merge([
+                'letter_number' => $letterNumber,
+                'kode' => $kode,
+            ]);
+        }
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, ValidationRule|array<mixed>|string>
@@ -26,6 +44,7 @@ class UpdateOfferingLetterRequest extends FormRequest
         $offeringLetterId = $this->route('offering_letter')?->id;
 
         return [
+            'employee_id' => ['required', 'exists:employees,id'],
             'letter_number' => [
                 'required',
                 'string',
@@ -60,6 +79,7 @@ class UpdateOfferingLetterRequest extends FormRequest
     public function attributes(): array
     {
         return [
+            'employee_id' => 'karyawan',
             'letter_number' => 'nomor surat penawaran',
             'kode' => 'kode surat',
             'offer_date' => 'tanggal surat',

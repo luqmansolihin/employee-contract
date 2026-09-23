@@ -46,6 +46,7 @@
                     <div>
                         <h4 class="text-xs font-bold text-[#3C50E0]">Merujuk ke Offering Letter
                             #{{ $offeringLetter->letter_number }}</h4>
+                        <h4 class="text-xs font-bold text-[#3C50E0]">Merujuk ke Offering Letter #{{ $offeringLetter->letter_number }}</h4>
                         <p class="text-[11px] text-slate-500 mt-0.5">
                             Data kandidat, penempatan, dan remunerasi telah dimuat secara otomatis dari penawaran kerja yang
                             telah diterima.

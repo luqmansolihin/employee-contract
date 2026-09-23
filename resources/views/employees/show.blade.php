@@ -209,6 +209,12 @@
                                     <div class="flex items-center gap-2 flex-wrap">
                                         <span
                                             class="font-mono font-bold text-xs text-[#1C2434]">{{ $ol->letter_number }}</span>
+                                        @if ($ol->kode)
+                                            <span
+                                                class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-indigo-50 text-[#3C50E0] border border-indigo-200 uppercase font-mono">
+                                                {{ $ol->kode }}
+                                            </span>
+                                        @endif
                                         <span
                                             class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold border {{ $ol->contract_type_badge_class }}">
                                             {{ $ol->contract_type }}
@@ -221,14 +227,35 @@
                                     <p class="text-slate-600">
                                         Jabatan: <strong>{{ $ol->position }}</strong> ({{ $ol->branch }}) &bull;
                                         Kompensasi: <strong>{{ $ol->formatted_total_compensation }}</strong>
+                                        Bidang: <strong class="text-indigo-600">{{ $ol->bidang ?: '-' }}</strong> &bull;
+                                        Posisi: <strong>{{ $ol->position }}</strong> ({{ $ol->branch }})
+                                    </p>
+                                    <p class="text-slate-600">
+                                        Periode: <strong>{{ $ol->proposed_start_date->format('d M Y') }}</strong> s/d
+                                        <strong>{{ $ol->proposed_end_date->format('d M Y') }}</strong> &bull;
+                                        Atasan: <strong>{{ $ol->supervisor_name ?: '-' }}</strong>
+                                        ({{ $ol->supervisor_position ?: '-' }})
                                     </p>
                                     <p class="text-[11px] text-slate-400">
                                         Tgl Penawaran: {{ $ol->offer_date->format('d M Y') }} &bull; Rencana Mulai:
                                         {{ $ol->proposed_start_date->format('d M Y') }}
+                                        Tgl Surat: {{ $ol->offer_date->format('d M Y') }} &bull; Alamat Kantor:
+                                        {{ $ol->office_address ?: '-' }}
                                     </p>
                                 </div>
 
                                 <div class="flex items-center gap-2 shrink-0">
+                                    <a href="{{ route('offering-letters.edit', $ol) }}"
+                                        class="px-2.5 py-1.5 rounded-lg border border-[#E2E8F0] text-slate-700 hover:text-[#3C50E0] hover:border-[#3C50E0] text-xs font-semibold transition flex items-center gap-1">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                            </path>
+                                        </svg>
+                                        <span>Edit</span>
+                                    </a>
+
                                     <a href="{{ route('offering-letters.print', $ol) }}" target="_blank"
                                         class="px-2.5 py-1.5 rounded-lg border border-[#E2E8F0] text-slate-700 hover:text-emerald-600 hover:border-emerald-300 text-xs font-semibold transition flex items-center gap-1">
                                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor"

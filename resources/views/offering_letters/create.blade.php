@@ -61,6 +61,7 @@
                                 <div>
                                     <span class="text-slate-400 block text-[10px] uppercase font-semibold">Jenis
                                         Kelamin</span>
+                                    <span class="text-slate-400 block text-[10px] uppercase font-semibold">Jenis Kelamin</span>
                                     <span
                                         class="font-bold text-slate-700">{{ in_array(strtolower($employee->gender ?? ''), ['laki-laki', 'male', 'l']) ? 'Laki-laki' : (in_array(strtolower($employee->gender ?? ''), ['perempuan', 'female', 'p']) ? 'Perempuan' : ($employee->gender ?: '-')) }}</span>
                                 </div>
@@ -238,6 +239,17 @@
                         2. Informasi Surat & Rencana Kontrak
                     </h4>
 
+                    @php
+                        $rawLetterNumber = old('letter_number', $suggestedNumber);
+                        $currentKode = old('kode');
+                        $cleanKode = strtoupper(trim((string) $currentKode));
+                        if ($cleanKode !== '' && str_ends_with($rawLetterNumber, '/' . $cleanKode)) {
+                            $displayLetterNumber = substr($rawLetterNumber, 0, -strlen('/' . $cleanKode));
+                        } else {
+                            $displayLetterNumber = $rawLetterNumber;
+                        }
+                    @endphp
+
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <!-- Nomor Surat -->
                         <div>
@@ -246,7 +258,11 @@
                             </label>
                             <input type="text" name="letter_number" id="letter_number"
                                 value="{{ old('letter_number', $suggestedNumber) }}" required autocomplete="off"
+                                value="{{ $displayLetterNumber }}" required autocomplete="off"
                                 class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('letter_number') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] font-mono outline-hidden transition">
+                            <p class="text-[11px] text-slate-500 mt-1 font-mono">
+                                Nomor Surat Lengkap: <span id="full_number_preview" class="font-bold text-[#3C50E0]">{{ $rawLetterNumber }}</span>
+                            </p>
                             @error('letter_number')
                                 <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
                             @enderror
@@ -676,12 +692,17 @@
             }
 
             // Dynamic KODE suffix in letter number
+            // Live helper preview for full letter number
             const letterNumberInput = document.getElementById('letter_number');
             const kodeInput = document.getElementById('kode');
             const initialSuggested = @json($suggestedNumber);
+            const previewEl = document.getElementById('full_number_preview');
 
             function syncLetterNumberWithKode() {
                 if (!letterNumberInput) return;
+            function updateFullNumberPreview() {
+                if (!letterNumberInput || !previewEl) return;
+                const rawNumber = letterNumberInput.value.trim();
                 const rawKode = kodeInput ? kodeInput.value.trim().toUpperCase() : '';
 
                 let currentNumber = letterNumberInput.value.trim();
@@ -693,8 +714,11 @@
 
                 if (rawKode) {
                     letterNumberInput.value = base + '/' + rawKode;
+                if (rawNumber && rawKode && !rawNumber.endsWith('/' + rawKode)) {
+                    previewEl.textContent = rawNumber + '/' + rawKode;
                 } else {
                     letterNumberInput.value = base;
+                    previewEl.textContent = rawNumber || '-';
                 }
             }
 
@@ -702,12 +726,18 @@
                 kodeInput.addEventListener('input', function() {
                     this.value = this.value.toUpperCase();
                     syncLetterNumberWithKode();
+                    updateFullNumberPreview();
                 });
+            }
 
                 if (kodeInput.value.trim()) {
                     syncLetterNumberWithKode();
                 }
+            if (letterNumberInput) {
+                letterNumberInput.addEventListener('input', updateFullNumberPreview);
             }
+
+            updateFullNumberPreview();
 
             if (currentSelectedId && employeeMap[currentSelectedId]) {
                 selectEmployee(currentSelectedId, false);

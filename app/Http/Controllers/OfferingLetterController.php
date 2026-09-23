@@ -31,6 +31,7 @@ class OfferingLetterController extends Controller
                     ->orWhere('branch', 'like', "%{$search}%")
                     ->orWhere('bidang', 'like', "%{$search}%")
                     ->orWhere('kode', 'like', "%{$search}%")
+                    ->orWhere('supervisor_name', 'like', "%{$search}%")
                     ->orWhereHas('employee', fn ($eq) => $eq->where('name', 'like', "%{$search}%"));
             })
             ->orderBy('offer_date', 'desc');
@@ -125,8 +126,21 @@ class OfferingLetterController extends Controller
     public function edit(OfferingLetter $offeringLetter): View
     {
         $offeringLetter->load('employee');
+        $employees = Employee::orderBy('name')->get([
+            'id',
+            'name',
+            'ktp_number',
+            'gender',
+            'birth_place',
+            'birth_date',
+            'address',
+            'current_position',
+            'current_branch',
+            'first_join_date',
+        ]);
 
         return view('offering_letters.edit', compact('offeringLetter'));
+        return view('offering_letters.edit', compact('offeringLetter', 'employees'));
     }
 
     /**

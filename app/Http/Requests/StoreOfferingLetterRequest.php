@@ -16,6 +16,24 @@ class StoreOfferingLetterRequest extends FormRequest
     }
 
     /**
+     * Prepare the data for validation.
+     */
+    protected function prepareForValidation(): void
+    {
+        if ($this->filled('letter_number') && $this->filled('kode')) {
+            $kode = strtoupper(trim((string) $this->kode));
+            $letterNumber = trim((string) $this->letter_number);
+            if (! str_ends_with($letterNumber, '/'.$kode)) {
+                $letterNumber = $letterNumber.'/'.$kode;
+            }
+            $this->merge([
+                'letter_number' => $letterNumber,
+                'kode' => $kode,
+            ]);
+        }
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, ValidationRule|array<mixed>|string>
