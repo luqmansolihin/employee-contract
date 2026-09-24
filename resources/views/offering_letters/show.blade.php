@@ -78,52 +78,40 @@
             class="p-4 rounded-2xl bg-white border border-[#E2E8F0] shadow-xs flex flex-wrap items-center justify-between gap-3">
             <span class="text-xs text-slate-500 font-medium">Ubah Status Surat Penawaran:</span>
             <div class="flex items-center gap-2">
-                @if ($offeringLetter->status !== 'draft')
-                    <form action="{{ route('offering-letters.status', $offeringLetter) }}" method="POST">
-                        @csrf
-                        @method('PATCH')
-                        <input type="hidden" name="status" value="draft">
-                        <button type="submit"
-                            class="px-3 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium transition">
-                            Draft
-                        </button>
-                    </form>
-                @endif
-
-                @if ($offeringLetter->status !== 'sent')
+                @if ($offeringLetter->status === 'draft')
                     <form action="{{ route('offering-letters.status', $offeringLetter) }}" method="POST">
                         @csrf
                         @method('PATCH')
                         <input type="hidden" name="status" value="sent">
                         <button type="submit"
-                            class="px-3 py-1 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-medium border border-blue-200 transition">
+                            class="px-3 py-1 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-semibold border border-blue-200 transition">
                             Tandai Terkirim
                         </button>
                     </form>
-                @endif
+                @else
+                    @if ($offeringLetter->status !== 'accepted')
+                        <form action="{{ route('offering-letters.status', $offeringLetter) }}" method="POST">
+                            @csrf
+                            @method('PATCH')
+                            <input type="hidden" name="status" value="accepted">
+                            <button type="submit"
+                                class="px-3 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-semibold border border-emerald-200 transition">
+                                Tandai Diterima (Accepted)
+                            </button>
+                        </form>
+                    @endif
 
-                @if ($offeringLetter->status !== 'accepted')
-                    <form action="{{ route('offering-letters.status', $offeringLetter) }}" method="POST">
-                        @csrf
-                        @method('PATCH')
-                        <input type="hidden" name="status" value="accepted">
-                        <button type="submit"
-                            class="px-3 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-medium border border-emerald-200 transition">
-                            Tandai Diterima (Accepted)
-                        </button>
-                    </form>
-                @endif
-
-                @if ($offeringLetter->status !== 'rejected')
-                    <form action="{{ route('offering-letters.status', $offeringLetter) }}" method="POST">
-                        @csrf
-                        @method('PATCH')
-                        <input type="hidden" name="status" value="rejected">
-                        <button type="submit"
-                            class="px-3 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-medium border border-rose-200 transition">
-                            Tandai Ditolak
-                        </button>
-                    </form>
+                    @if ($offeringLetter->status !== 'rejected')
+                        <form action="{{ route('offering-letters.status', $offeringLetter) }}" method="POST">
+                            @csrf
+                            @method('PATCH')
+                            <input type="hidden" name="status" value="rejected">
+                            <button type="submit"
+                                class="px-3 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-semibold border border-rose-200 transition">
+                                Tandai Ditolak
+                            </button>
+                        </form>
+                    @endif
                 @endif
             </div>
         </div>

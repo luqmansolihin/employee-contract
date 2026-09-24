@@ -159,9 +159,17 @@ class OfferingLetterController extends Controller
      */
     public function updateStatus(Request $request, OfferingLetter $offeringLetter): RedirectResponse
     {
-        $request->validate([
-            'status' => ['required', 'in:draft,sent,accepted,rejected'],
-        ]);
+        if ($offeringLetter->status !== 'draft') {
+            $request->validate([
+                'status' => ['required', 'in:accepted,rejected'],
+            ], [
+                'status.in' => 'Setelah terkirim, status surat penawaran hanya dapat diubah ke Diterima atau Ditolak.',
+            ]);
+        } else {
+            $request->validate([
+                'status' => ['required', 'in:sent,accepted,rejected'],
+            ]);
+        }
 
         $offeringLetter->update([
             'status' => $request->status,

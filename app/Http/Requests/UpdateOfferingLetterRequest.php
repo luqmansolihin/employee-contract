@@ -41,10 +41,21 @@ class UpdateOfferingLetterRequest extends FormRequest
      */
     public function rules(): array
     {
-        $offeringLetterId = $this->route('offering_letter')?->id;
+        $offeringLetter = $this->route('offering_letter');
+        $offeringLetterId = $offeringLetter?->id;
 
         return [
-            'employee_id' => ['required', 'exists:employees,id'],
+            'employee_id' => [
+                'required',
+                'exists:employees,id',
+                function ($attribute, $value, $fail) use ($offeringLetter) {
+                    if ($offeringLetter && $offeringLetter->status !== 'draft') {
+                        if ((int) $value !== (int) $offeringLetter->employee_id) {
+                            $fail('Karyawan penerima penawaran tidak dapat diganti setelah status surat penawaran terkirim.');
+                        }
+                    }
+                },
+            ],
             'letter_number' => [
                 'required',
                 'string',
@@ -62,7 +73,15 @@ class UpdateOfferingLetterRequest extends FormRequest
             'basic_salary' => ['nullable', 'numeric', 'min:0'],
             'allowance' => ['nullable', 'numeric', 'min:0'],
             'valid_until' => ['nullable', 'date'],
-            'status' => ['nullable', 'in:draft,sent,accepted,rejected'],
+            'status' => [
+                'nullable',
+                Rule::in(['draft', 'sent', 'accepted', 'rejected']),
+                function ($attribute, $value, $fail) use ($offeringLetter) {
+                    if ($offeringLetter && $offeringLetter->status !== 'draft' && $value === 'draft') {
+                        $fail('Setelah terkirim, status surat penawaran tidak dapat diubah kembali ke draft.');
+                    }
+                },
+            ],
             'terms' => ['nullable', 'string'],
             'notes' => ['nullable', 'string'],
             'supervisor_name' => ['required', 'string', 'max:255'],

@@ -75,10 +75,6 @@
                         <tr
                             class="border-b border-[#E2E8F0] bg-[#F8FAFC] text-[11px] font-bold text-[#8A99AD] uppercase tracking-wider">
                             <th class="py-3.5 px-4">No. Surat & Tanggal</th>
-                            <th class="py-3.5 px-4">Karyawan / Kandidat</th>
-                            <th class="py-3.5 px-4">Posisi & Cabang</th>
-                            <th class="py-3.5 px-4">Rencana Tipe</th>
-                            <th class="py-3.5 px-4">Gaji / Saku</th>
                             <th class="py-3.5 px-4">Karyawan</th>
                             <th class="py-3.5 px-4">Bidang & Posisi</th>
                             <th class="py-3.5 px-4">Cabang Penempatan</th>
@@ -91,8 +87,8 @@
                     <tbody class="divide-y divide-[#E2E8F0] text-xs">
                         @forelse($offeringLetters as $ol)
                             <tr class="hover:bg-slate-50/75 transition">
+                                <!-- No. Surat & Tanggal -->
                                 <td class="py-3.5 px-4 font-semibold text-[#1C2434]">
-                                    <span class="font-mono text-xs block text-[#3C50E0]">{{ $ol->letter_number }}</span>
                                     <div class="flex items-center gap-1.5 flex-wrap">
                                         <span class="font-mono text-xs text-[#3C50E0]">{{ $ol->letter_number }}</span>
                                         @if ($ol->kode)
@@ -102,38 +98,36 @@
                                             </span>
                                         @endif
                                     </div>
-                                    <span
-                                        class="text-[11px] font-normal text-slate-400">{{ $ol->offer_date->format('d M Y') }}</span>
-                                        class="text-[11px] font-normal text-slate-400 block mt-0.5">{{ $ol->offer_date->format('d M Y') }}</span>
+                                    <span class="text-[11px] font-normal text-slate-400 block mt-0.5">
+                                        {{ $ol->offer_date->format('d M Y') }}
+                                    </span>
                                 </td>
+
+                                <!-- Karyawan -->
                                 <td class="py-3.5 px-4">
                                     <a href="{{ route('employees.show', $ol->employee) }}"
                                         class="font-bold text-[#1C2434] hover:text-[#3C50E0] transition block truncate max-w-[160px]">
                                         {{ $ol->employee->name }}
                                     </a>
-                                    <span class="text-[10px] text-slate-400 font-mono">NIK:
-                                        {{ $ol->employee->ktp_number }}</span>
+                                    <span class="text-[10px] text-slate-400 font-mono">
+                                        NIK: {{ $ol->employee->ktp_number }}
+                                    </span>
                                 </td>
+
+                                <!-- Bidang & Posisi -->
                                 <td class="py-3.5 px-4">
-                                    <span class="font-medium text-slate-800 block">{{ $ol->position }}</span>
-                                    <span class="text-[11px] text-slate-400 block">
-                                        {{ $ol->branch }}@if ($ol->bidang)
-                                            &bull; <span class="text-indigo-600 font-medium">{{ $ol->bidang }}</span>
-                                        @endif
                                     <span class="font-bold text-slate-800 block">{{ $ol->position }}</span>
                                     <span class="text-[11px] text-indigo-600 font-medium block">
                                         {{ $ol->bidang ?: '-' }}
                                     </span>
                                 </td>
+
+                                <!-- Cabang Penempatan -->
                                 <td class="py-3.5 px-4">
-                                    <span
-                                        class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold border {{ $ol->contract_type_badge_class }}">
-                                        {{ $ol->contract_type }}
-                                    </span>
                                     <span class="font-medium text-slate-700 block">{{ $ol->branch }}</span>
                                 </td>
-                                <td class="py-3.5 px-4 font-semibold text-slate-800">
-                                    {{ $ol->formatted_total_compensation }}
+
+                                <!-- Periode Kontrak -->
                                 <td class="py-3.5 px-4 text-slate-700">
                                     <div class="whitespace-nowrap font-medium">
                                         {{ $ol->proposed_start_date->format('d M Y') }}
@@ -142,17 +136,24 @@
                                         s/d {{ $ol->proposed_end_date->format('d M Y') }}
                                     </div>
                                 </td>
+
+                                <!-- Nama Atasan -->
                                 <td class="py-3.5 px-4">
-                                    <span class="font-semibold text-slate-800 block">{{ $ol->supervisor_name ?: '-' }}</span>
-                                    <span class="text-[11px] text-slate-400 block truncate max-w-[150px]"
+                                    <span
+                                        class="font-semibold text-slate-800 block">{{ $ol->supervisor_name ?: '-' }}</span>
+                                    <span class="text-[11px] text-slate-400 block truncate max-w-[160px]"
                                         title="{{ $ol->supervisor_position }}">{{ $ol->supervisor_position ?: '-' }}</span>
                                 </td>
+
+                                <!-- Status -->
                                 <td class="py-3.5 px-4">
                                     <span
                                         class="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-semibold border {{ $ol->status_badge_class }}">
                                         {{ $ol->status_label }}
                                     </span>
                                 </td>
+
+                                <!-- Aksi -->
                                 <td class="py-3.5 px-4 text-center">
                                     <div class="flex items-center justify-center gap-1.5">
                                         <a href="{{ route('offering-letters.show', $ol) }}"
@@ -170,7 +171,8 @@
                                         <a href="{{ route('offering-letters.edit', $ol) }}"
                                             class="p-1.5 rounded-lg text-[#8A99AD] hover:text-[#3C50E0] hover:bg-[#3C50E0]/10 transition"
                                             title="Ubah Data">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
                                                 </path>
@@ -180,7 +182,8 @@
                                         <a href="{{ route('offering-letters.print', $ol) }}" target="_blank"
                                             class="p-1.5 rounded-lg text-[#8A99AD] hover:text-emerald-600 hover:bg-emerald-50 transition"
                                             title="Cetak Surat Penawaran">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z">
                                                 </path>
@@ -215,14 +218,14 @@
                             </tr>
                         @endforelse
                     </tbody>
-                    </table>
-                </div>
-
-                @if ($offeringLetters->hasPages())
-                    <div class="p-4 border-t border-[#E2E8F0]">
-                        {{ $offeringLetters->links() }}
-                    </div>
-                @endif
+                </table>
             </div>
+
+            @if ($offeringLetters->hasPages())
+                <div class="p-4 border-t border-[#E2E8F0]">
+                    {{ $offeringLetters->links() }}
+                </div>
+            @endif
         </div>
-    @endsection
+    </div>
+@endsection

@@ -32,6 +32,21 @@ class OfferingLetterTest extends TestCase
 
     public function test_can_render_offering_letters_index(): void
     {
+        OfferingLetter::create([
+            'employee_id' => $this->employee->id,
+            'letter_number' => '001/OL/2026',
+            'kode' => 'HRD',
+            'offer_date' => '2026-09-21',
+            'position' => 'Software Engineer',
+            'bidang' => 'IT Development',
+            'branch' => 'Jakarta',
+            'proposed_start_date' => '2026-10-01',
+            'proposed_end_date' => '2027-09-30',
+            'supervisor_name' => 'Budi Santoso',
+            'supervisor_position' => 'Head of IT',
+            'status' => 'draft',
+        ]);
+
         $response = $this->get(route('offering-letters.index'));
 
         $response->assertOk();
@@ -39,6 +54,12 @@ class OfferingLetterTest extends TestCase
         $response->assertSee('OFFERING LETTER');
         $response->assertSee('Filter Status:');
         $response->assertSee('Buat Offering Letter');
+        $response->assertSee('001/OL/2026');
+        $response->assertSee('Software Engineer');
+        $response->assertSee('IT Development');
+        $response->assertSee('Budi Santoso');
+        $response->assertDontSee('Rencana Tipe');
+        $response->assertDontSee('Gaji / Saku');
         $response->assertSee(route('offering-letters.create'));
     }
 
@@ -318,7 +339,7 @@ class OfferingLetterTest extends TestCase
         ]);
     }
 
-    public function test_can_change_employee_when_updating_offering_letter(): void
+    public function test_can_change_employee_when_offering_letter_is_draft(): void
     {
         $newEmployee = Employee::factory()->create([
             'name' => 'Rina Wijaya',
@@ -345,8 +366,10 @@ class OfferingLetterTest extends TestCase
 
         $editResponse = $this->get(route('offering-letters.edit', $ol));
         $editResponse->assertOk();
-        $editResponse->assertSee('Rina Wijaya');
-        $editResponse->assertSee('Pilih Karyawan Terdaftar');
+        $editResponse->assertSee($this->employee->name);
+        $editResponse->assertSee('Draft (Dapat Diganti)');
+        $editResponse->assertSee('Pilih / Ganti Karyawan');
+        $editResponse->assertSee('id="employee-combobox-wrapper"', false);
         $editResponse->assertSee('value="007/IX/2026/OL"', false);
 
         $updateResponse = $this->put(route('offering-letters.update', $ol), [
@@ -369,6 +392,143 @@ class OfferingLetterTest extends TestCase
         $ol->refresh();
         $this->assertEquals($newEmployee->id, $ol->employee_id);
         $this->assertEquals('007/IX/2026/OL/HRD', $ol->letter_number);
+    }
+
+    public function test_cannot_change_employee_when_offering_letter_is_sent(): void
+    {
+        $newEmployee = Employee::factory()->create([
+            'name' => 'Budi Nugraha',
+            'current_position' => 'Finance Staff',
+            'current_branch' => 'Surabaya',
+        ]);
+
+        $ol = OfferingLetter::create([
+            'employee_id' => $this->employee->id,
+            'letter_number' => '008/IX/2026/OL/HRD',
+            'kode' => 'HRD',
+            'offer_date' => '2026-09-21',
+            'contract_type' => 'PKWT',
+            'position' => 'Finance Staff',
+            'bidang' => 'Keuangan',
+            'branch' => 'Jakarta',
+            'proposed_start_date' => '2026-10-01',
+            'proposed_end_date' => '2027-09-30',
+            'supervisor_name' => 'Hendra Wijaya, S.Psi.',
+            'supervisor_position' => 'Human Resources Manager',
+            'office_address' => 'Gedung Sudirman Central Lt. 12',
+            'status' => 'sent',
+        ]);
+
+        $editResponse = $this->get(route('offering-letters.edit', $ol));
+        $editResponse->assertOk();
+        $editResponse->assertSee($this->employee->name);
+        $editResponse->assertSee('Terkunci (Status: Terkirim)');
+        $editResponse->assertDontSee('Pilih / Ganti Karyawan');
+        $editResponse->assertDontSee('id="employee-combobox-wrapper"', false);
+
+        $updateResponse = $this->put(route('offering-letters.update', $ol), [
+            'employee_id' => $newEmployee->id,
+            'letter_number' => '008/IX/2026/OL',
+            'kode' => 'HRD',
+            'bidang' => 'Keuangan',
+            'offer_date' => '2026-09-22',
+            'position' => 'Finance Officer',
+            'branch' => 'Surabaya',
+            'proposed_start_date' => '2026-10-01',
+            'proposed_end_date' => '2027-09-30',
+            'supervisor_name' => 'Hendra Wijaya, S.Psi.',
+            'supervisor_position' => 'Human Resources Manager',
+            'office_address' => 'Gedung Sudirman Central Lt. 12',
+        ]);
+
+        $updateResponse->assertSessionHasErrors('employee_id');
+
+        $ol->refresh();
+        $this->assertEquals($this->employee->id, $ol->employee_id);
+    }
+
+    public function test_cannot_revert_status_to_draft_after_sent(): void
+    {
+        $ol = OfferingLetter::create([
+            'employee_id' => $this->employee->id,
+            'letter_number' => '009/IX/2026/OL/HRD',
+            'kode' => 'HRD',
+            'offer_date' => '2026-09-21',
+            'contract_type' => 'PKWT',
+            'position' => 'Finance Staff',
+            'bidang' => 'Keuangan',
+            'branch' => 'Jakarta',
+            'proposed_start_date' => '2026-10-01',
+            'proposed_end_date' => '2027-09-30',
+            'supervisor_name' => 'Hendra Wijaya, S.Psi.',
+            'supervisor_position' => 'Human Resources Manager',
+            'office_address' => 'Gedung Sudirman Central Lt. 12',
+            'status' => 'sent',
+        ]);
+
+        // Trying to revert to draft via status patch
+        $response = $this->patch(route('offering-letters.status', $ol), [
+            'status' => 'draft',
+        ]);
+        $response->assertSessionHasErrors('status');
+        $ol->refresh();
+        $this->assertEquals('sent', $ol->status);
+
+        // Can change to accepted
+        $response = $this->patch(route('offering-letters.status', $ol), [
+            'status' => 'accepted',
+        ]);
+        $response->assertRedirect();
+        $ol->refresh();
+        $this->assertEquals('accepted', $ol->status);
+
+        // Can change to rejected
+        $response = $this->patch(route('offering-letters.status', $ol), [
+            'status' => 'rejected',
+        ]);
+        $response->assertRedirect();
+        $ol->refresh();
+        $this->assertEquals('rejected', $ol->status);
+
+        // From rejected cannot revert to draft
+        $response = $this->patch(route('offering-letters.status', $ol), [
+            'status' => 'draft',
+        ]);
+        $response->assertSessionHasErrors('status');
+        $ol->refresh();
+        $this->assertEquals('rejected', $ol->status);
+    }
+
+    public function test_status_buttons_on_show_page_reflect_allowed_transitions(): void
+    {
+        $ol = OfferingLetter::create([
+            'employee_id' => $this->employee->id,
+            'letter_number' => '010/IX/2026/OL/HRD',
+            'kode' => 'HRD',
+            'offer_date' => '2026-09-21',
+            'contract_type' => 'PKWT',
+            'position' => 'Finance Staff',
+            'bidang' => 'Keuangan',
+            'branch' => 'Jakarta',
+            'proposed_start_date' => '2026-10-01',
+            'proposed_end_date' => '2027-09-30',
+            'supervisor_name' => 'Hendra Wijaya, S.Psi.',
+            'supervisor_position' => 'Human Resources Manager',
+            'office_address' => 'Gedung Sudirman Central Lt. 12',
+            'status' => 'draft',
+        ]);
+
+        $response = $this->get(route('offering-letters.show', $ol));
+        $response->assertSee('Tandai Terkirim');
+        $response->assertDontSee('Tandai Diterima');
+        $response->assertDontSee('Tandai Ditolak');
+
+        $ol->update(['status' => 'sent']);
+        $response = $this->get(route('offering-letters.show', $ol));
+        $response->assertDontSee('Tandai Terkirim');
+        $response->assertSee('Tandai Diterima (Accepted)');
+        $response->assertSee('Tandai Ditolak');
+        $response->assertDontSee('name="status" value="draft"', false);
     }
 
     public function test_all_columns_in_offering_letter_are_required_when_updating(): void
