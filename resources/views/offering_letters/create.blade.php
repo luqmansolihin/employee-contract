@@ -51,28 +51,33 @@
                                 <div>
                                     <span class="text-slate-400 block text-[10px] uppercase font-semibold">Posisi /
                                         Jabatan</span>
+                                    <span class="text-slate-400 block text-[10px] uppercase font-semibold">Posisi / Jabatan</span>
                                     <span class="font-bold text-slate-700">{{ $employee->current_position ?: '-' }}</span>
                                 </div>
                                 <div>
                                     <span class="text-slate-400 block text-[10px] uppercase font-semibold">Cabang /
                                         Lokasi</span>
+                                    <span class="text-slate-400 block text-[10px] uppercase font-semibold">Cabang / Lokasi</span>
                                     <span class="font-bold text-slate-700">{{ $employee->current_branch ?: '-' }}</span>
                                 </div>
                                 <div>
                                     <span class="text-slate-400 block text-[10px] uppercase font-semibold">Jenis
                                         Kelamin</span>
+                                    <span class="text-slate-400 block text-[10px] uppercase font-semibold">Jenis Kelamin</span>
                                     <span
                                         class="font-bold text-slate-700">{{ in_array(strtolower($employee->gender ?? ''), ['laki-laki', 'male', 'l']) ? 'Laki-laki' : (in_array(strtolower($employee->gender ?? ''), ['perempuan', 'female', 'p']) ? 'Perempuan' : ($employee->gender ?: '-')) }}</span>
                                 </div>
                                 <div>
                                     <span class="text-slate-400 block text-[10px] uppercase font-semibold">Tgl Pertama
                                         Masuk</span>
+                                    <span class="text-slate-400 block text-[10px] uppercase font-semibold">Tgl Pertama Masuk</span>
                                     <span
                                         class="font-bold text-slate-700">{{ $employee->first_join_date ? $employee->first_join_date->format('d M Y') : '-' }}</span>
                                 </div>
                                 <div class="sm:col-span-2">
                                     <span class="text-slate-400 block text-[10px] uppercase font-semibold">Tempat, Tanggal
                                         Lahir</span>
+                                    <span class="text-slate-400 block text-[10px] uppercase font-semibold">Tempat, Tanggal Lahir</span>
                                     <span class="font-medium text-slate-700">
                                         {{ $employee->birth_place ? $employee->birth_place . ($employee->birth_date ? ', ' . $employee->birth_date->format('d M Y') : '') : '-' }}
                                     </span>
@@ -197,31 +202,37 @@
                                     <div>
                                         <span class="text-slate-400 block text-[10px] uppercase font-semibold">Posisi /
                                             Jabatan</span>
+                                        <span class="text-slate-400 block text-[10px] uppercase font-semibold">Posisi / Jabatan</span>
                                         <span class="font-bold text-slate-700" id="detail_emp_position">-</span>
                                     </div>
                                     <div>
                                         <span class="text-slate-400 block text-[10px] uppercase font-semibold">Cabang /
                                             Lokasi</span>
+                                        <span class="text-slate-400 block text-[10px] uppercase font-semibold">Cabang / Lokasi</span>
                                         <span class="font-bold text-slate-700" id="detail_emp_branch">-</span>
                                     </div>
                                     <div>
                                         <span class="text-slate-400 block text-[10px] uppercase font-semibold">Jenis
                                             Kelamin</span>
+                                        <span class="text-slate-400 block text-[10px] uppercase font-semibold">Jenis Kelamin</span>
                                         <span class="font-bold text-slate-700" id="detail_emp_gender">-</span>
                                     </div>
                                     <div>
                                         <span class="text-slate-400 block text-[10px] uppercase font-semibold">Tgl Pertama
                                             Masuk</span>
+                                        <span class="text-slate-400 block text-[10px] uppercase font-semibold">Tgl Pertama Masuk</span>
                                         <span class="font-bold text-slate-700" id="detail_emp_join_date">-</span>
                                     </div>
                                     <div class="sm:col-span-2">
                                         <span class="text-slate-400 block text-[10px] uppercase font-semibold">Tempat,
                                             Tanggal Lahir</span>
+                                        <span class="text-slate-400 block text-[10px] uppercase font-semibold">Tempat, Tanggal Lahir</span>
                                         <span class="font-medium text-slate-700" id="detail_emp_birth">-</span>
                                     </div>
                                     <div class="sm:col-span-2">
                                         <span
                                             class="text-slate-400 block text-[10px] uppercase font-semibold">Alamat</span>
+                                        <span class="text-slate-400 block text-[10px] uppercase font-semibold">Alamat</span>
                                         <span class="font-medium text-slate-700 truncate block"
                                             id="detail_emp_address">-</span>
                                     </div>

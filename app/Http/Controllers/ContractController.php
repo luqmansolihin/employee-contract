@@ -117,6 +117,11 @@ class ContractController extends Controller
             $employee = Employee::findOrFail($request->employee_id);
             $sequence = $employee->contracts()->count() + 1;
 
+            $offeringLetter = null;
+            if ($request->filled('offering_letter_id')) {
+                $offeringLetter = OfferingLetter::find($request->offering_letter_id);
+            }
+
             $contract = $employee->contracts()->create([
                 'offering_letter_id' => $request->offering_letter_id,
                 'contract_sequence' => $sequence,
@@ -128,6 +133,8 @@ class ContractController extends Controller
                 'end_date' => $request->end_date,
                 'basic_salary' => $request->basic_salary,
                 'allowance' => $request->allowance ?? 0,
+                'basic_salary' => $request->basic_salary ?? ($offeringLetter?->basic_salary ?? 0),
+                'allowance' => $request->allowance ?? ($offeringLetter?->allowance ?? 0),
                 'status' => 'active',
                 'notes' => $request->notes,
             ]);

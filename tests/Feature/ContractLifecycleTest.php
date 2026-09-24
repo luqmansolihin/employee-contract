@@ -51,6 +51,9 @@ class ContractLifecycleTest extends TestCase
         $response->assertSee('employee-combobox-wrapper');
         $response->assertSee('selected_employee_card');
         $response->assertSee($this->employee->name);
+        $response->assertDontSee('3. Remunerasi & Catatan');
+        $response->assertDontSee('Gaji Pokok / Uang Saku');
+        $response->assertDontSee('Tunjangan Lainnya');
     }
 
     public function test_can_create_contract_from_accepted_offering_letter(): void

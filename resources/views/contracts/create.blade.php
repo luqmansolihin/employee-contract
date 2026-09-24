@@ -44,8 +44,6 @@
                         </svg>
                     </div>
                     <div>
-                        <h4 class="text-xs font-bold text-[#3C50E0]">Merujuk ke Offering Letter
-                            #{{ $offeringLetter->letter_number }}</h4>
                         <h4 class="text-xs font-bold text-[#3C50E0]">Merujuk ke Offering Letter #{{ $offeringLetter->letter_number }}</h4>
                         <p class="text-[11px] text-slate-500 mt-0.5">
                             Data kandidat, penempatan, dan remunerasi telah dimuat secara otomatis dari penawaran kerja yang
@@ -396,56 +394,7 @@
                     </div>
                 </div>
 
-                <!-- Section: Gaji & Tunjangan -->
-                <div>
-                    <h4
-                        class="text-xs font-bold uppercase tracking-wider text-[#3C50E0] mb-4 pb-2 border-b border-[#E2E8F0]">
-                        3. Remunerasi & Catatan
-                    </h4>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <!-- Gaji Pokok -->
-                        <div>
-                            <label for="basic_salary" class="block text-xs font-bold text-[#1C2434] mb-1">
-                                Gaji Pokok / Uang Saku (Rp)
-                            </label>
-                            <input type="number" name="basic_salary" id="basic_salary" step="1000" min="0"
-                                value="{{ old('basic_salary', $offeringLetter ? (float) $offeringLetter->basic_salary : 0) }}"
-                                autocomplete="off"
-                                class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('basic_salary') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] font-mono outline-hidden transition">
-                            @error('basic_salary')
-                                <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Tunjangan -->
-                        <div>
-                            <label for="allowance" class="block text-xs font-bold text-[#1C2434] mb-1">
-                                Tunjangan Lainnya (Rp)
-                            </label>
-                            <input type="number" name="allowance" id="allowance" step="1000" min="0"
-                                value="{{ old('allowance', $offeringLetter ? (float) $offeringLetter->allowance : 0) }}"
-                                autocomplete="off"
-                                class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('allowance') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] font-mono outline-hidden transition">
-                            @error('allowance')
-                                <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Catatan -->
-                        <div class="sm:col-span-2">
-                            <label for="notes" class="block text-xs font-bold text-[#1C2434] mb-1">
-                                Catatan / Klausul Tambahan
-                            </label>
-                            <textarea name="notes" id="notes" rows="2"
-                                placeholder="Keterangan masa percobaan, tugas pokok, atau kesepakatan khusus"
-                                class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('notes') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">{{ old('notes') }}</textarea>
-                            @error('notes')
-                                <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
-                </div>
 
                 <!-- Actions -->
                 <div class="pt-4 border-t border-[#E2E8F0] flex items-center justify-end gap-3">
