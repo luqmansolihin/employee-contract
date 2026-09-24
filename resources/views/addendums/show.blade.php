@@ -64,12 +64,69 @@
                 <div class="sm:text-right">
                     <p class="text-xs text-slate-400 font-medium">Nomor Surat Adendum</p>
                     <p class="text-base font-bold font-mono text-[#3C50E0] mt-0.5">{{ $addendum->addendum_number }}</p>
-                    <p class="text-xs text-slate-500 mt-1">Tanggal Terbit:
-                        <strong>{{ $addendum->issue_date->format('d F Y') }}</strong></p>
-                    <p class="text-xs text-slate-500 mt-0.5">
+                    <div class="mt-1 space-y-0.5 text-xs text-slate-600 sm:text-right">
+                        @if ($addendum->kode)
+                            <p><span class="text-slate-400">Kode Surat:</span> <span
+                                    class="font-bold font-mono text-[#3C50E0]">{{ $addendum->kode }}</span></p>
+                        @endif
+                        <p><span class="text-slate-400">Tanggal Surat:</span> <strong
+                                class="text-slate-800">{{ $addendum->issue_date->translatedFormat('d F Y') }}</strong>
+                        </p>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-1">
                         Kontrak Induk: <a href="{{ route('contracts.show', $addendum->contract) }}"
                             class="font-mono text-indigo-600 hover:underline font-bold">#{{ $addendum->contract->contract_number ?: $addendum->contract->id }}</a>
                     </p>
+                </div>
+            </div>
+
+            <!-- Position, Bidang, Branch, Extension Period -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pb-6 border-b border-[#E2E8F0]">
+                <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+                    <span class="text-[10px] uppercase font-semibold text-slate-400 block">Posisi / Jabatan</span>
+                    <span
+                        class="text-xs font-bold text-slate-800 block mt-1">{{ $addendum->new_position ?: ($addendum->previous_position ?: '-') }}</span>
+                </div>
+
+                <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+                    <span class="text-[10px] uppercase font-semibold text-slate-400 block">Bidang</span>
+                    <span class="text-xs font-bold text-slate-800 block mt-1">{{ $addendum->bidang ?: '-' }}</span>
+                </div>
+
+                <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+                    <span class="text-[10px] uppercase font-semibold text-slate-400 block">Cabang / Penempatan</span>
+                    <span class="text-xs font-bold text-slate-800 block mt-1">{{ $addendum->branch ?: '-' }}</span>
+                </div>
+
+                <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+                    <span class="text-[10px] uppercase font-semibold text-slate-400 block">Periode Perpanjangan</span>
+                    <span class="text-xs font-bold text-emerald-700 block mt-1">
+                        {{ $addendum->effective_date->translatedFormat('d M Y') }} s/d
+                        {{ $addendum->new_end_date->translatedFormat('d M Y') }}
+                    </span>
+                    <span class="text-[11px] text-slate-400 block mt-0.5">Sebelumnya:
+                        {{ $addendum->previous_end_date->translatedFormat('d M Y') }}</span>
+                </div>
+            </div>
+
+            <!-- Penandatangan & Alamat Kantor -->
+            <div class="pb-6 border-b border-[#E2E8F0]">
+                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">Penandatangan & Alamat Kantor
+                </h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                        <span class="text-[10px] uppercase font-semibold text-slate-400 block">Nama & Jabatan Atasan</span>
+                        <span
+                            class="text-sm font-bold text-slate-800 block mt-1">{{ $addendum->supervisor_name ?: '-' }}</span>
+                        <span
+                            class="text-xs text-slate-500 block mt-0.5">{{ $addendum->supervisor_position ?: '-' }}</span>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                        <span class="text-[10px] uppercase font-semibold text-slate-400 block">Alamat Kantor</span>
+                        <span
+                            class="text-xs text-slate-700 block mt-1 leading-relaxed">{{ $addendum->office_address ?: '-' }}</span>
+                    </div>
                 </div>
             </div>
 

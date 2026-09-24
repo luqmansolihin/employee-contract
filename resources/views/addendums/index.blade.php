@@ -55,10 +55,18 @@
                                 <td class="py-3.5 px-4">
                                     <span
                                         class="font-mono font-bold text-xs text-[#3C50E0] block">{{ $ad->addendum_number }}</span>
-                                    <span
-                                        class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-purple-50 text-purple-700 border border-purple-200 mt-0.5">
-                                        {{ $ad->sequence_label }}
-                                    </span>
+                                    <div class="flex items-center gap-1 flex-wrap mt-0.5">
+                                        <span
+                                            class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-purple-50 text-purple-700 border border-purple-200">
+                                            {{ $ad->sequence_label }}
+                                        </span>
+                                        @if ($ad->kode)
+                                            <span
+                                                class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-slate-100 text-slate-600 border border-slate-200">
+                                                {{ $ad->kode }}
+                                            </span>
+                                        @endif
+                                    </div>
                                 </td>
                                 <td class="py-3.5 px-4">
                                     <a href="{{ route('employees.show', $ad->employee) }}"
@@ -67,6 +75,11 @@
                                     </a>
                                     <span class="text-[10px] text-slate-400 font-mono">NIK:
                                         {{ $ad->employee->ktp_number }}</span>
+                                    @if ($ad->bidang || $ad->branch)
+                                        <div class="text-[10px] text-slate-500 truncate max-w-[150px] mt-0.5">
+                                            {{ $ad->bidang ?: '' }}{{ $ad->bidang && $ad->branch ? ' • ' : '' }}{{ $ad->branch ?: '' }}
+                                        </div>
+                                    @endif
                                 </td>
                                 <td class="py-3.5 px-4">
                                     <a href="{{ route('contracts.show', $ad->contract) }}"

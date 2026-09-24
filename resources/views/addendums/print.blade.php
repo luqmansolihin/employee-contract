@@ -152,8 +152,9 @@
     <!-- Letterhead -->
     <div class="header-logo">
         <h1 class="company-name">PT. CIPTA KARYA UTAMA</h1>
-        <p class="company-sub">Gedung Perkantoran Sudirman Central, Lantai 12, Jakarta Pusat • Telp: (021) 555-0199 •
-            Email: hrd@ciptakarya.co.id</p>
+        <p class="company-sub">
+            {{ $addendum->office_address ?: ($addendum->contract->office_address ?: 'Gedung Perkantoran Sudirman Central, Lantai 12, Jakarta Pusat • Telp: (021) 555-0199 • Email: hrd@ciptakarya.co.id') }}
+        </p>
     </div>
 
     <div class="doc-title">SURAT ADENDUM {{ $addendum->sequence_label }}<br>PERJANJIAN KERJA
@@ -166,7 +167,10 @@
     </p>
 
     <p style="margin-left: 16px;">
-        1. <strong>PT. CIPTA KARYA UTAMA</strong>, diwakili oleh Hendra Wijaya, S.Psi. (selanjutnya disebut
+        1. <strong>PT. CIPTA KARYA UTAMA</strong>, diwakili oleh
+        {{ $addendum->supervisor_name ?: ($addendum->contract->supervisor_name ?: 'Hendra Wijaya, S.Psi.') }}
+        ({{ $addendum->supervisor_position ?: ($addendum->contract->supervisor_position ?: 'HR Manager') }})
+        (selanjutnya disebut
         <strong>PIHAK PERTAMA</strong>).<br>
         2. <strong>{{ $addendum->employee->name }}</strong>, Pemegang KTP NIK {{ $addendum->employee->ktp_number }}
         (selanjutnya disebut <strong>PIHAK KEDUA</strong>).
@@ -254,8 +258,12 @@
         <div class="sig-col">
             <p>PIHAK PERTAMA,<br><strong>PT. CIPTA KARYA UTAMA</strong></p>
             <div class="sig-space"></div>
-            <p style="text-decoration: underline; font-weight: bold; margin-bottom: 2px;">Hendra Wijaya, S.Psi.</p>
-            <p style="font-size: 10pt; color: #4B5563; margin-top: 0;">HR Manager</p>
+            <p style="text-decoration: underline; font-weight: bold; margin-bottom: 2px;">
+                {{ $addendum->supervisor_name ?: ($addendum->contract->supervisor_name ?: 'Hendra Wijaya, S.Psi.') }}
+            </p>
+            <p style="font-size: 10pt; color: #4B5563; margin-top: 0;">
+                {{ $addendum->supervisor_position ?: ($addendum->contract->supervisor_position ?: 'HR Manager') }}
+            </p>
         </div>
     </div>
 

@@ -37,12 +37,18 @@ class ContractAddendumTest extends TestCase
             'employee_id' => $this->employee->id,
             'contract_sequence' => 1,
             'contract_number' => '001/I/2025/PKWT',
+            'kode' => 'HRD',
             'contract_type' => 'PKWT',
+            'contract_date' => '2025-01-01',
             'position' => 'Backend Developer',
+            'bidang' => 'Teknologi Informasi',
             'branch' => 'Jakarta',
             'start_date' => '2025-01-01',
             'end_date' => '2025-12-31',
             'basic_salary' => 8000000,
+            'supervisor_name' => 'Hendra Wijaya, S.Psi.',
+            'supervisor_position' => 'Human Resources Manager',
+            'office_address' => 'Gedung Perkantoran Sudirman Central Lt. 12 Jakarta',
             'status' => 'active',
         ]);
     }
@@ -65,51 +71,77 @@ class ContractAddendumTest extends TestCase
         $response->assertSee('untuk Kontrak');
         $response->assertSee('Bambang Sudiro');
         $response->assertSee('/A-PKWT');
+        $response->assertSee('HRD');
+        $response->assertSee('Teknologi Informasi');
+        $response->assertSee('Hendra Wijaya, S.Psi.');
+        $response->assertSee('Human Resources Manager');
+        $response->assertSee('Gedung Perkantoran Sudirman Central Lt. 12 Jakarta');
+
+        // Point 3 and Point 5 should not be in the form
+        $response->assertDontSee('Penyesuaian Jabatan & Gaji');
+        $response->assertDontSee('Alasan & Klausul Perubahan');
+        $response->assertDontSee('name="new_position"', false);
+        $response->assertDontSee('name="new_salary"', false);
+        $response->assertDontSee('name="amendment_reason"', false);
+        $response->assertDontSee('name="clause_changes"', false);
     }
 
     public function test_can_store_addendum_and_extend_contract_end_date(): void
     {
         $payload = [
             'addendum_number' => '001/IX/2026/A-PKWT',
+            'kode' => 'HRD',
             'issue_date' => '2025-12-15',
+            'bidang' => 'Teknologi Informasi',
+            'branch' => 'Bandung',
             'effective_date' => '2026-01-01',
             'new_end_date' => '2026-12-31',
-            'new_position' => 'Senior Backend Developer',
-            'new_salary' => 11000000,
-            'amendment_reason' => 'Perpanjangan Masa Berlaku 1 Tahun & Promosi Jabatan Senior',
-            'clause_changes' => 'Pasal 1 masa kerja diperpanjang hingga 31 Desember 2026.',
+            'supervisor_name' => 'Budi Santoso',
+            'supervisor_position' => 'General Manager',
+            'office_address' => 'Jl. Asia Afrika No. 10 Bandung',
         ];
 
         $response = $this->post(route('addendums.store', $this->contract), $payload);
 
         $this->assertDatabaseHas('contract_addendums', [
             'employee_contract_id' => $this->contract->id,
-            'addendum_number' => '001/IX/2026/A-PKWT',
+            'addendum_number' => '001/IX/2026/A-PKWT/HRD',
+            'kode' => 'HRD',
             'addendum_sequence' => 1,
-            'new_position' => 'Senior Backend Developer',
-            'new_salary' => 11000000,
+            'bidang' => 'Teknologi Informasi',
+            'branch' => 'Bandung',
+            'new_position' => 'Backend Developer',
+            'new_salary' => 8000000,
+            'amendment_reason' => 'Perpanjangan Masa Berlaku Perjanjian Kerja',
+            'supervisor_name' => 'Budi Santoso',
+            'supervisor_position' => 'General Manager',
+            'office_address' => 'Jl. Asia Afrika No. 10 Bandung',
         ]);
 
-        // Contract end date and salary should be updated to the addendum terms
+        // Contract end date and branch should be updated to the addendum terms
         $this->contract->refresh();
         $this->assertEquals('2026-12-31', $this->contract->end_date->format('Y-m-d'));
-        $this->assertEquals('Senior Backend Developer', $this->contract->position);
-        $this->assertEquals(11000000, (float) $this->contract->basic_salary);
+        $this->assertEquals('Backend Developer', $this->contract->position);
+        $this->assertEquals('Bandung', $this->contract->branch);
+        $this->assertEquals('Budi Santoso', $this->contract->supervisor_name);
+        $this->assertEquals(8000000, (float) $this->contract->basic_salary);
 
         // Employee cached data should also reflect the extended contract
         $this->employee->refresh();
         $this->assertEquals('2026-12-31', $this->employee->current_contract_end_date->format('Y-m-d'));
-        $this->assertEquals('Senior Backend Developer', $this->employee->current_position);
+        $this->assertEquals('Backend Developer', $this->employee->current_position);
+        $this->assertEquals('Bandung', $this->employee->current_branch);
 
         $response->assertRedirect(route('contracts.show', $this->contract));
     }
 
-    public function test_can_render_print_addendum_document(): void
+    public function test_can_render_show_addendum_page(): void
     {
         $addendum = ContractAddendum::create([
             'employee_id' => $this->employee->id,
             'employee_contract_id' => $this->contract->id,
-            'addendum_number' => '001/IX/2026/A-PKWT',
+            'addendum_number' => '001/IX/2026/A-PKWT/HRD',
+            'kode' => 'HRD',
             'addendum_sequence' => 1,
             'issue_date' => '2025-12-15',
             'effective_date' => '2026-01-01',
@@ -117,10 +149,51 @@ class ContractAddendumTest extends TestCase
             'new_end_date' => '2026-12-31',
             'previous_position' => 'Backend Developer',
             'new_position' => 'Senior Backend Developer',
+            'bidang' => 'Teknologi Informasi',
+            'branch' => 'Jakarta',
             'previous_salary' => 8000000,
             'new_salary' => 11000000,
             'amendment_reason' => 'Perpanjangan Masa Berlaku 1 Tahun',
             'clause_changes' => 'Pasal 1 diperpanjang.',
+            'supervisor_name' => 'Hendra Wijaya, S.Psi.',
+            'supervisor_position' => 'Human Resources Manager',
+            'office_address' => 'Gedung Perkantoran Sudirman Central Lt. 12 Jakarta',
+            'status' => 'active',
+        ]);
+
+        $response = $this->get(route('addendums.show', $addendum));
+
+        $response->assertOk();
+        $response->assertSee('001/IX/2026/A-PKWT/HRD');
+        $response->assertSee('HRD');
+        $response->assertSee('Teknologi Informasi');
+        $response->assertSee('Hendra Wijaya, S.Psi.');
+        $response->assertSee('Gedung Perkantoran Sudirman Central Lt. 12 Jakarta');
+    }
+
+    public function test_can_render_print_addendum_document(): void
+    {
+        $addendum = ContractAddendum::create([
+            'employee_id' => $this->employee->id,
+            'employee_contract_id' => $this->contract->id,
+            'addendum_number' => '001/IX/2026/A-PKWT/HRD',
+            'kode' => 'HRD',
+            'addendum_sequence' => 1,
+            'issue_date' => '2025-12-15',
+            'effective_date' => '2026-01-01',
+            'previous_end_date' => '2025-12-31',
+            'new_end_date' => '2026-12-31',
+            'previous_position' => 'Backend Developer',
+            'new_position' => 'Senior Backend Developer',
+            'bidang' => 'Teknologi Informasi',
+            'branch' => 'Jakarta',
+            'previous_salary' => 8000000,
+            'new_salary' => 11000000,
+            'amendment_reason' => 'Perpanjangan Masa Berlaku 1 Tahun',
+            'clause_changes' => 'Pasal 1 diperpanjang.',
+            'supervisor_name' => 'Budi Santoso',
+            'supervisor_position' => 'Director',
+            'office_address' => 'Menara BCA Lt. 20 Jakarta',
             'status' => 'active',
         ]);
 
@@ -128,7 +201,10 @@ class ContractAddendumTest extends TestCase
 
         $response->assertOk();
         $response->assertSee('SURAT ADENDUM Adendum I');
-        $response->assertSee('001/IX/2026/A-PKWT');
+        $response->assertSee('001/IX/2026/A-PKWT/HRD');
         $response->assertSee('Bambang Sudiro');
+        $response->assertSee('Budi Santoso');
+        $response->assertSee('Director');
+        $response->assertSee('Menara BCA Lt. 20 Jakarta');
     }
 }

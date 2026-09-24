@@ -16,6 +16,7 @@ class ContractAddendum extends Model
         'employee_id',
         'employee_contract_id',
         'addendum_number',
+        'kode',
         'addendum_sequence',
         'issue_date',
         'effective_date',
@@ -23,10 +24,15 @@ class ContractAddendum extends Model
         'new_end_date',
         'previous_position',
         'new_position',
+        'bidang',
+        'branch',
         'previous_salary',
         'new_salary',
         'amendment_reason',
         'clause_changes',
+        'supervisor_name',
+        'supervisor_position',
+        'office_address',
         'status',
     ];
 
@@ -90,6 +96,16 @@ class ContractAddendum extends Model
             get: fn (): ?string => $this->new_salary !== null
                 ? 'Rp '.number_format((float) $this->new_salary, 0, ',', '.')
                 : null
+        );
+    }
+
+    /**
+     * Alias for issue_date as contract_date.
+     */
+    protected function contractDate(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->issue_date,
         );
     }
 }

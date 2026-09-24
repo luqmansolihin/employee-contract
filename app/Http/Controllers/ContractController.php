@@ -26,7 +26,7 @@ class ContractController extends Controller
 
         $query = EmployeeContract::query()
             ->with(['employee', 'offeringLetter', 'addendums'])
-            ->when($contractType, fn($q) => $q->where('contract_type', $contractType))
+            ->when($contractType, fn ($q) => $q->where('contract_type', $contractType))
             ->when($status, function ($q) use ($status) {
                 $today = Carbon::today()->toDateString();
                 $thirtyDaysAhead = Carbon::today()->addDays(30)->toDateString();
@@ -36,7 +36,7 @@ class ContractController extends Controller
                 } elseif ($status === 'expiring_soon') {
                     $q->where('status', 'active')->whereBetween('end_date', [$today, $thirtyDaysAhead]);
                 } elseif ($status === 'expired') {
-                    $q->where(fn($sub) => $sub->where('status', 'expired')->orWhere('end_date', '<', $today));
+                    $q->where(fn ($sub) => $sub->where('status', 'expired')->orWhere('end_date', '<', $today));
                 } elseif ($status === 'renewed') {
                     $q->where('status', 'renewed');
                 }
@@ -45,7 +45,7 @@ class ContractController extends Controller
                 $q->where('contract_number', 'like', "%{$search}%")
                     ->orWhere('position', 'like', "%{$search}%")
                     ->orWhere('branch', 'like', "%{$search}%")
-                    ->orWhereHas('employee', fn($eq) => $eq->where('name', 'like', "%{$search}%"));
+                    ->orWhereHas('employee', fn ($eq) => $eq->where('name', 'like', "%{$search}%"));
             })
             ->orderBy('end_date', 'asc');
 

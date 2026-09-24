@@ -25,6 +25,9 @@ class ContractAddendumController extends Controller
             ->with(['employee', 'contract'])
             ->when($search, function ($q) use ($search) {
                 $q->where('addendum_number', 'like', "%{$search}%")
+                    ->orWhere('kode', 'like', "%{$search}%")
+                    ->orWhere('bidang', 'like', "%{$search}%")
+                    ->orWhere('branch', 'like', "%{$search}%")
                     ->orWhere('amendment_reason', 'like', "%{$search}%")
                     ->orWhereHas('employee', fn ($eq) => $eq->where('name', 'like', "%{$search}%"))
                     ->orWhereHas('contract', fn ($cq) => $cq->where('contract_number', 'like', "%{$search}%"));
@@ -72,6 +75,7 @@ class ContractAddendumController extends Controller
                 'employee_id' => $contract->employee_id,
                 'employee_contract_id' => $contract->id,
                 'addendum_number' => $request->addendum_number,
+                'kode' => $request->kode,
                 'addendum_sequence' => $nextSequence,
                 'issue_date' => $request->issue_date,
                 'effective_date' => $request->effective_date,
@@ -79,18 +83,28 @@ class ContractAddendumController extends Controller
                 'new_end_date' => $request->new_end_date,
                 'previous_position' => $contract->position,
                 'new_position' => $request->new_position ?: $contract->position,
+                'bidang' => $request->bidang ?: $contract->bidang,
+                'branch' => $request->branch ?: $contract->branch,
                 'previous_salary' => $contract->basic_salary,
                 'new_salary' => $request->new_salary ?: $contract->basic_salary,
-                'amendment_reason' => $request->amendment_reason,
+                'amendment_reason' => $request->amendment_reason ?: 'Perpanjangan Masa Berlaku Perjanjian Kerja',
                 'clause_changes' => $request->clause_changes,
+                'supervisor_name' => $request->supervisor_name,
+                'supervisor_position' => $request->supervisor_position,
+                'office_address' => $request->office_address,
                 'status' => 'active',
             ]);
 
-            // Update parent contract with extended end date and updated position/salary if modified
+            // Update parent contract with extended end date and updated position/salary/bidang/branch/supervisor if modified
             $contract->update([
                 'end_date' => $request->new_end_date,
                 'position' => $request->new_position ?: $contract->position,
+                'bidang' => $request->bidang ?: $contract->bidang,
+                'branch' => $request->branch ?: $contract->branch,
                 'basic_salary' => $request->new_salary ?: $contract->basic_salary,
+                'supervisor_name' => $request->supervisor_name ?: $contract->supervisor_name,
+                'supervisor_position' => $request->supervisor_position ?: $contract->supervisor_position,
+                'office_address' => $request->office_address ?: $contract->office_address,
                 'status' => 'active',
             ]);
 
@@ -98,6 +112,7 @@ class ContractAddendumController extends Controller
             $employee->update([
                 'current_contract_end_date' => $request->new_end_date,
                 'current_position' => $request->new_position ?: $employee->current_position,
+                'current_branch' => $request->branch ?: $employee->current_branch,
             ]);
 
             return $addendum;

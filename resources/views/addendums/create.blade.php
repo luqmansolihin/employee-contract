@@ -56,6 +56,17 @@
                         1. Data Penerbitan Adendum
                     </h4>
 
+                    @php
+                        $rawAddendumNumber = old('addendum_number', $suggestedNumber);
+                        $currentKode = old('kode', $contract->kode);
+                        $cleanKode = strtoupper(trim((string) $currentKode));
+                        if ($cleanKode !== '' && str_ends_with($rawAddendumNumber, '/' . $cleanKode)) {
+                            $displayAddendumNumber = substr($rawAddendumNumber, 0, -strlen('/' . $cleanKode));
+                        } else {
+                            $displayAddendumNumber = $rawAddendumNumber;
+                        }
+                    @endphp
+
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <!-- Nomor Adendum -->
                         <div>
@@ -63,24 +74,67 @@
                                 Nomor Surat Adendum <span class="text-rose-500">*</span>
                             </label>
                             <input type="text" name="addendum_number" id="addendum_number"
-                                value="{{ old('addendum_number', $suggestedNumber) }}" required autocomplete="off"
+                                value="{{ $displayAddendumNumber }}" required autocomplete="off"
                                 class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('addendum_number') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] font-mono outline-hidden transition">
-                            <p class="text-[10px] text-slate-400 mt-1">Format: Nomor/Bulan
-                                Romawi/Tahun/A-{{ $contract->contract_type }}</p>
+                            <p class="text-[11px] text-slate-500 mt-1 font-mono">
+                                Nomor Adendum Lengkap: <span id="full_number_preview"
+                                    class="font-bold text-[#3C50E0]">{{ $rawAddendumNumber }}</span>
+                            </p>
                             @error('addendum_number')
                                 <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
                             @enderror
                         </div>
 
-                        <!-- Tanggal Terbit Adendum -->
+                        <!-- Kode -->
+                        <div>
+                            <label for="kode" class="block text-xs font-bold text-[#1C2434] mb-1">
+                                Kode <span class="text-rose-500">*</span>
+                            </label>
+                            <input type="text" name="kode" id="kode" value="{{ old('kode', $contract->kode) }}"
+                                required autocomplete="off" placeholder="Contoh: HRD, CKU, OPS"
+                                class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('kode') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] font-mono uppercase outline-hidden transition">
+                            @error('kode')
+                                <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Tanggal Surat -->
                         <div>
                             <label for="issue_date" class="block text-xs font-bold text-[#1C2434] mb-1">
-                                Tanggal Penerbitan Adendum <span class="text-rose-500">*</span>
+                                Tanggal Surat <span class="text-rose-500">*</span>
                             </label>
                             <input type="date" name="issue_date" id="issue_date"
                                 value="{{ old('issue_date', date('Y-m-d')) }}" required autocomplete="off"
                                 class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('issue_date') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
                             @error('issue_date')
+                                <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Bidang -->
+                        <div>
+                            <label for="bidang" class="block text-xs font-bold text-[#1C2434] mb-1">
+                                Bidang <span class="text-rose-500">*</span>
+                            </label>
+                            <input type="text" name="bidang" id="bidang"
+                                value="{{ old('bidang', $contract->bidang) }}" required autocomplete="off"
+                                placeholder="Contoh: Operasional, IT, Keuangan"
+                                class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('bidang') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
+                            @error('bidang')
+                                <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Cabang / Unit Kerja -->
+                        <div class="sm:col-span-2">
+                            <label for="branch" class="block text-xs font-bold text-[#1C2434] mb-1">
+                                Cabang / Lokasi Penempatan <span class="text-rose-500">*</span>
+                            </label>
+                            <input type="text" name="branch" id="branch"
+                                value="{{ old('branch', $contract->branch) }}" required autocomplete="off"
+                                placeholder="Contoh: Kantor Pusat Jakarta"
+                                class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('branch') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
+                            @error('branch')
                                 <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
                             @enderror
                         </div>
@@ -127,80 +181,53 @@
                     </div>
                 </div>
 
-                <!-- Section 3: Perubahan Jabatan & Remunerasi (Opsional) -->
+                <!-- Section 3: Penandatangan & Alamat Kantor -->
                 <div>
                     <h4
                         class="text-xs font-bold uppercase tracking-wider text-[#3C50E0] mb-4 pb-2 border-b border-[#E2E8F0]">
-                        3. Penyesuaian Jabatan & Gaji (Bila Ada)
+                        3. Penandatangan & Alamat Kantor
                     </h4>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <!-- Posisi / Jabatan Baru -->
+                        <!-- Nama Atasan -->
                         <div>
-                            <label for="new_position" class="block text-xs font-bold text-[#1C2434] mb-1">
-                                Jabatan Baru (Bila Terjadi Promosi / Mutasi)
+                            <label for="supervisor_name" class="block text-xs font-bold text-[#1C2434] mb-1">
+                                Nama Atasan <span class="text-rose-500">*</span>
                             </label>
-                            <input type="text" name="new_position" id="new_position"
-                                value="{{ old('new_position', $contract->position) }}" autocomplete="off"
-                                placeholder="Biarkan sama jika tidak ada perubahan"
-                                class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('new_position') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
-                            <p class="text-[10px] text-slate-400 mt-1">Jabatan sebelumnya:
-                                <strong>{{ $contract->position }}</strong>
-                            </p>
-                            @error('new_position')
+                            <input type="text" name="supervisor_name" id="supervisor_name"
+                                value="{{ old('supervisor_name', $contract->supervisor_name) }}" required
+                                autocomplete="off" placeholder="Contoh: Hendra Wijaya, S.Psi."
+                                class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('supervisor_name') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
+                            @error('supervisor_name')
                                 <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
                             @enderror
                         </div>
 
-                        <!-- Gaji Baru -->
+                        <!-- Jabatan Atasan -->
                         <div>
-                            <label for="new_salary" class="block text-xs font-bold text-[#1C2434] mb-1">
-                                Gaji Pokok Baru (Rp)
+                            <label for="supervisor_position" class="block text-xs font-bold text-[#1C2434] mb-1">
+                                Jabatan Atasan <span class="text-rose-500">*</span>
                             </label>
-                            <input type="number" name="new_salary" id="new_salary" step="1000" min="0"
-                                value="{{ old('new_salary', $contract->basic_salary ? (float) $contract->basic_salary : 0) }}"
+                            <input type="text" name="supervisor_position" id="supervisor_position"
+                                value="{{ old('supervisor_position', $contract->supervisor_position) }}" required
+                                autocomplete="off" placeholder="Contoh: Human Resources Manager"
+                                class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('supervisor_position') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
+                            @error('supervisor_position')
+                                <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Alamat Kantor -->
+                        <div class="sm:col-span-2">
+                            <label for="office_address" class="block text-xs font-bold text-[#1C2434] mb-1">
+                                Alamat Kantor <span class="text-rose-500">*</span>
+                            </label>
+                            <input type="text" name="office_address" id="office_address"
+                                value="{{ old('office_address', $contract->office_address) }}" required
                                 autocomplete="off"
-                                class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('new_salary') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] font-mono outline-hidden transition">
-                            <p class="text-[10px] text-slate-400 mt-1">Gaji sebelumnya:
-                                <strong>{{ $contract->formatted_salary ?: 'Belum diatur' }}</strong>
-                            </p>
-                            @error('new_salary')
-                                <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Section 4: Alasan & Klausul Perubahan -->
-                <div>
-                    <h4
-                        class="text-xs font-bold uppercase tracking-wider text-[#3C50E0] mb-4 pb-2 border-b border-[#E2E8F0]">
-                        4. Alasan & Klausul Perubahan
-                    </h4>
-
-                    <div class="space-y-4">
-                        <div>
-                            <label for="amendment_reason" class="block text-xs font-bold text-[#1C2434] mb-1">
-                                Pokok Perubahan / Alasan Adendum <span class="text-rose-500">*</span>
-                            </label>
-                            <input type="text" name="amendment_reason" id="amendment_reason"
-                                value="{{ old('amendment_reason', 'Perpanjangan Masa Berlaku Perjanjian Kerja & Penyesuaian Remunerasi') }}"
-                                required placeholder="Contoh: Perpanjangan Masa Berlaku Kontrak Kerja 1 Tahun"
-                                autocomplete="off"
-                                class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('amendment_reason') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
-                            @error('amendment_reason')
-                                <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <div>
-                            <label for="clause_changes" class="block text-xs font-bold text-[#1C2434] mb-1">
-                                Rincian Klausul / Pasal Perubahan (Opsional)
-                            </label>
-                            <textarea name="clause_changes" id="clause_changes" rows="3"
-                                placeholder="Klausul spesifik yang diubah, misal: Mengubah Pasal 1 ayat (1) mengenai Jangka Waktu Perjanjian..."
-                                class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('clause_changes') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">{{ old('clause_changes', "1. Mengubah Pasal 1 mengenai Jangka Waktu Perjanjian Kerja menjadi terhitung sejak tanggal efektif hingga tanggal berakhir baru.\n2. Seluruh ketentuan lain dalam Perjanjian Kerja Induk yang tidak diubah dalam Adendum ini dinyatakan tetap berlaku dan mengikat.") }}</textarea>
-                            @error('clause_changes')
+                                placeholder="Contoh: Gedung Perkantoran Sudirman Central, Lantai 12, Jakarta Pusat"
+                                class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('office_address') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
+                            @error('office_address')
                                 <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
                             @enderror
                         </div>
@@ -225,4 +252,40 @@
             </form>
         </div>
     </div>
+
+    <!-- Script for Live Addendum Number Preview with /KODE -->
+    <script>
+        function updateFullNumberPreview() {
+            const addendumNumberInput = document.getElementById('addendum_number');
+            const kodeInput = document.getElementById('kode');
+            const previewEl = document.getElementById('full_number_preview');
+            if (!addendumNumberInput || !previewEl) return;
+            const rawNumber = addendumNumberInput.value.trim();
+            const rawKode = kodeInput ? kodeInput.value.trim().toUpperCase() : '';
+
+            if (rawNumber && rawKode && !rawNumber.endsWith('/' + rawKode)) {
+                previewEl.textContent = rawNumber + '/' + rawKode;
+            } else {
+                previewEl.textContent = rawNumber || '-';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const addendumNumberInput = document.getElementById('addendum_number');
+            const kodeInput = document.getElementById('kode');
+
+            if (kodeInput) {
+                kodeInput.addEventListener('input', function() {
+                    this.value = this.value.toUpperCase();
+                    updateFullNumberPreview();
+                });
+            }
+
+            if (addendumNumberInput) {
+                addendumNumberInput.addEventListener('input', updateFullNumberPreview);
+            }
+
+            updateFullNumberPreview();
+        });
+    </script>
 @endsection
