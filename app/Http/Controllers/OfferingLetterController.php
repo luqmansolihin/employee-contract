@@ -24,7 +24,7 @@ class OfferingLetterController extends Controller
 
         $query = OfferingLetter::query()
             ->with(['employee'])
-            ->when($status, fn ($q) => $q->where('status', $status))
+            ->when($status, fn($q) => $q->where('status', $status))
             ->when($search, function ($q) use ($search) {
                 $q->where('letter_number', 'like', "%{$search}%")
                     ->orWhere('position', 'like', "%{$search}%")
@@ -32,7 +32,7 @@ class OfferingLetterController extends Controller
                     ->orWhere('bidang', 'like', "%{$search}%")
                     ->orWhere('kode', 'like', "%{$search}%")
                     ->orWhere('supervisor_name', 'like', "%{$search}%")
-                    ->orWhereHas('employee', fn ($eq) => $eq->where('name', 'like', "%{$search}%"));
+                    ->orWhereHas('employee', fn($eq) => $eq->where('name', 'like', "%{$search}%"));
             })
             ->orderBy('offer_date', 'desc');
 
@@ -123,8 +123,14 @@ class OfferingLetterController extends Controller
     /**
      * Show the form for editing the specified offering letter.
      */
-    public function edit(OfferingLetter $offeringLetter): View
+    public function edit(OfferingLetter $offeringLetter): View|RedirectResponse
     {
+        if ($offeringLetter->status !== 'draft') {
+            return redirect()
+                ->route('offering-letters.show', $offeringLetter)
+                ->with('error', 'Surat Penawaran yang sudah terkirim tidak dapat diedit kembali.');
+        }
+
         $offeringLetter->load('employee');
         $employees = Employee::orderBy('name')->get([
             'id',
@@ -147,6 +153,12 @@ class OfferingLetterController extends Controller
      */
     public function update(UpdateOfferingLetterRequest $request, OfferingLetter $offeringLetter): RedirectResponse
     {
+        if ($offeringLetter->status !== 'draft') {
+            return redirect()
+                ->route('offering-letters.show', $offeringLetter)
+                ->with('error', 'Surat Penawaran yang sudah terkirim tidak dapat diedit kembali.');
+        }
+
         $offeringLetter->update($request->validated());
 
         return redirect()

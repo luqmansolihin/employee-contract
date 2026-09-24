@@ -245,16 +245,18 @@
                                 </div>
 
                                 <div class="flex items-center gap-2 shrink-0">
-                                    <a href="{{ route('offering-letters.edit', $ol) }}"
-                                        class="px-2.5 py-1.5 rounded-lg border border-[#E2E8F0] text-slate-700 hover:text-[#3C50E0] hover:border-[#3C50E0] text-xs font-semibold transition flex items-center gap-1">
-                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
-                                            </path>
-                                        </svg>
-                                        <span>Edit</span>
-                                    </a>
+                                    @if ($ol->status === 'draft')
+                                        <a href="{{ route('offering-letters.edit', $ol) }}"
+                                            class="px-2.5 py-1.5 rounded-lg border border-[#E2E8F0] text-slate-700 hover:text-[#3C50E0] hover:border-[#3C50E0] text-xs font-semibold transition flex items-center gap-1">
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                                </path>
+                                            </svg>
+                                            <span>Edit</span>
+                                        </a>
+                                    @endif
 
                                     <a href="{{ route('offering-letters.print', $ol) }}" target="_blank"
                                         class="px-2.5 py-1.5 rounded-lg border border-[#E2E8F0] text-slate-700 hover:text-emerald-600 hover:border-emerald-300 text-xs font-semibold transition flex items-center gap-1">

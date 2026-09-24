@@ -394,7 +394,7 @@ class OfferingLetterTest extends TestCase
         $this->assertEquals('007/IX/2026/OL/HRD', $ol->letter_number);
     }
 
-    public function test_cannot_change_employee_when_offering_letter_is_sent(): void
+    public function test_cannot_edit_offering_letter_when_status_is_sent(): void
     {
         $newEmployee = Employee::factory()->create([
             'name' => 'Budi Nugraha',
@@ -419,13 +419,12 @@ class OfferingLetterTest extends TestCase
             'status' => 'sent',
         ]);
 
+        // Attempting to visit edit page redirects to show page with error message
         $editResponse = $this->get(route('offering-letters.edit', $ol));
-        $editResponse->assertOk();
-        $editResponse->assertSee($this->employee->name);
-        $editResponse->assertSee('Terkunci (Status: Terkirim)');
-        $editResponse->assertDontSee('Pilih / Ganti Karyawan');
-        $editResponse->assertDontSee('id="employee-combobox-wrapper"', false);
+        $editResponse->assertRedirect(route('offering-letters.show', $ol));
+        $editResponse->assertSessionHas('error', 'Surat Penawaran yang sudah terkirim tidak dapat diedit kembali.');
 
+        // Attempting to update redirects to show page with error message and data remains unchanged
         $updateResponse = $this->put(route('offering-letters.update', $ol), [
             'employee_id' => $newEmployee->id,
             'letter_number' => '008/IX/2026/OL',
@@ -441,10 +440,23 @@ class OfferingLetterTest extends TestCase
             'office_address' => 'Gedung Sudirman Central Lt. 12',
         ]);
 
-        $updateResponse->assertSessionHasErrors('employee_id');
+        $updateResponse->assertRedirect(route('offering-letters.show', $ol));
+        $updateResponse->assertSessionHas('error', 'Surat Penawaran yang sudah terkirim tidak dapat diedit kembali.');
 
         $ol->refresh();
         $this->assertEquals($this->employee->id, $ol->employee_id);
+        $this->assertEquals('Finance Staff', $ol->position);
+        $this->assertEquals('sent', $ol->status);
+
+        // Edit button is hidden on show page, index page, and employee detail page
+        $showResponse = $this->get(route('offering-letters.show', $ol));
+        $showResponse->assertDontSee(route('offering-letters.edit', $ol));
+
+        $indexResponse = $this->get(route('offering-letters.index'));
+        $indexResponse->assertDontSee(route('offering-letters.edit', $ol));
+
+        $employeeResponse = $this->get(route('employees.show', $this->employee));
+        $employeeResponse->assertDontSee(route('offering-letters.edit', $ol));
     }
 
     public function test_cannot_revert_status_to_draft_after_sent(): void

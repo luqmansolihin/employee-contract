@@ -24,8 +24,8 @@ class UpdateOfferingLetterRequest extends FormRequest
         if ($this->filled('letter_number') && $this->filled('kode')) {
             $kode = strtoupper(trim((string) $this->kode));
             $letterNumber = trim((string) $this->letter_number);
-            if (! str_ends_with($letterNumber, '/'.$kode)) {
-                $letterNumber = $letterNumber.'/'.$kode;
+            if (! str_ends_with($letterNumber, '/' . $kode)) {
+                $letterNumber = $letterNumber . '/' . $kode;
             }
             $this->merge([
                 'letter_number' => $letterNumber,
@@ -42,19 +42,16 @@ class UpdateOfferingLetterRequest extends FormRequest
     public function rules(): array
     {
         $offeringLetter = $this->route('offering_letter');
+        if ($offeringLetter && $offeringLetter->status !== 'draft') {
+            return [];
+        }
+
         $offeringLetterId = $offeringLetter?->id;
 
         return [
             'employee_id' => [
                 'required',
                 'exists:employees,id',
-                function ($attribute, $value, $fail) use ($offeringLetter) {
-                    if ($offeringLetter && $offeringLetter->status !== 'draft') {
-                        if ((int) $value !== (int) $offeringLetter->employee_id) {
-                            $fail('Karyawan penerima penawaran tidak dapat diganti setelah status surat penawaran terkirim.');
-                        }
-                    }
-                },
             ],
             'letter_number' => [
                 'required',
@@ -76,11 +73,6 @@ class UpdateOfferingLetterRequest extends FormRequest
             'status' => [
                 'nullable',
                 Rule::in(['draft', 'sent', 'accepted', 'rejected']),
-                function ($attribute, $value, $fail) use ($offeringLetter) {
-                    if ($offeringLetter && $offeringLetter->status !== 'draft' && $value === 'draft') {
-                        $fail('Setelah terkirim, status surat penawaran tidak dapat diubah kembali ke draft.');
-                    }
-                },
             ],
             'terms' => ['nullable', 'string'],
             'notes' => ['nullable', 'string'],
