@@ -24,8 +24,11 @@ class EmployeeContract extends Model
         'offering_letter_id',
         'contract_sequence',
         'contract_number',
+        'kode',
         'contract_type',
+        'contract_date',
         'position',
+        'bidang',
         'branch',
         'start_date',
         'end_date',
@@ -33,6 +36,9 @@ class EmployeeContract extends Model
         'allowance',
         'status',
         'notes',
+        'supervisor_name',
+        'supervisor_position',
+        'office_address',
     ];
 
     /**
@@ -43,6 +49,7 @@ class EmployeeContract extends Model
     protected function casts(): array
     {
         return [
+            'contract_date' => 'date',
             'start_date' => 'date',
             'end_date' => 'date',
             'contract_sequence' => 'integer',
@@ -89,7 +96,7 @@ class EmployeeContract extends Model
     protected function contractTypeBadgeClass(): Attribute
     {
         return Attribute::make(
-            get: fn (): string => match ($this->contract_type) {
+            get: fn(): string => match ($this->contract_type) {
                 'PKWT' => 'bg-indigo-50 text-indigo-700 border-indigo-200',
                 'MT' => 'bg-purple-50 text-purple-700 border-purple-200',
                 'MAGANG' => 'bg-amber-50 text-amber-700 border-amber-200',
@@ -104,8 +111,8 @@ class EmployeeContract extends Model
     protected function formattedSalary(): Attribute
     {
         return Attribute::make(
-            get: fn (): ?string => $this->basic_salary !== null
-                ? 'Rp '.number_format((float) $this->basic_salary, 0, ',', '.')
+            get: fn(): ?string => $this->basic_salary !== null
+                ? 'Rp ' . number_format((float) $this->basic_salary, 0, ',', '.')
                 : null
         );
     }
@@ -116,8 +123,8 @@ class EmployeeContract extends Model
     protected function formattedAllowance(): Attribute
     {
         return Attribute::make(
-            get: fn (): ?string => $this->allowance !== null
-                ? 'Rp '.number_format((float) $this->allowance, 0, ',', '.')
+            get: fn(): ?string => $this->allowance !== null
+                ? 'Rp ' . number_format((float) $this->allowance, 0, ',', '.')
                 : null
         );
     }

@@ -44,7 +44,8 @@
                         </svg>
                     </div>
                     <div>
-                        <h4 class="text-xs font-bold text-[#3C50E0]">Merujuk ke Offering Letter #{{ $offeringLetter->letter_number }}</h4>
+                        <h4 class="text-xs font-bold text-[#3C50E0]">Merujuk ke Offering Letter
+                            #{{ $offeringLetter->letter_number }}</h4>
                         <p class="text-[11px] text-slate-500 mt-0.5">
                             Data kandidat, penempatan, dan remunerasi telah dimuat secara otomatis dari penawaran kerja yang
                             telah diterima.
@@ -311,31 +312,86 @@
                             </div>
                         @endif
 
+                    </div>
+                </div>
+
+                <!-- Section 2: Informasi Surat & Ketentuan Kontrak -->
+                <div>
+                    <h4
+                        class="text-xs font-bold uppercase tracking-wider text-[#3C50E0] mb-4 pb-2 border-b border-[#E2E8F0]">
+                        2. Informasi Surat & Ketentuan Kontrak
+                    </h4>
+
+                    @php
+                        $rawContractNumber = old('contract_number', $suggestedNumber);
+                        $currentKode = old('kode', $offeringLetter?->kode);
+                        $cleanKode = strtoupper(trim((string) $currentKode));
+                        if ($cleanKode !== '' && str_ends_with($rawContractNumber, '/' . $cleanKode)) {
+                            $displayContractNumber = substr($rawContractNumber, 0, -strlen('/' . $cleanKode));
+                        } else {
+                            $displayContractNumber = $rawContractNumber;
+                        }
+                    @endphp
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <!-- Nomor Kontrak -->
-                        <div class="sm:col-span-2">
+                        <div>
                             <label for="contract_number" class="block text-xs font-bold text-[#1C2434] mb-1">
                                 Nomor Kontrak Kerja <span class="text-rose-500">*</span>
                             </label>
                             <input type="text" name="contract_number" id="contract_number"
-                                value="{{ old('contract_number', $suggestedNumber) }}" required autocomplete="off"
+                                value="{{ $displayContractNumber }}" required autocomplete="off"
                                 class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('contract_number') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] font-mono outline-hidden transition">
-                            <p class="text-[10px] text-slate-400 mt-1">Disarankan otomatis berdasarkan tipe kontrak. Anda
-                                dapat mengubahnya secara manual.</p>
+                            <p class="text-[11px] text-slate-500 mt-1 font-mono">
+                                Nomor Kontrak Lengkap: <span id="full_number_preview"
+                                    class="font-bold text-[#3C50E0]">{{ $rawContractNumber }}</span>
+                            </p>
                             @error('contract_number')
                                 <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
                             @enderror
                         </div>
-                    </div>
-                </div>
 
-                <!-- Section: Detail Posisi & Durasi -->
-                <div>
-                    <h4
-                        class="text-xs font-bold uppercase tracking-wider text-[#3C50E0] mb-4 pb-2 border-b border-[#E2E8F0]">
-                        2. Posisi, Penempatan & Jangka Waktu
-                    </h4>
+                        <!-- Kode -->
+                        <div>
+                            <label for="kode" class="block text-xs font-bold text-[#1C2434] mb-1">
+                                Kode <span class="text-rose-500">*</span>
+                            </label>
+                            <input type="text" name="kode" id="kode"
+                                value="{{ old('kode', $offeringLetter?->kode) }}" required autocomplete="off"
+                                placeholder="Contoh: HRD, CKU, OPS"
+                                class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('kode') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] font-mono uppercase outline-hidden transition">
+                            @error('kode')
+                                <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <!-- Tanggal Surat -->
+                        <div>
+                            <label for="contract_date" class="block text-xs font-bold text-[#1C2434] mb-1">
+                                Tanggal Surat <span class="text-rose-500">*</span>
+                            </label>
+                            <input type="date" name="contract_date" id="contract_date"
+                                value="{{ old('contract_date', date('Y-m-d')) }}" required autocomplete="off"
+                                class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('contract_date') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
+                            @error('contract_date')
+                                <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Bidang -->
+                        <div>
+                            <label for="bidang" class="block text-xs font-bold text-[#1C2434] mb-1">
+                                Bidang <span class="text-rose-500">*</span>
+                            </label>
+                            <input type="text" name="bidang" id="bidang"
+                                value="{{ old('bidang', $offeringLetter?->bidang) }}" required autocomplete="off"
+                                placeholder="Contoh: Operasional, IT, Keuangan"
+                                class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('bidang') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
+                            @error('bidang')
+                                <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
                         <!-- Posisi / Jabatan -->
                         <div>
                             <label for="position" class="block text-xs font-bold text-[#1C2434] mb-1">
@@ -391,6 +447,49 @@
                                 <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
                             @enderror
                         </div>
+
+                        <!-- Nama Atasan -->
+                        <div>
+                            <label for="supervisor_name" class="block text-xs font-bold text-[#1C2434] mb-1">
+                                Nama Atasan <span class="text-rose-500">*</span>
+                            </label>
+                            <input type="text" name="supervisor_name" id="supervisor_name"
+                                value="{{ old('supervisor_name', $offeringLetter?->supervisor_name) }}" required
+                                autocomplete="off" placeholder="Contoh: Hendra Wijaya, S.Psi."
+                                class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('supervisor_name') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
+                            @error('supervisor_name')
+                                <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Jabatan Atasan -->
+                        <div>
+                            <label for="supervisor_position" class="block text-xs font-bold text-[#1C2434] mb-1">
+                                Jabatan Atasan <span class="text-rose-500">*</span>
+                            </label>
+                            <input type="text" name="supervisor_position" id="supervisor_position"
+                                value="{{ old('supervisor_position', $offeringLetter?->supervisor_position) }}" required
+                                autocomplete="off" placeholder="Contoh: Human Resources Manager"
+                                class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('supervisor_position') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
+                            @error('supervisor_position')
+                                <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Alamat Kantor -->
+                        <div class="sm:col-span-2">
+                            <label for="office_address" class="block text-xs font-bold text-[#1C2434] mb-1">
+                                Alamat Kantor <span class="text-rose-500">*</span>
+                            </label>
+                            <input type="text" name="office_address" id="office_address"
+                                value="{{ old('office_address', $offeringLetter?->office_address) }}" required
+                                autocomplete="off"
+                                placeholder="Contoh: Gedung Perkantoran Sudirman Central, Lantai 12, Jakarta Pusat"
+                                class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('office_address') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
+                            @error('office_address')
+                                <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </div>
                 </div>
 
@@ -419,12 +518,46 @@
     <script>
         const suggestedNumbers = @json($suggestedNumbers);
 
+        function updateFullNumberPreview() {
+            const contractNumberInput = document.getElementById('contract_number');
+            const kodeInput = document.getElementById('kode');
+            const previewEl = document.getElementById('full_number_preview');
+            if (!contractNumberInput || !previewEl) return;
+            const rawNumber = contractNumberInput.value.trim();
+            const rawKode = kodeInput ? kodeInput.value.trim().toUpperCase() : '';
+
+            if (rawNumber && rawKode && !rawNumber.endsWith('/' + rawKode)) {
+                previewEl.textContent = rawNumber + '/' + rawKode;
+            } else {
+                previewEl.textContent = rawNumber || '-';
+            }
+        }
+
         function updateContractNumberSuggestion() {
             const type = document.getElementById('contract_type').value;
             if (suggestedNumbers[type]) {
                 document.getElementById('contract_number').value = suggestedNumbers[type];
+                updateFullNumberPreview();
             }
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const contractNumberInput = document.getElementById('contract_number');
+            const kodeInput = document.getElementById('kode');
+
+            if (kodeInput) {
+                kodeInput.addEventListener('input', function() {
+                    this.value = this.value.toUpperCase();
+                    updateFullNumberPreview();
+                });
+            }
+
+            if (contractNumberInput) {
+                contractNumberInput.addEventListener('input', updateFullNumberPreview);
+            }
+
+            updateFullNumberPreview();
+        });
 
         @if (!$offeringLetter)
             const employeesData = @json($employees);

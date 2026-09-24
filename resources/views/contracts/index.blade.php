@@ -131,7 +131,8 @@
                                 </td>
                                 <td class="py-3.5 px-4">
                                     <span class="font-medium text-slate-800 block">{{ $c->position }}</span>
-                                    <span class="text-[11px] text-slate-400 block">{{ $c->branch }}</span>
+                                    <span
+                                        class="text-[11px] text-slate-400 block">{{ $c->branch }}{{ $c->bidang ? ' • ' . $c->bidang : '' }}</span>
                                 </td>
                                 <td class="py-3.5 px-4">
                                     <span class="font-medium text-[#1C2434] block">

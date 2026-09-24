@@ -146,8 +146,9 @@
     <!-- Letterhead -->
     <div class="header-logo">
         <h1 class="company-name">PT. CIPTA KARYA UTAMA</h1>
-        <p class="company-sub">Gedung Perkantoran Sudirman Central, Lantai 12, Jakarta Pusat • Telp: (021) 555-0199 •
-            Email: hrd@ciptakarya.co.id</p>
+        <p class="company-sub">
+            {{ $contract->office_address ?: 'Gedung Perkantoran Sudirman Central, Lantai 12, Jakarta Pusat • Telp: (021) 555-0199 • Email: hrd@ciptakarya.co.id' }}
+        </p>
     </div>
 
     @php
@@ -163,7 +164,8 @@
     <div class="doc-number">Nomor: {{ $contract->contract_number ?: 'PKWT/' . date('Y') . '/' . $contract->id }}</div>
 
     <p>
-        Pada hari ini, <strong>{{ Carbon\Carbon::parse($contract->start_date)->translatedFormat('l, d F Y') }}</strong>,
+        Pada hari ini,
+        <strong>{{ Carbon\Carbon::parse($contract->contract_date ?? $contract->start_date)->translatedFormat('l, d F Y') }}</strong>,
         bertempat di Jakarta, telah dibuat dan ditandatangani perjanjian kerja oleh dan antara pihak-pihak:
     </p>
 
@@ -178,13 +180,14 @@
             <td></td>
             <td>Diwakili Oleh</td>
             <td>:</td>
-            <td>Hendra Wijaya, S.Psi. (Human Resources Manager)</td>
+            <td>{{ $contract->supervisor_name ?: 'Hendra Wijaya, S.Psi.' }}
+                ({{ $contract->supervisor_position ?: 'Human Resources Manager' }})</td>
         </tr>
         <tr>
             <td></td>
             <td>Alamat Kantor</td>
             <td>:</td>
-            <td>Gedung Sudirman Central Lt. 12, Jakarta Pusat</td>
+            <td>{{ $contract->office_address ?: 'Gedung Perkantoran Sudirman Central, Lantai 12, Jakarta Pusat' }}</td>
         </tr>
         <tr>
             <td></td>
@@ -244,7 +247,11 @@
     <!-- Pasal 2 -->
     <div class="article-title">Pasal 2<br>JABATAN DAN TEMPAT PENEMPATAN</div>
     <p>
-        1. PIHAK PERTAMA mempekerjakan PIHAK KEDUA sebagai <strong>{{ $contract->position }}</strong> dengan lokasi
+        1. PIHAK PERTAMA mempekerjakan PIHAK KEDUA sebagai <strong>{{ $contract->position }}</strong>
+        @if ($contract->bidang)
+            pada Bidang
+            <strong>{{ $contract->bidang }}</strong>
+        @endif dengan lokasi
         penempatan di <strong>{{ $contract->branch }}</strong>.<br>
         2. PIHAK PERTAMA berhak melakukan mutasi, rotasi, atau penyesuaian tugas sesuai dengan kebutuhan operasional
         perusahaan.
@@ -282,8 +289,12 @@
         <div class="sig-col">
             <p>PIHAK PERTAMA,<br><strong>PT. CIPTA KARYA UTAMA</strong></p>
             <div class="sig-space"></div>
-            <p style="text-decoration: underline; font-weight: bold; margin-bottom: 2px;">Hendra Wijaya, S.Psi.</p>
-            <p style="font-size: 10pt; color: #4B5563; margin-top: 0;">HR Manager</p>
+            <p style="text-decoration: underline; font-weight: bold; margin-bottom: 2px;">
+                {{ $contract->supervisor_name ?: 'Hendra Wijaya, S.Psi.' }}
+            </p>
+            <p style="font-size: 10pt; color: #4B5563; margin-top: 0;">
+                {{ $contract->supervisor_position ?: 'Human Resources Manager' }}
+            </p>
         </div>
     </div>
 

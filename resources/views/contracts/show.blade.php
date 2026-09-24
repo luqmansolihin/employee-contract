@@ -93,6 +93,17 @@
                     <p class="text-xs text-slate-400 font-medium">Nomor Kontrak Resmi</p>
                     <p class="text-base font-bold font-mono text-[#1C2434] mt-0.5">{{ $contract->contract_number ?: '-' }}
                     </p>
+                    <div class="mt-1 space-y-0.5 text-xs text-slate-600 sm:text-right">
+                        @if ($contract->kode)
+                            <p><span class="text-slate-400">Kode Surat:</span> <span
+                                    class="font-bold font-mono text-[#3C50E0]">{{ $contract->kode }}</span></p>
+                        @endif
+                        @if ($contract->contract_date)
+                            <p><span class="text-slate-400">Tanggal Surat:</span> <strong
+                                    class="text-slate-800">{{ $contract->contract_date->translatedFormat('d F Y') }}</strong>
+                            </p>
+                        @endif
+                    </div>
                     <p class="text-xs text-slate-500 mt-1">Urutan: <strong>{{ $contract->sequence_label }}</strong></p>
                     @if ($contract->offeringLetter)
                         <p class="text-xs text-indigo-600 mt-0.5">
@@ -103,31 +114,52 @@
                 </div>
             </div>
 
-            <!-- Position, Duration, Salary -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 pb-6 border-b border-[#E2E8F0]">
-                <div>
-                    <span class="text-xs text-slate-400 block font-medium">Jabatan & Penempatan</span>
-                    <span class="text-sm font-bold text-[#1C2434] block mt-0.5">{{ $contract->position }}</span>
-                    <span class="text-xs text-slate-500 block">{{ $contract->branch }}</span>
+            <!-- Position, Bidang, Duration, Salary -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pb-6 border-b border-[#E2E8F0]">
+                <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+                    <span class="text-[10px] uppercase font-semibold text-slate-400 block">Posisi / Jabatan</span>
+                    <span class="text-xs font-bold text-slate-800 block mt-1">{{ $contract->position }}</span>
                 </div>
 
-                <div>
-                    <span class="text-xs text-slate-400 block font-medium">Durasi Hubungan Kerja</span>
-                    <span class="text-sm font-bold text-[#1C2434] block mt-0.5">
-                        {{ $contract->duration_in_months }} Bulan
-                    </span>
-                    <span class="text-xs text-slate-500 block">Total: {{ $contract->duration_in_days }} Hari</span>
+                <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+                    <span class="text-[10px] uppercase font-semibold text-slate-400 block">Bidang</span>
+                    <span class="text-xs font-bold text-slate-800 block mt-1">{{ $contract->bidang ?: '-' }}</span>
                 </div>
 
-                <div>
-                    <span class="text-xs text-slate-400 block font-medium">Kompensasi Kontrak</span>
-                    <span class="text-base font-extrabold text-[#3C50E0] block mt-0.5">
-                        {{ $contract->formatted_salary ?: 'Belum Diatur' }}
+                <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+                    <span class="text-[10px] uppercase font-semibold text-slate-400 block">Cabang / Penempatan</span>
+                    <span class="text-xs font-bold text-slate-800 block mt-1">{{ $contract->branch }}</span>
+                </div>
+
+                <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+                    <span class="text-[10px] uppercase font-semibold text-slate-400 block">Periode Kontrak</span>
+                    <span class="text-xs font-bold text-slate-800 block mt-1">
+                        {{ $contract->start_date->translatedFormat('d M Y') }} s/d
+                        {{ $contract->end_date->translatedFormat('d M Y') }}
                     </span>
-                    @if ($contract->allowance)
-                        <span class="text-[11px] text-slate-400 block">Tunjangan:
-                            {{ $contract->formatted_allowance }}</span>
-                    @endif
+                    <span class="text-[11px] text-slate-500 block mt-0.5">({{ $contract->duration_in_months }} Bulan /
+                        {{ $contract->duration_in_days }} Hari)</span>
+                </div>
+            </div>
+
+            <!-- Atasan & Alamat Kantor -->
+            <div class="pb-6 border-b border-[#E2E8F0]">
+                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">Penandatangan & Alamat Kantor
+                </h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                        <span class="text-[10px] uppercase font-semibold text-slate-400 block">Nama & Jabatan Atasan</span>
+                        <span
+                            class="text-sm font-bold text-slate-800 block mt-1">{{ $contract->supervisor_name ?: '-' }}</span>
+                        <span
+                            class="text-xs text-slate-500 block mt-0.5">{{ $contract->supervisor_position ?: '-' }}</span>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                        <span class="text-[10px] uppercase font-semibold text-slate-400 block">Alamat Kantor</span>
+                        <span
+                            class="text-xs font-medium text-slate-700 block mt-1 leading-relaxed">{{ $contract->office_address ?: '-' }}</span>
+                    </div>
                 </div>
             </div>
 

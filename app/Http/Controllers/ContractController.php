@@ -26,7 +26,7 @@ class ContractController extends Controller
 
         $query = EmployeeContract::query()
             ->with(['employee', 'offeringLetter', 'addendums'])
-            ->when($contractType, fn ($q) => $q->where('contract_type', $contractType))
+            ->when($contractType, fn($q) => $q->where('contract_type', $contractType))
             ->when($status, function ($q) use ($status) {
                 $today = Carbon::today()->toDateString();
                 $thirtyDaysAhead = Carbon::today()->addDays(30)->toDateString();
@@ -36,7 +36,7 @@ class ContractController extends Controller
                 } elseif ($status === 'expiring_soon') {
                     $q->where('status', 'active')->whereBetween('end_date', [$today, $thirtyDaysAhead]);
                 } elseif ($status === 'expired') {
-                    $q->where(fn ($sub) => $sub->where('status', 'expired')->orWhere('end_date', '<', $today));
+                    $q->where(fn($sub) => $sub->where('status', 'expired')->orWhere('end_date', '<', $today));
                 } elseif ($status === 'renewed') {
                     $q->where('status', 'renewed');
                 }
@@ -45,7 +45,7 @@ class ContractController extends Controller
                 $q->where('contract_number', 'like', "%{$search}%")
                     ->orWhere('position', 'like', "%{$search}%")
                     ->orWhere('branch', 'like', "%{$search}%")
-                    ->orWhereHas('employee', fn ($eq) => $eq->where('name', 'like', "%{$search}%"));
+                    ->orWhereHas('employee', fn($eq) => $eq->where('name', 'like', "%{$search}%"));
             })
             ->orderBy('end_date', 'asc');
 
@@ -126,17 +126,21 @@ class ContractController extends Controller
                 'offering_letter_id' => $request->offering_letter_id,
                 'contract_sequence' => $sequence,
                 'contract_number' => $request->contract_number,
+                'kode' => $request->kode,
                 'contract_type' => $request->contract_type,
+                'contract_date' => $request->contract_date,
                 'position' => $request->position,
+                'bidang' => $request->bidang,
                 'branch' => $request->branch,
                 'start_date' => $request->start_date,
                 'end_date' => $request->end_date,
-                'basic_salary' => $request->basic_salary,
-                'allowance' => $request->allowance ?? 0,
                 'basic_salary' => $request->basic_salary ?? ($offeringLetter?->basic_salary ?? 0),
                 'allowance' => $request->allowance ?? ($offeringLetter?->allowance ?? 0),
                 'status' => 'active',
                 'notes' => $request->notes,
+                'supervisor_name' => $request->supervisor_name,
+                'supervisor_position' => $request->supervisor_position,
+                'office_address' => $request->office_address,
             ]);
 
             // Update offering letter status to accepted if linked
