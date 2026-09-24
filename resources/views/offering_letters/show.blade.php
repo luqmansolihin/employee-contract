@@ -53,7 +53,15 @@
                     <span>Cetak Surat</span>
                 </a>
 
-                @if (!$offeringLetter->contract)
+                @if ($offeringLetter->contract)
+                    <a href="{{ route('contracts.show', $offeringLetter->contract) }}"
+                        class="px-3.5 py-2 rounded-xl bg-emerald-600 text-white hover:bg-emerald-700 text-xs font-bold transition flex items-center gap-1.5 shadow-xs">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        <span>Lihat Kontrak Kerja Terbit</span>
+                    </a>
+                @elseif ($offeringLetter->status === 'accepted')
                     <a href="{{ route('contracts.create', ['offering_letter_id' => $offeringLetter->id]) }}"
                         class="px-4 py-2 rounded-xl bg-[#3C50E0] text-white hover:bg-[#2F40BD] text-xs font-bold shadow-lg shadow-[#3C50E0]/25 transition flex items-center gap-1.5">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -62,14 +70,6 @@
                             </path>
                         </svg>
                         <span>Terbitkan Kontrak Kerja</span>
-                    </a>
-                @else
-                    <a href="{{ route('contracts.show', $offeringLetter->contract) }}"
-                        class="px-3.5 py-2 rounded-xl bg-emerald-600 text-white hover:bg-emerald-700 text-xs font-bold transition flex items-center gap-1.5 shadow-xs">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        <span>Lihat Kontrak Kerja Terbit</span>
                     </a>
                 @endif
             </div>

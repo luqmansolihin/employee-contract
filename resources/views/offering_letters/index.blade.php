@@ -192,7 +192,12 @@
                                             </svg>
                                         </a>
 
-                                        @if (!$ol->contract)
+                                        @if ($ol->contract)
+                                            <span
+                                                class="text-[10px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+                                                Kontrak Terbit
+                                            </span>
+                                        @elseif ($ol->status === 'accepted')
                                             <a href="{{ route('contracts.create', ['offering_letter_id' => $ol->id]) }}"
                                                 class="px-2.5 py-1 rounded-lg bg-[#3C50E0] text-white hover:bg-[#2F40BD] text-[10px] font-semibold transition flex items-center gap-1 shadow-xs"
                                                 title="Terbitkan Kontrak Kerja Resmi">
@@ -203,11 +208,6 @@
                                                         d="M9 5l7 7-7 7"></path>
                                                 </svg>
                                             </a>
-                                        @else
-                                            <span
-                                                class="text-[10px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
-                                                Kontrak Terbit
-                                            </span>
                                         @endif
                                     </div>
                                 </td>

@@ -61,8 +61,6 @@
                                 <div>
                                     <span class="text-slate-400 block text-[10px] uppercase font-semibold">Jenis
                                         Kelamin</span>
-                                    <span class="text-slate-400 block text-[10px] uppercase font-semibold">Jenis
-                                        Kelamin</span>
                                     <span
                                         class="font-bold text-slate-700">{{ in_array(strtolower($employee->gender ?? ''), ['laki-laki', 'male', 'l']) ? 'Laki-laki' : (in_array(strtolower($employee->gender ?? ''), ['perempuan', 'female', 'p']) ? 'Perempuan' : ($employee->gender ?: '-')) }}</span>
                                 </div>

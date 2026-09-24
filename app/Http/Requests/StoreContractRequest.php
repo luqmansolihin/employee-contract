@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\OfferingLetter;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -25,6 +26,18 @@ class StoreContractRequest extends FormRequest
         return [
             'employee_id' => ['required', 'exists:employees,id'],
             'offering_letter_id' => ['nullable', 'exists:offering_letters,id'],
+            'offering_letter_id' => [
+                'nullable',
+                'exists:offering_letters,id',
+                function ($attribute, $value, $fail) {
+                    if ($value) {
+                        $ol = OfferingLetter::find($value);
+                        if ($ol && $ol->status !== 'accepted') {
+                            $fail('Kontrak kerja hanya dapat diterbitkan untuk Surat Penawaran yang berstatus Diterima (Accepted).');
+                        }
+                    }
+                },
+            ],
             'contract_number' => ['required', 'string', 'max:255', 'unique:employee_contracts,contract_number'],
             'contract_type' => ['required', 'in:PKWT,MT,MAGANG'],
             'position' => ['required', 'string', 'max:255'],

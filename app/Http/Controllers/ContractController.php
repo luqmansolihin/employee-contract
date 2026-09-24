@@ -64,7 +64,7 @@ class ContractController extends Controller
     /**
      * Show the form for creating a new contract.
      */
-    public function create(Request $request): View
+    public function create(Request $request): View|RedirectResponse
     {
         $employee = null;
         $offeringLetter = null;
@@ -72,6 +72,11 @@ class ContractController extends Controller
 
         if ($request->filled('offering_letter_id')) {
             $offeringLetter = OfferingLetter::with('employee')->findOrFail($request->input('offering_letter_id'));
+            if ($offeringLetter->status !== 'accepted') {
+                return redirect()
+                    ->route('offering-letters.show', $offeringLetter)
+                    ->with('error', 'Kontrak kerja hanya dapat diterbitkan untuk Surat Penawaran yang berstatus Diterima (Accepted).');
+            }
             $employee = $offeringLetter->employee;
             $selectedType = $offeringLetter->contract_type;
         } elseif ($request->filled('employee_id')) {

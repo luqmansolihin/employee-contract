@@ -274,7 +274,12 @@
                                         Detail
                                     </a>
 
-                                    @if (!$ol->contract)
+                                    @if ($ol->contract)
+                                        <a href="{{ route('contracts.show', $ol->contract) }}"
+                                            class="px-2.5 py-1.5 rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-100 text-xs font-semibold border border-emerald-200 transition">
+                                            Kontrak Terbit
+                                        </a>
+                                    @elseif ($ol->status === 'accepted')
                                         <a href="{{ route('contracts.create', ['offering_letter_id' => $ol->id]) }}"
                                             class="px-3 py-1.5 rounded-lg bg-[#3C50E0] hover:bg-[#2F40BD] text-white text-xs font-bold transition shadow-xs">
                                             Terbitkan Kontrak
