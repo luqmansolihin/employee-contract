@@ -24,8 +24,8 @@ class UpdateOfferingLetterRequest extends FormRequest
         if ($this->filled('letter_number') && $this->filled('kode')) {
             $kode = strtoupper(trim((string) $this->kode));
             $letterNumber = trim((string) $this->letter_number);
-            if (! str_ends_with($letterNumber, '/' . $kode)) {
-                $letterNumber = $letterNumber . '/' . $kode;
+            if (! str_ends_with($letterNumber, '/'.$kode)) {
+                $letterNumber = $letterNumber.'/'.$kode;
             }
             $this->merge([
                 'letter_number' => $letterNumber,

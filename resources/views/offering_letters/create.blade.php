@@ -61,7 +61,8 @@
                                 <div>
                                     <span class="text-slate-400 block text-[10px] uppercase font-semibold">Jenis
                                         Kelamin</span>
-                                    <span class="text-slate-400 block text-[10px] uppercase font-semibold">Jenis Kelamin</span>
+                                    <span class="text-slate-400 block text-[10px] uppercase font-semibold">Jenis
+                                        Kelamin</span>
                                     <span
                                         class="font-bold text-slate-700">{{ in_array(strtolower($employee->gender ?? ''), ['laki-laki', 'male', 'l']) ? 'Laki-laki' : (in_array(strtolower($employee->gender ?? ''), ['perempuan', 'female', 'p']) ? 'Perempuan' : ($employee->gender ?: '-')) }}</span>
                                 </div>
@@ -261,7 +262,8 @@
                                 value="{{ $displayLetterNumber }}" required autocomplete="off"
                                 class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('letter_number') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] font-mono outline-hidden transition">
                             <p class="text-[11px] text-slate-500 mt-1 font-mono">
-                                Nomor Surat Lengkap: <span id="full_number_preview" class="font-bold text-[#3C50E0]">{{ $rawLetterNumber }}</span>
+                                Nomor Surat Lengkap: <span id="full_number_preview"
+                                    class="font-bold text-[#3C50E0]">{{ $rawLetterNumber }}</span>
                             </p>
                             @error('letter_number')
                                 <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
@@ -480,8 +482,6 @@
             if (ktp) ktp.textContent = 'NIK: ' + (emp.ktp_number || '-');
             if (position) position.textContent = emp.current_position || '-';
             if (branch) branch.textContent = emp.current_branch || '-';
-            if (gender) gender.textContent = emp.gender === 'female' ? 'Perempuan' : (emp.gender === 'male' ? 'Laki-laki' :
-                '-');
             if (gender) gender.textContent = formatGender(emp.gender);
             if (joinDate) joinDate.textContent = formatDateIndo(emp.first_join_date);
 
@@ -504,220 +504,19 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            const wrapper = document.getElementById('employee-combobox-wrapper');
-            if (!wrapper) return;
-
-            const hiddenInput = document.getElementById('employee_id');
-            const searchInput = document.getElementById('employee_search_input');
-            const clearBtn = document.getElementById('employee_clear_btn');
-            const toggleBtn = document.getElementById('employee_dropdown_toggle');
-            const chevronIcon = document.getElementById('employee_chevron_icon');
-            const dropdownMenu = document.getElementById('employee_dropdown_menu');
-            const noResults = document.getElementById('employee_no_results');
-            const items = dropdownMenu.querySelectorAll('.employee-item');
-
-            let currentSelectedId = hiddenInput.value ? String(hiddenInput.value) : '';
-            let selectedLabel = '';
-
-            function openDropdown() {
-                dropdownMenu.classList.remove('hidden');
-                if (chevronIcon) chevronIcon.classList.add('rotate-180');
-            }
-
-            function closeDropdown() {
-                dropdownMenu.classList.add('hidden');
-                if (chevronIcon) chevronIcon.classList.remove('rotate-180');
-            }
-
-            function isDropdownOpen() {
-                return !dropdownMenu.classList.contains('hidden');
-            }
-
-            function selectEmployee(id, triggerFill) {
-                const emp = employeeMap[id];
-                if (!emp) {
-                    clearSelection();
-                    return;
-                }
-
-                currentSelectedId = String(id);
-                hiddenInput.value = currentSelectedId;
-                selectedLabel = `${emp.name} (NIK: ${emp.ktp_number})`;
-                searchInput.value = selectedLabel;
-                searchInput.setCustomValidity('');
-
-                if (clearBtn) clearBtn.classList.remove('hidden');
-
-                items.forEach(item => {
-                    const check = item.querySelector('.employee-check-icon');
-                    if (item.dataset.id === String(id)) {
-                        item.classList.add('bg-indigo-50/70', 'font-semibold');
-                        if (check) check.classList.remove('hidden');
-                    } else {
-                        item.classList.remove('bg-indigo-50/70', 'font-semibold');
-                        if (check) check.classList.add('hidden');
-                    }
-                });
-
-                updateEmployeeDetailCard(emp);
-
-                if (triggerFill) {
-                    const posInput = document.getElementById('position');
-                    const branchInput = document.getElementById('branch');
-
-                    if (posInput && emp.current_position) posInput.value = emp.current_position;
-                    if (branchInput && emp.current_branch) branchInput.value = emp.current_branch;
-                }
-
-                closeDropdown();
-            }
-
-            function clearSelection() {
-                currentSelectedId = '';
-                hiddenInput.value = '';
-                selectedLabel = '';
-                searchInput.value = '';
-                if (clearBtn) clearBtn.classList.add('hidden');
-
-                items.forEach(item => {
-                    item.classList.remove('bg-indigo-50/70', 'font-semibold', 'hidden');
-                    const check = item.querySelector('.employee-check-icon');
-                    if (check) check.classList.add('hidden');
-                });
-                if (noResults) noResults.classList.add('hidden');
-
-                updateEmployeeDetailCard(null);
-            }
-
-            function filterItems(query) {
-                const q = query.trim().toLowerCase();
-                let visibleCount = 0;
-
-                items.forEach(item => {
-                    const haystack = (item.dataset.search || '').toLowerCase();
-                    if (!q || haystack.includes(q)) {
-                        item.classList.remove('hidden');
-                        visibleCount++;
-                    } else {
-                        item.classList.add('hidden');
-                    }
-                });
-
-                if (noResults) {
-                    noResults.classList.toggle('hidden', visibleCount > 0);
-                }
-            }
-
-            searchInput.addEventListener('focus', function() {
-                openDropdown();
-                if (searchInput.value === selectedLabel) {
-                    filterItems('');
-                } else {
-                    filterItems(searchInput.value);
-                }
-            });
-
-            searchInput.addEventListener('input', function() {
-                searchInput.setCustomValidity('');
-                openDropdown();
-                filterItems(searchInput.value);
-
-                if (searchInput.value.trim() === '') {
-                    if (clearBtn) clearBtn.classList.add('hidden');
-                    if (currentSelectedId) {
-                        currentSelectedId = '';
-                        hiddenInput.value = '';
-                        updateEmployeeDetailCard(null);
-                    }
-                } else {
-                    if (clearBtn) clearBtn.classList.remove('hidden');
-                }
-            });
-
-            searchInput.addEventListener('blur', function() {
-                setTimeout(() => {
-                    if (currentSelectedId && employeeMap[currentSelectedId]) {
-                        searchInput.value = selectedLabel;
-                    } else if (!currentSelectedId) {
-                        searchInput.value = '';
-                        if (clearBtn) clearBtn.classList.add('hidden');
-                    }
-                }, 200);
-            });
-
-            if (clearBtn) {
-                clearBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    clearSelection();
-                    searchInput.focus();
-                });
-            }
-
-            if (toggleBtn) {
-                toggleBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    if (isDropdownOpen()) {
-                        closeDropdown();
-                    } else {
-                        searchInput.focus();
-                        openDropdown();
-                        filterItems('');
-                    }
-                });
-            }
-
-            items.forEach(item => {
-                item.addEventListener('click', function() {
-                    selectEmployee(this.dataset.id, true);
-                });
-            });
-
-            document.addEventListener('click', function(e) {
-                if (!wrapper.contains(e.target)) {
-                    closeDropdown();
-                }
-            });
-
-            const form = wrapper.closest('form');
-            if (form) {
-                form.addEventListener('submit', function(e) {
-                    if (!hiddenInput.value) {
-                        searchInput.setCustomValidity('Silakan pilih karyawan dari daftar yang tersedia.');
-                        searchInput.reportValidity();
-                        e.preventDefault();
-                    } else {
-                        searchInput.setCustomValidity('');
-                    }
-                });
-            }
-
-            // Dynamic KODE suffix in letter number
             // Live helper preview for full letter number
             const letterNumberInput = document.getElementById('letter_number');
             const kodeInput = document.getElementById('kode');
-            const initialSuggested = @json($suggestedNumber);
             const previewEl = document.getElementById('full_number_preview');
 
-            function syncLetterNumberWithKode() {
-                if (!letterNumberInput) return;
             function updateFullNumberPreview() {
                 if (!letterNumberInput || !previewEl) return;
                 const rawNumber = letterNumberInput.value.trim();
                 const rawKode = kodeInput ? kodeInput.value.trim().toUpperCase() : '';
 
-                let currentNumber = letterNumberInput.value.trim();
-                const olPos = currentNumber.indexOf('/OL');
-                let base = olPos !== -1 ? currentNumber.substring(0, olPos + 3) : currentNumber;
-                if (!base) {
-                    base = initialSuggested;
-                }
-
-                if (rawKode) {
-                    letterNumberInput.value = base + '/' + rawKode;
                 if (rawNumber && rawKode && !rawNumber.endsWith('/' + rawKode)) {
                     previewEl.textContent = rawNumber + '/' + rawKode;
                 } else {
-                    letterNumberInput.value = base;
                     previewEl.textContent = rawNumber || '-';
                 }
             }
@@ -725,22 +524,207 @@
             if (kodeInput) {
                 kodeInput.addEventListener('input', function() {
                     this.value = this.value.toUpperCase();
-                    syncLetterNumberWithKode();
                     updateFullNumberPreview();
                 });
             }
 
-                if (kodeInput.value.trim()) {
-                    syncLetterNumberWithKode();
-                }
             if (letterNumberInput) {
                 letterNumberInput.addEventListener('input', updateFullNumberPreview);
             }
 
             updateFullNumberPreview();
 
-            if (currentSelectedId && employeeMap[currentSelectedId]) {
-                selectEmployee(currentSelectedId, false);
+            // Employee Combobox
+            const wrapper = document.getElementById('employee-combobox-wrapper');
+            if (wrapper) {
+                const hiddenInput = document.getElementById('employee_id');
+                const searchInput = document.getElementById('employee_search_input');
+                const clearBtn = document.getElementById('employee_clear_btn');
+                const toggleBtn = document.getElementById('employee_dropdown_toggle');
+                const chevronIcon = document.getElementById('employee_chevron_icon');
+                const dropdownMenu = document.getElementById('employee_dropdown_menu');
+                const noResults = document.getElementById('employee_no_results');
+                const items = dropdownMenu.querySelectorAll('.employee-item');
+
+                let currentSelectedId = hiddenInput.value ? String(hiddenInput.value) : '';
+                let selectedLabel = '';
+
+                function openDropdown() {
+                    dropdownMenu.classList.remove('hidden');
+                    if (chevronIcon) chevronIcon.classList.add('rotate-180');
+                }
+
+                function closeDropdown() {
+                    dropdownMenu.classList.add('hidden');
+                    if (chevronIcon) chevronIcon.classList.remove('rotate-180');
+                }
+
+                function isDropdownOpen() {
+                    return !dropdownMenu.classList.contains('hidden');
+                }
+
+                function selectEmployee(id, triggerFill) {
+                    const emp = employeeMap[id];
+                    if (!emp) {
+                        clearSelection();
+                        return;
+                    }
+
+                    currentSelectedId = String(id);
+                    hiddenInput.value = currentSelectedId;
+                    selectedLabel = `${emp.name} (NIK: ${emp.ktp_number})`;
+                    searchInput.value = selectedLabel;
+                    searchInput.setCustomValidity('');
+
+                    if (clearBtn) clearBtn.classList.remove('hidden');
+
+                    items.forEach(item => {
+                        const check = item.querySelector('.employee-check-icon');
+                        if (item.dataset.id === String(id)) {
+                            item.classList.add('bg-indigo-50/70', 'font-semibold');
+                            if (check) check.classList.remove('hidden');
+                        } else {
+                            item.classList.remove('bg-indigo-50/70', 'font-semibold');
+                            if (check) check.classList.add('hidden');
+                        }
+                    });
+
+                    updateEmployeeDetailCard(emp);
+
+                    if (triggerFill) {
+                        const posInput = document.getElementById('position');
+                        const branchInput = document.getElementById('branch');
+
+                        if (posInput && emp.current_position) posInput.value = emp.current_position;
+                        if (branchInput && emp.current_branch) branchInput.value = emp.current_branch;
+                    }
+
+                    closeDropdown();
+                }
+
+                function clearSelection() {
+                    currentSelectedId = '';
+                    hiddenInput.value = '';
+                    selectedLabel = '';
+                    searchInput.value = '';
+                    if (clearBtn) clearBtn.classList.add('hidden');
+
+                    items.forEach(item => {
+                        item.classList.remove('bg-indigo-50/70', 'font-semibold', 'hidden');
+                        const check = item.querySelector('.employee-check-icon');
+                        if (check) check.classList.add('hidden');
+                    });
+                    if (noResults) noResults.classList.add('hidden');
+
+                    updateEmployeeDetailCard(null);
+                }
+
+                function filterItems(query) {
+                    const q = query.trim().toLowerCase();
+                    let visibleCount = 0;
+
+                    items.forEach(item => {
+                        const haystack = (item.dataset.search || '').toLowerCase();
+                        if (!q || haystack.includes(q)) {
+                            item.classList.remove('hidden');
+                            visibleCount++;
+                        } else {
+                            item.classList.add('hidden');
+                        }
+                    });
+
+                    if (noResults) {
+                        noResults.classList.toggle('hidden', visibleCount > 0);
+                    }
+                }
+
+                searchInput.addEventListener('focus', function() {
+                    openDropdown();
+                    if (searchInput.value === selectedLabel) {
+                        filterItems('');
+                    } else {
+                        filterItems(searchInput.value);
+                    }
+                });
+
+                searchInput.addEventListener('input', function() {
+                    searchInput.setCustomValidity('');
+                    openDropdown();
+                    filterItems(searchInput.value);
+
+                    if (searchInput.value.trim() === '') {
+                        if (clearBtn) clearBtn.classList.add('hidden');
+                        if (currentSelectedId) {
+                            currentSelectedId = '';
+                            hiddenInput.value = '';
+                            updateEmployeeDetailCard(null);
+                        }
+                    } else {
+                        if (clearBtn) clearBtn.classList.remove('hidden');
+                    }
+                });
+
+                searchInput.addEventListener('blur', function() {
+                    setTimeout(() => {
+                        if (currentSelectedId && employeeMap[currentSelectedId]) {
+                            searchInput.value = selectedLabel;
+                        } else if (!currentSelectedId) {
+                            searchInput.value = '';
+                            if (clearBtn) clearBtn.classList.add('hidden');
+                        }
+                    }, 200);
+                });
+
+                if (clearBtn) {
+                    clearBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        clearSelection();
+                        searchInput.focus();
+                    });
+                }
+
+                if (toggleBtn) {
+                    toggleBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        if (isDropdownOpen()) {
+                            closeDropdown();
+                        } else {
+                            searchInput.focus();
+                            openDropdown();
+                            filterItems('');
+                        }
+                    });
+                }
+
+                items.forEach(item => {
+                    item.addEventListener('click', function() {
+                        selectEmployee(this.dataset.id, true);
+                    });
+                });
+
+                document.addEventListener('click', function(e) {
+                    if (!wrapper.contains(e.target)) {
+                        closeDropdown();
+                    }
+                });
+
+                const form = wrapper.closest('form');
+                if (form) {
+                    form.addEventListener('submit', function(e) {
+                        if (!hiddenInput.value) {
+                            searchInput.setCustomValidity(
+                                'Silakan pilih karyawan dari daftar yang tersedia.');
+                            searchInput.reportValidity();
+                            e.preventDefault();
+                        } else {
+                            searchInput.setCustomValidity('');
+                        }
+                    });
+                }
+
+                if (currentSelectedId && employeeMap[currentSelectedId]) {
+                    selectEmployee(currentSelectedId, false);
+                }
             }
         });
     </script>

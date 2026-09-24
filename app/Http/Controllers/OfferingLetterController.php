@@ -59,7 +59,6 @@ class OfferingLetterController extends Controller
         }
 
         $suggestedNumber = LetterNumberService::generateOfferingLetterNumber(Carbon::today());
-        $employees = Employee::orderBy('name')->get(['id', 'name', 'ktp_number', 'current_position', 'current_branch', 'first_join_date']);
         $employees = Employee::orderBy('name')->get([
             'id',
             'name',
