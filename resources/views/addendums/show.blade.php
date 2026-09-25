@@ -168,39 +168,10 @@
                                 </td>
                             </tr>
 
-                            <!-- Gaji Pokok -->
-                            <tr>
-                                <td class="py-3 px-4 font-bold text-[#1C2434]">Gaji Pokok / Saku</td>
-                                <td class="py-3 px-4 text-slate-500">
-                                    {{ $addendum->formatted_previous_salary ?: 'Belum diatur' }}</td>
-                                <td class="py-3 px-4 font-bold text-emerald-700 bg-emerald-50/25">
-                                    {{ $addendum->formatted_new_salary ?: ($addendum->formatted_previous_salary ?: '-') }}
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-
-            <!-- Amendment Reason -->
-            <div>
-                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Pokok Alasan Perubahan</h4>
-                <p class="text-sm font-semibold text-[#1C2434] bg-slate-50 p-3 rounded-xl border border-slate-200">
-                    {{ $addendum->amendment_reason }}
-                </p>
-            </div>
-
-            <!-- Clause Changes -->
-            @if ($addendum->clause_changes)
-                <div>
-                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Klausul / Pasal yang Diubah
-                    </h4>
-                    <div
-                        class="p-4 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-xs text-slate-700 whitespace-pre-line leading-relaxed">
-                        {{ $addendum->clause_changes }}
-                    </div>
-                </div>
-            @endif
         </div>
     </div>
 @endsection

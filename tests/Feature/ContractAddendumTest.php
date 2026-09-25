@@ -169,6 +169,11 @@ class ContractAddendumTest extends TestCase
         $response->assertSee('Teknologi Informasi');
         $response->assertSee('Hendra Wijaya, S.Psi.');
         $response->assertSee('Gedung Perkantoran Sudirman Central Lt. 12 Jakarta');
+
+        // Gaji pokok, pokok alasan perubahan, and klausul yang diubah should be removed from show page
+        $response->assertDontSee('Gaji Pokok / Saku');
+        $response->assertDontSee('Pokok Alasan Perubahan');
+        $response->assertDontSee('Klausul / Pasal yang Diubah');
     }
 
     public function test_can_render_print_addendum_document(): void
