@@ -28,8 +28,6 @@
                     </svg>
                 </div>
                 <div>
-                    <span class="text-[10px] font-extrabold uppercase tracking-wider text-purple-700 block">Alur Tahap 4:
-                        Adendum Kontrak</span>
                     <h3 class="text-sm font-bold text-purple-950">
                         Penerbitan Adendum {{ App\Services\LetterNumberService::romanMonth($nextSequence) }} untuk Kontrak
                         Induk #{{ $contract->contract_number ?: $contract->id }}
