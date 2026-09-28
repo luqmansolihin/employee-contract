@@ -60,7 +60,7 @@ class OfferingLetter extends Model
     protected function statusLabel(): Attribute
     {
         return Attribute::make(
-            get: fn(): string => match ($this->status) {
+            get: fn (): string => match ($this->status) {
                 'draft' => 'Draft',
                 'sent' => 'Terkirim',
                 'accepted' => 'Diterima',
@@ -76,7 +76,7 @@ class OfferingLetter extends Model
     protected function statusBadgeClass(): Attribute
     {
         return Attribute::make(
-            get: fn(): string => match ($this->status) {
+            get: fn (): string => match ($this->status) {
                 'draft' => 'bg-slate-100 text-slate-700 border-slate-300',
                 'sent' => 'bg-blue-50 text-blue-700 border-blue-200',
                 'accepted' => 'bg-emerald-50 text-emerald-700 border-emerald-200',
@@ -92,7 +92,7 @@ class OfferingLetter extends Model
     protected function formattedDuration(): Attribute
     {
         return Attribute::make(
-            get: fn(): string => ContractDurationService::format(
+            get: fn (): string => ContractDurationService::format(
                 $this->proposed_start_date,
                 $this->proposed_end_date
             )

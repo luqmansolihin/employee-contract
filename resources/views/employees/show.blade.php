@@ -203,12 +203,11 @@
                 @if ($employee->offeringLetters->isNotEmpty())
                     <div class="divide-y divide-[#E2E8F0] border border-[#E2E8F0] rounded-xl overflow-hidden text-xs">
                         @foreach ($employee->offeringLetters as $ol)
-                            <div
-                                class="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 hover:bg-slate-50/50 transition">
-                                <div class="space-y-1">
+                            <div class="p-4 hover:bg-slate-50/60 transition space-y-3">
+                                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
                                     <div class="flex items-center gap-2 flex-wrap">
                                         <span
-                                            class="font-mono font-bold text-xs text-[#1C2434]">{{ $ol->letter_number }}</span>
+                                            class="font-mono font-bold text-xs sm:text-sm text-[#1C2434]">{{ $ol->letter_number }}</span>
                                         @if ($ol->kode)
                                             <span
                                                 class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-indigo-50 text-[#3C50E0] border border-indigo-200 uppercase font-mono">
@@ -220,66 +219,78 @@
                                             {{ $ol->status_label }}
                                         </span>
                                     </div>
-                                    <p class="text-slate-600">
-                                        Bidang: <strong class="text-indigo-600">{{ $ol->bidang ?: '-' }}</strong> &bull;
-                                        Posisi: <strong>{{ $ol->position }}</strong> ({{ $ol->branch }})
-                                    </p>
-                                    <p class="text-slate-600">
-                                        Periode: <strong>{{ $ol->proposed_start_date->format('d M Y') }}</strong> s/d
-                                        <strong>{{ $ol->proposed_end_date->format('d M Y') }}</strong>
-                                        @if ($ol->formatted_duration !== '-')
-                                            ({{ $ol->formatted_duration }})
-                                        @endif
-                                        &bull; Atasan: <strong>{{ $ol->supervisor_name ?: '-' }}</strong>
-                                        ({{ $ol->supervisor_position ?: '-' }})
-                                    </p>
-                                    <p class="text-[11px] text-slate-400">
-                                        Tgl Surat: {{ $ol->offer_date->format('d M Y') }} &bull; Alamat Kantor:
-                                        {{ $ol->office_address ?: '-' }}
-                                    </p>
-                                </div>
 
-                                <div class="flex items-center gap-2 shrink-0">
-                                    @if ($ol->status === 'draft')
-                                        <a href="{{ route('offering-letters.edit', $ol) }}"
-                                            class="px-2.5 py-1.5 rounded-lg border border-[#E2E8F0] text-slate-700 hover:text-[#3C50E0] hover:border-[#3C50E0] text-xs font-semibold transition flex items-center gap-1">
+                                    <div class="flex items-center gap-2 shrink-0">
+                                        @if ($ol->status === 'draft')
+                                            <a href="{{ route('offering-letters.edit', $ol) }}"
+                                                class="px-2.5 py-1.5 rounded-lg border border-[#E2E8F0] text-slate-700 hover:text-[#3C50E0] hover:border-[#3C50E0] text-xs font-semibold transition flex items-center gap-1">
+                                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                                    </path>
+                                                </svg>
+                                                <span>Edit</span>
+                                            </a>
+                                        @endif
+
+                                        <a href="{{ route('offering-letters.print', $ol) }}" target="_blank"
+                                            class="px-2.5 py-1.5 rounded-lg border border-[#E2E8F0] text-slate-700 hover:text-emerald-600 hover:border-emerald-300 text-xs font-semibold transition flex items-center gap-1">
                                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                                    d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z">
                                                 </path>
                                             </svg>
-                                            <span>Edit</span>
+                                            <span>Cetak</span>
                                         </a>
-                                    @endif
 
-                                    <a href="{{ route('offering-letters.print', $ol) }}" target="_blank"
-                                        class="px-2.5 py-1.5 rounded-lg border border-[#E2E8F0] text-slate-700 hover:text-emerald-600 hover:border-emerald-300 text-xs font-semibold transition flex items-center gap-1">
-                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z">
-                                            </path>
-                                        </svg>
-                                        <span>Cetak</span>
-                                    </a>
-
-                                    <a href="{{ route('offering-letters.show', $ol) }}"
-                                        class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition">
-                                        Detail
-                                    </a>
-
-                                    @if ($ol->contract)
-                                        <a href="{{ route('contracts.show', $ol->contract) }}"
-                                            class="px-2.5 py-1.5 rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-100 text-xs font-semibold border border-emerald-200 transition">
-                                            Kontrak Terbit
+                                        <a href="{{ route('offering-letters.show', $ol) }}"
+                                            class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition">
+                                            Detail
                                         </a>
-                                    @elseif ($ol->status === 'accepted')
-                                        <a href="{{ route('contracts.create', ['offering_letter_id' => $ol->id]) }}"
-                                            class="px-3 py-1.5 rounded-lg bg-[#3C50E0] hover:bg-[#2F40BD] text-white text-xs font-bold transition shadow-xs">
-                                            Terbitkan Kontrak
-                                        </a>
-                                    @endif
+
+                                        @if ($ol->contract)
+                                            <a href="{{ route('contracts.show', $ol->contract) }}"
+                                                class="px-2.5 py-1.5 rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-100 text-xs font-semibold border border-emerald-200 transition">
+                                                Kontrak Terbit
+                                            </a>
+                                        @elseif ($ol->status === 'accepted')
+                                            <a href="{{ route('contracts.create', ['offering_letter_id' => $ol->id]) }}"
+                                                class="px-3 py-1.5 rounded-lg bg-[#3C50E0] hover:bg-[#2F40BD] text-white text-xs font-bold transition shadow-xs">
+                                                Terbitkan Kontrak
+                                            </a>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 pt-2.5 border-t border-slate-100 text-xs text-slate-600">
+                                    <div>
+                                        <span class="text-slate-400 block text-[11px]">Tanggal Surat:</span>
+                                        <strong class="text-slate-800">{{ $ol->offer_date->format('d M Y') }}</strong>
+                                    </div>
+                                    <div>
+                                        <span class="text-slate-400 block text-[11px]">Jabatan:</span>
+                                        <strong class="text-slate-800">{{ $ol->position }}</strong>
+                                    </div>
+                                    <div>
+                                        <span class="text-slate-400 block text-[11px]">Bidang:</span>
+                                        <strong class="text-indigo-600 font-semibold">{{ $ol->bidang ?: '-' }}</strong>
+                                    </div>
+                                    <div>
+                                        <span class="text-slate-400 block text-[11px]">Cabang:</span>
+                                        <strong class="text-slate-800">{{ $ol->branch }}</strong>
+                                    </div>
+                                    <div class="col-span-2 sm:col-span-2 lg:col-span-1">
+                                        <span class="text-slate-400 block text-[11px]">Periode Kontrak:</span>
+                                        <strong class="text-slate-800">{{ $ol->proposed_start_date->format('d M Y') }}
+                                            &mdash; {{ $ol->proposed_end_date->format('d M Y') }}</strong>
+                                        @if ($ol->formatted_duration !== '-')
+                                            <span
+                                                class="text-slate-500 block mt-0.5 text-[11px]">({{ $ol->formatted_duration }})</span>
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
                         @endforeach

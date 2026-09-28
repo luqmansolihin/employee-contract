@@ -92,7 +92,7 @@ class EmployeeContract extends Model
     protected function contractTypeBadgeClass(): Attribute
     {
         return Attribute::make(
-            get: fn(): string => match ($this->contract_type) {
+            get: fn (): string => match ($this->contract_type) {
                 'PKWT' => 'bg-indigo-50 text-indigo-700 border-indigo-200',
                 'MT' => 'bg-purple-50 text-purple-700 border-purple-200',
                 'MAGANG' => 'bg-amber-50 text-amber-700 border-amber-200',
@@ -239,7 +239,7 @@ class EmployeeContract extends Model
     protected function formattedDuration(): Attribute
     {
         return Attribute::make(
-            get: fn(): string => ContractDurationService::format(
+            get: fn (): string => ContractDurationService::format(
                 $this->start_date,
                 $this->end_date
             )
