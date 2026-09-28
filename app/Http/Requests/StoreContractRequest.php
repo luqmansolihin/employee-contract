@@ -24,8 +24,8 @@ class StoreContractRequest extends FormRequest
         if ($this->filled('contract_number') && $this->filled('kode')) {
             $kode = strtoupper(trim((string) $this->kode));
             $contractNumber = trim((string) $this->contract_number);
-            if (! str_ends_with($contractNumber, '/' . $kode)) {
-                $contractNumber = $contractNumber . '/' . $kode;
+            if (! str_ends_with($contractNumber, '/'.$kode)) {
+                $contractNumber = $contractNumber.'/'.$kode;
             }
             $this->merge([
                 'contract_number' => $contractNumber,

@@ -138,9 +138,9 @@
                                     <span class="font-medium text-[#1C2434] block">
                                         {{ $c->start_date->format('d/m/Y') }} s/d {{ $c->end_date->format('d/m/Y') }}
                                     </span>
-                                    <span class="text-[11px] text-slate-400 block">{{ $c->duration_in_months }} Bulan
-                                        ({{ $c->duration_in_days }} Hari)
-                                    </span>
+                                    @if ($c->formatted_duration !== '-')
+                                        <span class="text-[11px] text-slate-400 block">{{ $c->formatted_duration }}</span>
+                                    @endif
                                 </td>
                                 <td class="py-3.5 px-4">
                                     <span

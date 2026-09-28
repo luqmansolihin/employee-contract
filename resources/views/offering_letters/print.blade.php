@@ -204,11 +204,8 @@
             <td>:</td>
             <td>
                 {{ $offeringLetter->proposed_end_date->translatedFormat('d F Y') }}
-                @php
-                    $duration = $offeringLetter->proposed_start_date->diffInMonths($offeringLetter->proposed_end_date);
-                @endphp
-                @if ($duration > 0)
-                    ({{ $duration }} Bulan)
+                @if ($offeringLetter->formatted_duration !== '-')
+                    ({{ $offeringLetter->formatted_duration }})
                 @endif
             </td>
         </tr>

@@ -28,8 +28,8 @@ class ContractAddendumController extends Controller
                     ->orWhere('kode', 'like', "%{$search}%")
                     ->orWhere('bidang', 'like', "%{$search}%")
                     ->orWhere('branch', 'like', "%{$search}%")
-                    ->orWhereHas('employee', fn($eq) => $eq->where('name', 'like', "%{$search}%"))
-                    ->orWhereHas('contract', fn($cq) => $cq->where('contract_number', 'like', "%{$search}%"));
+                    ->orWhereHas('employee', fn ($eq) => $eq->where('name', 'like', "%{$search}%"))
+                    ->orWhereHas('contract', fn ($cq) => $cq->where('contract_number', 'like', "%{$search}%"));
             })
             ->orderBy('issue_date', 'desc');
 

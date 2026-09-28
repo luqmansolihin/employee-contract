@@ -42,7 +42,9 @@
                     <p class="text-xs text-slate-300">
                         Periode: <strong class="text-white">{{ $latestContract->start_date->format('d M Y') }}</strong> s/d
                         <strong class="text-white">{{ $latestContract->end_date->format('d M Y') }}</strong>
-                        (~{{ $latestContract->duration_in_months }} Bulan)
+                        @if ($latestContract->formatted_duration !== '-')
+                            ({{ $latestContract->formatted_duration }})
+                        @endif
                     </p>
                 </div>
                 <div
@@ -210,9 +212,31 @@
 
             box.classList.remove('hidden');
 
-            const totalDays = Math.round((endDate - startDate) / (1000 * 60 * 60 * 24));
-            const months = Math.round(totalDays / 30);
-            document.getElementById('preview-duration').textContent = `${months} bulan (${totalDays} hari)`;
+            const sDate = new Date(startInput);
+            const eDate = new Date(endInput);
+            eDate.setDate(eDate.getDate() + 1);
+
+            let years = eDate.getFullYear() - sDate.getFullYear();
+            let months = eDate.getMonth() - sDate.getMonth();
+            let days = eDate.getDate() - sDate.getDate();
+
+            if (days < 0) {
+                months -= 1;
+                let prevMonth = new Date(eDate.getFullYear(), eDate.getMonth(), 0);
+                days += prevMonth.getDate();
+            }
+            if (months < 0) {
+                years -= 1;
+                months += 12;
+            }
+
+            let parts = [];
+            if (years > 0) parts.push(`${years} Tahun`);
+            if (months > 0) parts.push(`${months} Bulan`);
+            if (days > 0) parts.push(`${days} Hari`);
+            const durationText = parts.length > 0 ? parts.join(' ') : '0 Hari';
+
+            document.getElementById('preview-duration').textContent = durationText;
 
             const remainingDays = Math.round((endDate - today) / (1000 * 60 * 60 * 24));
             const badgeEl = document.getElementById('preview-badge');

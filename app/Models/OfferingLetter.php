@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\ContractDurationService;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -82,6 +83,19 @@ class OfferingLetter extends Model
                 'rejected' => 'bg-rose-50 text-rose-700 border-rose-200',
                 default => 'bg-slate-100 text-slate-700 border-slate-200',
             }
+        );
+    }
+
+    /**
+     * Human-readable formatted contract duration (e.g. 1 Tahun, 1 Bulan, 1 Tahun 6 Bulan).
+     */
+    protected function formattedDuration(): Attribute
+    {
+        return Attribute::make(
+            get: fn(): string => ContractDurationService::format(
+                $this->proposed_start_date,
+                $this->proposed_end_date
+            )
         );
     }
 }

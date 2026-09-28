@@ -135,6 +135,11 @@
                                     <div class="text-[11px] text-slate-400 whitespace-nowrap">
                                         s/d {{ $ol->proposed_end_date->format('d M Y') }}
                                     </div>
+                                    @if ($ol->formatted_duration !== '-')
+                                        <div class="text-[10px] text-slate-400 font-medium whitespace-nowrap">
+                                            ({{ $ol->formatted_duration }})
+                                        </div>
+                                    @endif
                                 </td>
 
                                 <!-- Nama Atasan -->

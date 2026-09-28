@@ -65,7 +65,7 @@ class ContractAddendum extends Model
     protected function sequenceLabel(): Attribute
     {
         return Attribute::make(
-            get: fn(): string => 'Adendum ' . LetterNumberService::romanMonth($this->addendum_sequence ?? 1)
+            get: fn (): string => 'Adendum '.LetterNumberService::romanMonth($this->addendum_sequence ?? 1)
         );
     }
 
@@ -75,7 +75,7 @@ class ContractAddendum extends Model
     protected function contractDate(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->issue_date,
+            get: fn () => $this->issue_date,
         );
     }
 }

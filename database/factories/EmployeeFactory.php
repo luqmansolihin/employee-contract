@@ -80,7 +80,7 @@ class EmployeeFactory extends Factory
             if ($employee->contracts()->count() === 0) {
                 $employee->contracts()->create([
                     'contract_sequence' => 1,
-                    'contract_number' => '001/PKWT/HRD/' . fake()->numerify('###/2026'),
+                    'contract_number' => '001/PKWT/HRD/'.fake()->numerify('###/2026'),
                     'kode' => 'HRD',
                     'contract_type' => 'PKWT',
                     'contract_date' => $employee->first_join_date,
@@ -165,7 +165,7 @@ class EmployeeFactory extends Factory
                     'kode' => 'HRD',
                     'contract_type' => 'PKWT',
                     'contract_date' => $startDate->toDateString(),
-                    'position' => $i === 1 ? 'Junior ' . $employee->current_position : $employee->current_position,
+                    'position' => $i === 1 ? 'Junior '.$employee->current_position : $employee->current_position,
                     'bidang' => 'Operasional',
                     'branch' => $employee->current_branch,
                     'start_date' => $startDate->toDateString(),

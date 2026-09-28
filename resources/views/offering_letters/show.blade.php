@@ -183,13 +183,9 @@
                             {{ $offeringLetter->proposed_start_date->translatedFormat('d M Y') }} s/d
                             {{ $offeringLetter->proposed_end_date->translatedFormat('d M Y') }}
                         </span>
-                        @php
-                            $months = $offeringLetter->proposed_start_date->diffInMonths(
-                                $offeringLetter->proposed_end_date,
-                            );
-                        @endphp
-                        @if ($months > 0)
-                            <span class="text-[11px] text-slate-500 block mt-0.5">({{ $months }} Bulan)</span>
+                        @if ($offeringLetter->formatted_duration !== '-')
+                            <span
+                                class="text-[11px] text-slate-500 block mt-0.5">({{ $offeringLetter->formatted_duration }})</span>
                         @endif
                     </div>
                 </div>

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\ContractDurationService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -229,6 +230,19 @@ class EmployeeContract extends Model
 
                 return "Lewat {$absoluteDays} hari lalu";
             }
+        );
+    }
+
+    /**
+     * Human-readable formatted contract duration (e.g. 1 Tahun, 1 Bulan, 1 Tahun 6 Bulan).
+     */
+    protected function formattedDuration(): Attribute
+    {
+        return Attribute::make(
+            get: fn(): string => ContractDurationService::format(
+                $this->start_date,
+                $this->end_date
+            )
         );
     }
 

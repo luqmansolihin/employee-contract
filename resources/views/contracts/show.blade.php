@@ -137,8 +137,9 @@
                         {{ $contract->start_date->translatedFormat('d M Y') }} s/d
                         {{ $contract->end_date->translatedFormat('d M Y') }}
                     </span>
-                    <span class="text-[11px] text-slate-500 block mt-0.5">({{ $contract->duration_in_months }} Bulan /
-                        {{ $contract->duration_in_days }} Hari)</span>
+                    @if ($contract->formatted_duration !== '-')
+                        <span class="text-[11px] text-slate-500 block mt-0.5">({{ $contract->formatted_duration }})</span>
+                    @endif
                 </div>
             </div>
 

@@ -23,8 +23,8 @@ class StoreContractAddendumRequest extends FormRequest
         if ($this->filled('addendum_number') && $this->filled('kode')) {
             $kode = strtoupper(trim((string) $this->kode));
             $addendumNumber = trim((string) $this->addendum_number);
-            if (! str_ends_with($addendumNumber, '/' . $kode)) {
-                $addendumNumber = $addendumNumber . '/' . $kode;
+            if (! str_ends_with($addendumNumber, '/'.$kode)) {
+                $addendumNumber = $addendumNumber.'/'.$kode;
             }
             $this->merge([
                 'addendum_number' => $addendumNumber,

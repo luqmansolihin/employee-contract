@@ -216,29 +216,24 @@
                                             </span>
                                         @endif
                                         <span
-                                            class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold border {{ $ol->contract_type_badge_class }}">
-                                            {{ $ol->contract_type }}
-                                        </span>
-                                        <span
                                             class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold border {{ $ol->status_badge_class }}">
                                             {{ $ol->status_label }}
                                         </span>
                                     </div>
                                     <p class="text-slate-600">
-                                        Jabatan: <strong>{{ $ol->position }}</strong> ({{ $ol->branch }}) &bull;
-                                        Kompensasi: <strong>{{ $ol->formatted_total_compensation }}</strong>
                                         Bidang: <strong class="text-indigo-600">{{ $ol->bidang ?: '-' }}</strong> &bull;
                                         Posisi: <strong>{{ $ol->position }}</strong> ({{ $ol->branch }})
                                     </p>
                                     <p class="text-slate-600">
                                         Periode: <strong>{{ $ol->proposed_start_date->format('d M Y') }}</strong> s/d
-                                        <strong>{{ $ol->proposed_end_date->format('d M Y') }}</strong> &bull;
-                                        Atasan: <strong>{{ $ol->supervisor_name ?: '-' }}</strong>
+                                        <strong>{{ $ol->proposed_end_date->format('d M Y') }}</strong>
+                                        @if ($ol->formatted_duration !== '-')
+                                            ({{ $ol->formatted_duration }})
+                                        @endif
+                                        &bull; Atasan: <strong>{{ $ol->supervisor_name ?: '-' }}</strong>
                                         ({{ $ol->supervisor_position ?: '-' }})
                                     </p>
                                     <p class="text-[11px] text-slate-400">
-                                        Tgl Penawaran: {{ $ol->offer_date->format('d M Y') }} &bull; Rencana Mulai:
-                                        {{ $ol->proposed_start_date->format('d M Y') }}
                                         Tgl Surat: {{ $ol->offer_date->format('d M Y') }} &bull; Alamat Kantor:
                                         {{ $ol->office_address ?: '-' }}
                                     </p>
@@ -386,9 +381,10 @@
                                         <span class="text-slate-400 block text-[11px]">Periode Masa Kerja:</span>
                                         <strong class="text-slate-800">{{ $contract->start_date->format('d M Y') }}
                                             &mdash; {{ $contract->end_date->format('d M Y') }}</strong>
-                                        <span
-                                            class="text-slate-400 block mt-0.5 text-[11px]">(~{{ $contract->duration_in_months }}
-                                            Bulan)</span>
+                                        @if ($contract->formatted_duration !== '-')
+                                            <span
+                                                class="text-slate-400 block mt-0.5 text-[11px]">({{ $contract->formatted_duration }})</span>
+                                        @endif
                                     </div>
                                     <div>
                                         <span class="text-slate-400 block text-[11px]">Jabatan & Lokasi:</span>
