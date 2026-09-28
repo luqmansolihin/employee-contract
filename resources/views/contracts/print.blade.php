@@ -258,19 +258,7 @@
     </p>
 
     <!-- Pasal 3 -->
-    <div class="article-title">Pasal 3<br>UPAH DAN KOMPENSASI</div>
-    <p>
-        1. PIHAK PERTAMA memberikan upah kepada PIHAK KEDUA sebesar
-        <strong>{{ $contract->formatted_salary ?: 'Rp 0' }}</strong> per bulan.<br>
-        @if ((float) $contract->allowance > 0)
-            2. PIHAK KEDUA berhak atas tunjangan sebesar <strong>{{ $contract->formatted_allowance }}</strong> per
-            bulan.<br>
-        @endif
-        3. Pembayaran upah dibayarkan setiap akhir bulan kalender melalui transfer rekening bank.
-    </p>
-
-    <!-- Pasal 4 -->
-    <div class="article-title">Pasal 4<br>PENUTUP</div>
+    <div class="article-title">Pasal 3<br>PENUTUP</div>
     <p>
         Demikian Perjanjian Kerja ini dibuat dalam rangkap 2 (dua) bermaterai cukup dan memiliki kekuatan hukum yang
         sama bagi PARA PIHAK.

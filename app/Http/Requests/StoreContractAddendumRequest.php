@@ -23,8 +23,8 @@ class StoreContractAddendumRequest extends FormRequest
         if ($this->filled('addendum_number') && $this->filled('kode')) {
             $kode = strtoupper(trim((string) $this->kode));
             $addendumNumber = trim((string) $this->addendum_number);
-            if (! str_ends_with($addendumNumber, '/'.$kode)) {
-                $addendumNumber = $addendumNumber.'/'.$kode;
+            if (! str_ends_with($addendumNumber, '/' . $kode)) {
+                $addendumNumber = $addendumNumber . '/' . $kode;
             }
             $this->merge([
                 'addendum_number' => $addendumNumber,
@@ -49,12 +49,9 @@ class StoreContractAddendumRequest extends FormRequest
             'effective_date' => ['required', 'date'],
             'new_end_date' => ['required', 'date', 'after:effective_date'],
             'new_position' => ['nullable', 'string', 'max:255'],
-            'new_salary' => ['nullable', 'numeric', 'min:0'],
             'supervisor_name' => ['required', 'string', 'max:255'],
             'supervisor_position' => ['required', 'string', 'max:255'],
             'office_address' => ['required', 'string'],
-            'amendment_reason' => ['nullable', 'string', 'max:500'],
-            'clause_changes' => ['nullable', 'string'],
         ];
     }
 
@@ -74,12 +71,9 @@ class StoreContractAddendumRequest extends FormRequest
             'effective_date' => 'tanggal efektif berlaku',
             'new_end_date' => 'tanggal berakhir baru',
             'new_position' => 'jabatan/posisi baru',
-            'new_salary' => 'gaji baru',
             'supervisor_name' => 'nama atasan',
             'supervisor_position' => 'jabatan atasan',
             'office_address' => 'alamat kantor',
-            'amendment_reason' => 'alasan perubahan/perpanjangan',
-            'clause_changes' => 'klausul/pasal perubahan',
         ];
     }
 }

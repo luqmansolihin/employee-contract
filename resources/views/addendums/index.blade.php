@@ -45,7 +45,7 @@
                             <th class="py-3.5 px-4">Kontrak Induk</th>
                             <th class="py-3.5 px-4">Tanggal Terbit</th>
                             <th class="py-3.5 px-4">Perpanjangan Masa Berlaku</th>
-                            <th class="py-3.5 px-4">Alasan Perubahan</th>
+                            <th class="py-3.5 px-4">Penandatangan</th>
                             <th class="py-3.5 px-4 text-center">Aksi</th>
                         </tr>
                     </thead>
@@ -101,13 +101,12 @@
                                     </span>
                                 </td>
                                 <td class="py-3.5 px-4">
-                                    <span class="text-slate-700 font-medium block truncate max-w-[180px]"
-                                        title="{{ $ad->amendment_reason }}">
-                                        {{ $ad->amendment_reason }}
+                                    <span class="text-slate-700 font-medium block truncate max-w-[180px]">
+                                        {{ $ad->supervisor_name ?: '-' }}
                                     </span>
-                                    @if ($ad->new_salary && $ad->new_salary != $ad->previous_salary)
-                                        <span class="text-[10px] text-emerald-600 block">
-                                            Penyesuaian Gaji: {{ $ad->formatted_new_salary }}
+                                    @if ($ad->supervisor_position)
+                                        <span class="text-[10px] text-slate-400 block truncate max-w-[180px]">
+                                            {{ $ad->supervisor_position }}
                                         </span>
                                     @endif
                                 </td>

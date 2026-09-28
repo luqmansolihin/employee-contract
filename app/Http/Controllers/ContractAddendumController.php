@@ -28,9 +28,8 @@ class ContractAddendumController extends Controller
                     ->orWhere('kode', 'like', "%{$search}%")
                     ->orWhere('bidang', 'like', "%{$search}%")
                     ->orWhere('branch', 'like', "%{$search}%")
-                    ->orWhere('amendment_reason', 'like', "%{$search}%")
-                    ->orWhereHas('employee', fn ($eq) => $eq->where('name', 'like', "%{$search}%"))
-                    ->orWhereHas('contract', fn ($cq) => $cq->where('contract_number', 'like', "%{$search}%"));
+                    ->orWhereHas('employee', fn($eq) => $eq->where('name', 'like', "%{$search}%"))
+                    ->orWhereHas('contract', fn($cq) => $cq->where('contract_number', 'like', "%{$search}%"));
             })
             ->orderBy('issue_date', 'desc');
 
@@ -85,23 +84,18 @@ class ContractAddendumController extends Controller
                 'new_position' => $request->new_position ?: $contract->position,
                 'bidang' => $request->bidang ?: $contract->bidang,
                 'branch' => $request->branch ?: $contract->branch,
-                'previous_salary' => $contract->basic_salary,
-                'new_salary' => $request->new_salary ?: $contract->basic_salary,
-                'amendment_reason' => $request->amendment_reason ?: 'Perpanjangan Masa Berlaku Perjanjian Kerja',
-                'clause_changes' => $request->clause_changes,
                 'supervisor_name' => $request->supervisor_name,
                 'supervisor_position' => $request->supervisor_position,
                 'office_address' => $request->office_address,
                 'status' => 'active',
             ]);
 
-            // Update parent contract with extended end date and updated position/salary/bidang/branch/supervisor if modified
+            // Update parent contract with extended end date and updated position/bidang/branch/supervisor if modified
             $contract->update([
                 'end_date' => $request->new_end_date,
                 'position' => $request->new_position ?: $contract->position,
                 'bidang' => $request->bidang ?: $contract->bidang,
                 'branch' => $request->branch ?: $contract->branch,
-                'basic_salary' => $request->new_salary ?: $contract->basic_salary,
                 'supervisor_name' => $request->supervisor_name ?: $contract->supervisor_name,
                 'supervisor_position' => $request->supervisor_position ?: $contract->supervisor_position,
                 'office_address' => $request->office_address ?: $contract->office_address,

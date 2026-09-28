@@ -15,18 +15,17 @@ return new class extends Migration
             $table->id();
             $table->foreignId('employee_id')->constrained('employees')->cascadeOnDelete();
             $table->string('letter_number')->unique();
+            $table->string('kode', 50)->nullable();
             $table->date('offer_date')->index();
-            $table->enum('contract_type', ['PKWT', 'MT', 'MAGANG'])->default('PKWT')->index();
             $table->string('position');
+            $table->string('bidang')->nullable();
             $table->string('branch');
             $table->date('proposed_start_date');
             $table->date('proposed_end_date');
-            $table->decimal('basic_salary', 15, 2)->default(0);
-            $table->decimal('allowance', 15, 2)->default(0);
-            $table->date('valid_until')->nullable();
             $table->enum('status', ['draft', 'sent', 'accepted', 'rejected'])->default('draft')->index();
-            $table->text('terms')->nullable();
-            $table->text('notes')->nullable();
+            $table->string('supervisor_name')->nullable();
+            $table->string('supervisor_position')->nullable();
+            $table->text('office_address')->nullable();
             $table->timestamps();
         });
     }

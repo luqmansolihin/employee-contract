@@ -79,7 +79,6 @@ class ContractLifecycleTest extends TestCase
             'supervisor_name' => 'Hendra Wijaya, S.Psi.',
             'supervisor_position' => 'HR Director',
             'office_address' => 'Jl. Pemuda No. 45 Surabaya',
-            'basic_salary' => 6000000,
             'status' => 'accepted',
         ]);
 
@@ -154,7 +153,6 @@ class ContractLifecycleTest extends TestCase
             'supervisor_name' => 'Hendra Wijaya, S.Psi.',
             'supervisor_position' => 'Human Resources Manager',
             'office_address' => 'Gedung Sudirman Central Lt. 12, Jakarta',
-            'basic_salary' => 7000000,
             'status' => 'active',
         ]);
 
@@ -201,12 +199,10 @@ class ContractLifecycleTest extends TestCase
             'supervisor_name' => 'Budi',
             'supervisor_position' => 'Manager',
             'office_address' => 'Jakarta',
-            'contract_type' => 'PKWT',
             'position' => 'HR Specialist',
             'branch' => 'Surabaya',
             'proposed_start_date' => '2026-10-01',
             'proposed_end_date' => '2027-09-30',
-            'basic_salary' => 6000000,
             'status' => 'draft',
         ]);
 
@@ -241,7 +237,6 @@ class ContractLifecycleTest extends TestCase
             'supervisor_name' => 'Budi',
             'supervisor_position' => 'Manager',
             'office_address' => 'Jakarta',
-            'basic_salary' => 6000000,
         ]);
         $storeResponse->assertSessionHasErrors('offering_letter_id');
 
@@ -275,7 +270,6 @@ class ContractLifecycleTest extends TestCase
             'supervisor_name' => 'Bambang Pamungkas',
             'supervisor_position' => 'CTO',
             'office_address' => 'Gedung Cyber 2 Lt. 8 Jakarta',
-            'basic_salary' => 8000000,
             'status' => 'active',
         ]);
 

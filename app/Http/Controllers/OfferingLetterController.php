@@ -24,7 +24,7 @@ class OfferingLetterController extends Controller
 
         $query = OfferingLetter::query()
             ->with(['employee'])
-            ->when($status, fn ($q) => $q->where('status', $status))
+            ->when($status, fn($q) => $q->where('status', $status))
             ->when($search, function ($q) use ($search) {
                 $q->where('letter_number', 'like', "%{$search}%")
                     ->orWhere('position', 'like', "%{$search}%")
@@ -32,7 +32,7 @@ class OfferingLetterController extends Controller
                     ->orWhere('bidang', 'like', "%{$search}%")
                     ->orWhere('kode', 'like', "%{$search}%")
                     ->orWhere('supervisor_name', 'like', "%{$search}%")
-                    ->orWhereHas('employee', fn ($eq) => $eq->where('name', 'like', "%{$search}%"));
+                    ->orWhereHas('employee', fn($eq) => $eq->where('name', 'like', "%{$search}%"));
             })
             ->orderBy('offer_date', 'desc');
 
@@ -87,18 +87,12 @@ class OfferingLetterController extends Controller
             'letter_number' => $request->letter_number,
             'kode' => $request->kode,
             'offer_date' => $request->offer_date,
-            'contract_type' => $request->contract_type ?? 'PKWT',
             'position' => $request->position,
             'bidang' => $request->bidang,
             'branch' => $request->branch,
             'proposed_start_date' => $request->proposed_start_date,
             'proposed_end_date' => $request->proposed_end_date,
-            'basic_salary' => $request->basic_salary ?? 0,
-            'allowance' => $request->allowance ?? 0,
-            'valid_until' => $request->valid_until,
             'status' => 'draft',
-            'terms' => $request->terms,
-            'notes' => $request->notes,
             'supervisor_name' => $request->supervisor_name,
             'supervisor_position' => $request->supervisor_position,
             'office_address' => $request->office_address,

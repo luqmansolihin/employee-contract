@@ -55,7 +55,6 @@ class ContractRenewalTest extends TestCase
             'end_date' => '2026-12-31',
             'position' => 'Senior Staff', // Promoted!
             'branch' => 'Surabaya', // Transferred!
-            'notes' => 'Perpanjangan tahun ke-2 dengan promosi jabatan dan mutasi cabang.',
         ];
 
         $response = $this->post(route('employees.renew.store', $employee), $payload);
@@ -91,7 +90,6 @@ class ContractRenewalTest extends TestCase
         $showResponse->assertSee('Kontrak #2 (Perpanjangan 1)');
         $showResponse->assertSee('Junior Staff');
         $showResponse->assertSee('Senior Staff');
-        $showResponse->assertSee('Perpanjangan tahun ke-2 dengan promosi jabatan');
     }
 
     public function test_validates_renewal_end_date_must_be_after_start_date(): void
@@ -125,7 +123,6 @@ class ContractRenewalTest extends TestCase
             'end_date' => Carbon::parse($employee->current_contract_end_date)->addDay()->addYear()->toDateString(),
             'position' => 'Department Lead',
             'branch' => $employee->current_branch,
-            'notes' => 'Perpanjangan kontrak ke-3 menjadi Department Lead.',
         ];
 
         $response = $this->post(route('employees.renew.store', $employee), $payload);

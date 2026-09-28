@@ -28,7 +28,6 @@ class StoreContractRenewalRequest extends FormRequest
             'end_date' => ['required', 'date', 'after:start_date'],
             'position' => ['required', 'string', 'max:100'],
             'branch' => ['required', 'string', 'max:100'],
-            'notes' => ['nullable', 'string', 'max:1000'],
         ];
     }
 
@@ -45,7 +44,6 @@ class StoreContractRenewalRequest extends FormRequest
             'end_date' => 'tanggal habis perpanjangan',
             'position' => 'jabatan/posisi',
             'branch' => 'cabang',
-            'notes' => 'catatan perpanjangan',
         ];
     }
 

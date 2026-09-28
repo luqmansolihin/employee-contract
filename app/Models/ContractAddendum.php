@@ -26,10 +26,6 @@ class ContractAddendum extends Model
         'new_position',
         'bidang',
         'branch',
-        'previous_salary',
-        'new_salary',
-        'amendment_reason',
-        'clause_changes',
         'supervisor_name',
         'supervisor_position',
         'office_address',
@@ -44,8 +40,6 @@ class ContractAddendum extends Model
             'previous_end_date' => 'date',
             'new_end_date' => 'date',
             'addendum_sequence' => 'integer',
-            'previous_salary' => 'decimal:2',
-            'new_salary' => 'decimal:2',
         ];
     }
 
@@ -71,31 +65,7 @@ class ContractAddendum extends Model
     protected function sequenceLabel(): Attribute
     {
         return Attribute::make(
-            get: fn (): string => 'Adendum '.LetterNumberService::romanMonth($this->addendum_sequence ?? 1)
-        );
-    }
-
-    /**
-     * Formatted previous salary.
-     */
-    protected function formattedPreviousSalary(): Attribute
-    {
-        return Attribute::make(
-            get: fn (): ?string => $this->previous_salary !== null
-                ? 'Rp '.number_format((float) $this->previous_salary, 0, ',', '.')
-                : null
-        );
-    }
-
-    /**
-     * Formatted new salary.
-     */
-    protected function formattedNewSalary(): Attribute
-    {
-        return Attribute::make(
-            get: fn (): ?string => $this->new_salary !== null
-                ? 'Rp '.number_format((float) $this->new_salary, 0, ',', '.')
-                : null
+            get: fn(): string => 'Adendum ' . LetterNumberService::romanMonth($this->addendum_sequence ?? 1)
         );
     }
 
@@ -105,7 +75,7 @@ class ContractAddendum extends Model
     protected function contractDate(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->issue_date,
+            get: fn() => $this->issue_date,
         );
     }
 }

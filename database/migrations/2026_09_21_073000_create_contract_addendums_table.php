@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('employee_id')->constrained('employees')->cascadeOnDelete();
             $table->foreignId('employee_contract_id')->constrained('employee_contracts')->cascadeOnDelete();
             $table->string('addendum_number')->unique();
+            $table->string('kode', 50)->nullable();
             $table->unsignedInteger('addendum_sequence')->default(1)->index();
             $table->date('issue_date')->index();
             $table->date('effective_date');
@@ -23,10 +24,11 @@ return new class extends Migration
             $table->date('new_end_date')->index();
             $table->string('previous_position')->nullable();
             $table->string('new_position')->nullable();
-            $table->decimal('previous_salary', 15, 2)->nullable();
-            $table->decimal('new_salary', 15, 2)->nullable();
-            $table->string('amendment_reason')->nullable();
-            $table->text('clause_changes')->nullable();
+            $table->string('bidang')->nullable();
+            $table->string('branch')->nullable();
+            $table->string('supervisor_name')->nullable();
+            $table->string('supervisor_position')->nullable();
+            $table->text('office_address')->nullable();
             $table->enum('status', ['active', 'archived'])->default('active')->index();
             $table->timestamps();
         });

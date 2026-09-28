@@ -153,19 +153,6 @@
                         @enderror
                     </div>
 
-                    <!-- Catatan Perpanjangan -->
-                    <div class="md:col-span-2">
-                        <label for="notes"
-                            class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                            Catatan / Alasan Perpanjangan <span class="text-slate-400 font-normal">(Opsional)</span>
-                        </label>
-                        <textarea name="notes" id="notes" rows="3"
-                            placeholder="Misal: Perpanjangan kontrak 1 tahun berdasarkan hasil penilaian evaluasi kinerja tahunan (Grade A)..."
-                            class="w-full px-4 py-2.5 text-sm rounded-lg border border-[#E2E8F0] focus:border-[#3C50E0] focus:ring-2 focus:ring-[#3C50E0]/20 outline-hidden transition bg-white">{{ old('notes') }}</textarea>
-                        @error('notes')
-                            <p class="text-xs text-rose-600 mt-1 font-medium">{{ $message }}</p>
-                        @enderror
-                    </div>
 
                     <!-- Live Contract Duration Preview Box -->
                     <div id="duration-preview-box"

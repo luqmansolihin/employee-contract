@@ -80,13 +80,19 @@ class EmployeeFactory extends Factory
             if ($employee->contracts()->count() === 0) {
                 $employee->contracts()->create([
                     'contract_sequence' => 1,
-                    'contract_number' => '001/PKWT/'.fake()->numerify('###/2025'),
+                    'contract_number' => '001/PKWT/HRD/' . fake()->numerify('###/2026'),
+                    'kode' => 'HRD',
+                    'contract_type' => 'PKWT',
+                    'contract_date' => $employee->first_join_date,
                     'position' => $employee->current_position,
+                    'bidang' => 'Operasional',
                     'branch' => $employee->current_branch,
                     'start_date' => $employee->first_join_date,
                     'end_date' => $employee->current_contract_end_date,
                     'status' => 'active',
-                    'notes' => 'Kontrak awal saat pertama kali bergabung.',
+                    'supervisor_name' => 'Hendra Wijaya, S.Psi.',
+                    'supervisor_position' => 'Human Resources Manager',
+                    'office_address' => 'Gedung Perkantoran Sudirman Central, Lantai 12, Jakarta Pusat',
                 ]);
             }
         });
@@ -156,12 +162,18 @@ class EmployeeFactory extends Factory
                 $employee->contracts()->create([
                     'contract_sequence' => $i,
                     'contract_number' => sprintf('%03d/PKWT/HRD/%d', $i, $startDate->year),
-                    'position' => $i === 1 ? 'Junior '.$employee->current_position : $employee->current_position,
+                    'kode' => 'HRD',
+                    'contract_type' => 'PKWT',
+                    'contract_date' => $startDate->toDateString(),
+                    'position' => $i === 1 ? 'Junior ' . $employee->current_position : $employee->current_position,
+                    'bidang' => 'Operasional',
                     'branch' => $employee->current_branch,
                     'start_date' => $startDate->toDateString(),
                     'end_date' => $endDate->toDateString(),
                     'status' => 'renewed',
-                    'notes' => "Periode kontrak ke-{$i} telah selesai dan diperpanjang dengan hasil evaluasi baik.",
+                    'supervisor_name' => 'Hendra Wijaya, S.Psi.',
+                    'supervisor_position' => 'Human Resources Manager',
+                    'office_address' => 'Gedung Perkantoran Sudirman Central, Lantai 12, Jakarta Pusat',
                 ]);
 
                 $startDate = $endDate->copy()->addDay();
@@ -172,12 +184,18 @@ class EmployeeFactory extends Factory
             $employee->contracts()->create([
                 'contract_sequence' => $latestSequence,
                 'contract_number' => sprintf('%03d/PKWT/HRD/%d', $latestSequence, $startDate->year),
+                'kode' => 'HRD',
+                'contract_type' => 'PKWT',
+                'contract_date' => $startDate->toDateString(),
                 'position' => $employee->current_position,
+                'bidang' => 'Operasional',
                 'branch' => $employee->current_branch,
                 'start_date' => $startDate->toDateString(),
                 'end_date' => $employee->current_contract_end_date,
                 'status' => 'active',
-                'notes' => "Perpanjangan kontrak ke-{$previousContractsCount} (Kontrak #{$latestSequence}).",
+                'supervisor_name' => 'Hendra Wijaya, S.Psi.',
+                'supervisor_position' => 'Human Resources Manager',
+                'office_address' => 'Gedung Perkantoran Sudirman Central, Lantai 12, Jakarta Pusat',
             ]);
         });
     }

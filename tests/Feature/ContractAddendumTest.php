@@ -45,7 +45,6 @@ class ContractAddendumTest extends TestCase
             'branch' => 'Jakarta',
             'start_date' => '2025-01-01',
             'end_date' => '2025-12-31',
-            'basic_salary' => 8000000,
             'supervisor_name' => 'Hendra Wijaya, S.Psi.',
             'supervisor_position' => 'Human Resources Manager',
             'office_address' => 'Gedung Perkantoran Sudirman Central Lt. 12 Jakarta',
@@ -111,8 +110,6 @@ class ContractAddendumTest extends TestCase
             'bidang' => 'Teknologi Informasi',
             'branch' => 'Bandung',
             'new_position' => 'Backend Developer',
-            'new_salary' => 8000000,
-            'amendment_reason' => 'Perpanjangan Masa Berlaku Perjanjian Kerja',
             'supervisor_name' => 'Budi Santoso',
             'supervisor_position' => 'General Manager',
             'office_address' => 'Jl. Asia Afrika No. 10 Bandung',
@@ -124,7 +121,6 @@ class ContractAddendumTest extends TestCase
         $this->assertEquals('Backend Developer', $this->contract->position);
         $this->assertEquals('Bandung', $this->contract->branch);
         $this->assertEquals('Budi Santoso', $this->contract->supervisor_name);
-        $this->assertEquals(8000000, (float) $this->contract->basic_salary);
 
         // Employee cached data should also reflect the extended contract
         $this->employee->refresh();
@@ -151,10 +147,6 @@ class ContractAddendumTest extends TestCase
             'new_position' => 'Senior Backend Developer',
             'bidang' => 'Teknologi Informasi',
             'branch' => 'Jakarta',
-            'previous_salary' => 8000000,
-            'new_salary' => 11000000,
-            'amendment_reason' => 'Perpanjangan Masa Berlaku 1 Tahun',
-            'clause_changes' => 'Pasal 1 diperpanjang.',
             'supervisor_name' => 'Hendra Wijaya, S.Psi.',
             'supervisor_position' => 'Human Resources Manager',
             'office_address' => 'Gedung Perkantoran Sudirman Central Lt. 12 Jakarta',
@@ -192,10 +184,6 @@ class ContractAddendumTest extends TestCase
             'new_position' => 'Senior Backend Developer',
             'bidang' => 'Teknologi Informasi',
             'branch' => 'Jakarta',
-            'previous_salary' => 8000000,
-            'new_salary' => 11000000,
-            'amendment_reason' => 'Perpanjangan Masa Berlaku 1 Tahun',
-            'clause_changes' => 'Pasal 1 diperpanjang.',
             'supervisor_name' => 'Budi Santoso',
             'supervisor_position' => 'Director',
             'office_address' => 'Menara BCA Lt. 20 Jakarta',

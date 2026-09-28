@@ -397,22 +397,13 @@
                                             {{ $contract->branch }}</span>
                                     </div>
                                     <div>
-                                        <span class="text-slate-400 block text-[11px]">Gaji & Tunjangan:</span>
-                                        <strong
-                                            class="text-slate-800">{{ $contract->formatted_salary ?: 'Rp 0' }}</strong>
+                                        <span class="text-slate-400 block text-[11px]">Sisa Waktu:</span>
                                         <span
-                                            class="block mt-0.5 font-medium {{ $contract->calculated_status === 'expired' ? 'text-rose-600' : 'text-emerald-600' }}">
+                                            class="block font-bold mt-1 {{ $contract->calculated_status === 'expired' ? 'text-rose-600' : 'text-emerald-600' }}">
                                             {{ $contract->remaining_days_text }}
                                         </span>
                                     </div>
                                 </div>
-
-                                @if ($contract->notes)
-                                    <div
-                                        class="mt-2 pt-2 border-t border-[#E2E8F0] text-xs text-slate-600 bg-white p-2.5 rounded-lg border border-slate-100">
-                                        <span class="font-bold text-slate-700">Catatan:</span> {{ $contract->notes }}
-                                    </div>
-                                @endif
 
                                 <!-- Child Addendums Sub-List -->
                                 @if ($contract->addendums->isNotEmpty())
@@ -429,7 +420,7 @@
                                                     <span
                                                         class="text-[10px] font-semibold text-purple-700 bg-purple-50 px-1.5 py-0.5 rounded-sm ml-1">{{ $ad->sequence_label }}</span>
                                                     <span class="text-slate-500 block text-[11px] mt-0.5">
-                                                        {{ $ad->amendment_reason }} &bull; Perpanjangan s/d
+                                                        Perpanjangan s/d
                                                         <strong>{{ $ad->new_end_date->format('d/m/Y') }}</strong>
                                                     </span>
                                                 </div>

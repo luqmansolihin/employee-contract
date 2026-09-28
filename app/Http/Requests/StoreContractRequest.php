@@ -24,8 +24,8 @@ class StoreContractRequest extends FormRequest
         if ($this->filled('contract_number') && $this->filled('kode')) {
             $kode = strtoupper(trim((string) $this->kode));
             $contractNumber = trim((string) $this->contract_number);
-            if (! str_ends_with($contractNumber, '/'.$kode)) {
-                $contractNumber = $contractNumber.'/'.$kode;
+            if (! str_ends_with($contractNumber, '/' . $kode)) {
+                $contractNumber = $contractNumber . '/' . $kode;
             }
             $this->merge([
                 'contract_number' => $contractNumber,
@@ -67,9 +67,6 @@ class StoreContractRequest extends FormRequest
             'supervisor_name' => ['required', 'string', 'max:255'],
             'supervisor_position' => ['required', 'string', 'max:255'],
             'office_address' => ['required', 'string'],
-            'basic_salary' => ['nullable', 'numeric', 'min:0'],
-            'allowance' => ['nullable', 'numeric', 'min:0'],
-            'notes' => ['nullable', 'string'],
         ];
     }
 
@@ -95,9 +92,6 @@ class StoreContractRequest extends FormRequest
             'supervisor_name' => 'nama atasan',
             'supervisor_position' => 'jabatan atasan',
             'office_address' => 'alamat kantor',
-            'basic_salary' => 'gaji pokok/uang saku',
-            'allowance' => 'tunjangan',
-            'notes' => 'catatan kontrak',
         ];
     }
 }

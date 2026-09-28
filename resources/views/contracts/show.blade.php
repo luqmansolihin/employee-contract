@@ -162,14 +162,6 @@
                     </div>
                 </div>
             </div>
-
-            @if ($contract->notes)
-                <div>
-                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Catatan Tambahan</h4>
-                    <p class="text-xs text-slate-700 bg-slate-50 p-3 rounded-xl border border-slate-200">
-                        {{ $contract->notes }}</p>
-                </div>
-            @endif
         </div>
 
         <!-- Section: Adendum Kontrak Terkait -->
@@ -199,9 +191,6 @@
                                         {{ $ad->sequence_label }}
                                     </span>
                                 </div>
-                                <p class="text-slate-600">
-                                    Alasan: <strong>{{ $ad->amendment_reason }}</strong>
-                                </p>
                                 <p class="text-[11px] text-slate-400">
                                     Masa Berlaku Baru: <strong
                                         class="text-slate-700">{{ $ad->effective_date->format('d/m/Y') }} s/d

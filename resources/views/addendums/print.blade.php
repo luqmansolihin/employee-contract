@@ -212,27 +212,8 @@
                     <td><strong>{{ $addendum->new_position }}</strong></td>
                 </tr>
             @endif
-            @if ($addendum->new_salary && $addendum->new_salary != $addendum->previous_salary)
-                <tr>
-                    <td><strong>Gaji Pokok / Upah</strong></td>
-                    <td>{{ $addendum->formatted_previous_salary ?: 'Rp 0' }}</td>
-                    <td><strong>{{ $addendum->formatted_new_salary }}</strong></td>
-                </tr>
-            @endif
         </tbody>
     </table>
-
-    <p>
-        <strong>Pokok Alasan Perubahan:</strong><br>
-        {{ $addendum->amendment_reason }}
-    </p>
-
-    @if ($addendum->clause_changes)
-        <p><strong>Rincian Perubahan Klausul:</strong></p>
-        <div style="margin-left: 16px;">
-            {!! nl2br(e($addendum->clause_changes)) !!}
-        </div>
-    @endif
 
     <!-- Pasal 2 -->
     <div class="article-title">Pasal 2<br>KETENTUAN LAIN-LAIN</div>

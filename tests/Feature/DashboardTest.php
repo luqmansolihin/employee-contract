@@ -34,12 +34,10 @@ class DashboardTest extends TestCase
             'employee_id' => $employee->id,
             'letter_number' => '001/IX/2026/OL',
             'offer_date' => $date,
-            'contract_type' => 'PKWT',
             'position' => 'Staff',
             'branch' => 'Jakarta',
             'proposed_start_date' => $date,
             'proposed_end_date' => $date->copy()->addYear(),
-            'basic_salary' => 5000000,
             'status' => 'draft',
         ]);
 
@@ -64,7 +62,6 @@ class DashboardTest extends TestCase
             'effective_date' => $date,
             'previous_end_date' => $contract->end_date,
             'new_end_date' => $date->copy()->addYear(),
-            'amendment_reason' => 'Perpanjangan Masa Berlaku',
         ]);
 
         $response = $this->actingAs($user)->get(route('dashboard'));

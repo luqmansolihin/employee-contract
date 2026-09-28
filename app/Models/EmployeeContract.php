@@ -32,10 +32,7 @@ class EmployeeContract extends Model
         'branch',
         'start_date',
         'end_date',
-        'basic_salary',
-        'allowance',
         'status',
-        'notes',
         'supervisor_name',
         'supervisor_position',
         'office_address',
@@ -53,8 +50,6 @@ class EmployeeContract extends Model
             'start_date' => 'date',
             'end_date' => 'date',
             'contract_sequence' => 'integer',
-            'basic_salary' => 'decimal:2',
-            'allowance' => 'decimal:2',
         ];
     }
 
@@ -96,36 +91,12 @@ class EmployeeContract extends Model
     protected function contractTypeBadgeClass(): Attribute
     {
         return Attribute::make(
-            get: fn (): string => match ($this->contract_type) {
+            get: fn(): string => match ($this->contract_type) {
                 'PKWT' => 'bg-indigo-50 text-indigo-700 border-indigo-200',
                 'MT' => 'bg-purple-50 text-purple-700 border-purple-200',
                 'MAGANG' => 'bg-amber-50 text-amber-700 border-amber-200',
                 default => 'bg-slate-100 text-slate-700 border-slate-200',
             }
-        );
-    }
-
-    /**
-     * Formatted basic salary.
-     */
-    protected function formattedSalary(): Attribute
-    {
-        return Attribute::make(
-            get: fn (): ?string => $this->basic_salary !== null
-                ? 'Rp '.number_format((float) $this->basic_salary, 0, ',', '.')
-                : null
-        );
-    }
-
-    /**
-     * Formatted allowance.
-     */
-    protected function formattedAllowance(): Attribute
-    {
-        return Attribute::make(
-            get: fn (): ?string => $this->allowance !== null
-                ? 'Rp '.number_format((float) $this->allowance, 0, ',', '.')
-                : null
         );
     }
 
