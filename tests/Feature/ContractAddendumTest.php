@@ -76,13 +76,46 @@ class ContractAddendumTest extends TestCase
         $response->assertSee('Human Resources Manager');
         $response->assertSee('Gedung Perkantoran Sudirman Central Lt. 12 Jakarta');
 
-        // Point 3 and Point 5 should not be in the form
+        $response->assertSee('Backend Developer');
+        $response->assertSee('name="new_position"', false);
+
+        // Salary, reason, and clause changes should not be in the form
         $response->assertDontSee('Penyesuaian Jabatan & Gaji');
         $response->assertDontSee('Alasan & Klausul Perubahan');
-        $response->assertDontSee('name="new_position"', false);
         $response->assertDontSee('name="new_salary"', false);
         $response->assertDontSee('name="amendment_reason"', false);
         $response->assertDontSee('name="clause_changes"', false);
+    }
+
+    public function test_can_store_addendum_with_new_position(): void
+    {
+        $payload = [
+            'addendum_number' => '002/IX/2026/A-PKWT',
+            'kode' => 'HRD',
+            'issue_date' => '2025-12-15',
+            'bidang' => 'Teknologi Informasi',
+            'branch' => 'Bandung',
+            'effective_date' => '2026-01-01',
+            'new_end_date' => '2026-12-31',
+            'new_position' => 'Senior Backend Developer',
+            'supervisor_name' => 'Budi Santoso',
+            'supervisor_position' => 'General Manager',
+            'office_address' => 'Jl. Asia Afrika No. 10 Bandung',
+        ];
+
+        $response = $this->post(route('addendums.store', $this->contract), $payload);
+
+        $this->assertDatabaseHas('contract_addendums', [
+            'employee_contract_id' => $this->contract->id,
+            'new_position' => 'Senior Backend Developer',
+            'previous_position' => 'Backend Developer',
+        ]);
+
+        $this->contract->refresh();
+        $this->assertEquals('Senior Backend Developer', $this->contract->position);
+
+        $this->employee->refresh();
+        $this->assertEquals('Senior Backend Developer', $this->employee->current_position);
     }
 
     public function test_can_store_addendum_and_extend_contract_end_date(): void

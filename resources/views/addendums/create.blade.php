@@ -37,7 +37,9 @@
 
             <div class="text-right text-xs">
                 <span class="text-purple-700 block">Karyawan: <strong>{{ $contract->employee->name }}</strong></span>
-                <span class="text-purple-600 text-[11px]">Masa Kontrak Saat Ini: s/d
+                <span class="text-purple-900 block text-[11px] mt-0.5">Jabatan:
+                    <strong>{{ $contract->position }}</strong></span>
+                <span class="text-purple-600 text-[11px] block mt-0.5">Masa Kontrak Saat Ini: s/d
                     {{ $contract->end_date->format('d/m/Y') }}</span>
             </div>
         </div>
@@ -123,8 +125,22 @@
                             @enderror
                         </div>
 
+                        <!-- Posisi / Jabatan -->
+                        <div>
+                            <label for="new_position" class="block text-xs font-bold text-[#1C2434] mb-1">
+                                Posisi / Jabatan <span class="text-rose-500">*</span>
+                            </label>
+                            <input type="text" name="new_position" id="new_position"
+                                value="{{ old('new_position', $contract->position) }}" required autocomplete="off"
+                                placeholder="Contoh: Senior Backend Developer"
+                                class="w-full px-3.5 py-2 text-xs rounded-xl bg-[#F8FAFC] border @error('new_position') border-rose-400 @else border-[#E2E8F0] @enderror focus:bg-white focus:border-[#3C50E0] focus:ring-1 focus:ring-[#3C50E0] outline-hidden transition">
+                            @error('new_position')
+                                <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
                         <!-- Cabang / Unit Kerja -->
-                        <div class="sm:col-span-2">
+                        <div>
                             <label for="branch" class="block text-xs font-bold text-[#1C2434] mb-1">
                                 Cabang / Lokasi Penempatan <span class="text-rose-500">*</span>
                             </label>
