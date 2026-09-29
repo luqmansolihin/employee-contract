@@ -141,7 +141,7 @@ class EmployeeContract extends Model
                     return 'expired';
                 }
 
-                if ($endDate->diffInDays($today) <= 30) {
+                if ($this->remaining_days <= 30) {
                     return 'expiring_soon';
                 }
 
