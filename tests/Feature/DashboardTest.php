@@ -77,6 +77,61 @@ class DashboardTest extends TestCase
         $response->assertSee('Kontrak Kerja Aktif');
         $response->assertSee('Total Adendum Diterbitkan');
         $response->assertSee('Peringatan: Kontrak Segera Berakhir');
+        $response->assertSee('Peringatan: Kontrak Telah Berakhir (Expired)');
+    }
+
+    public function test_authenticated_user_can_view_expired_contracts_warning_on_dashboard(): void
+    {
+        $user = User::factory()->admin()->create();
+
+        // 1. Employee with expired contract (latest contract is expired)
+        $expiredEmployee = Employee::factory()->create(['name' => 'Budi Expired']);
+        EmployeeContract::create([
+            'employee_id' => $expiredEmployee->id,
+            'contract_sequence' => 1,
+            'contract_number' => '001/EXP/2026',
+            'contract_type' => 'PKWT',
+            'position' => 'Staff',
+            'branch' => 'Jakarta',
+            'start_date' => now()->subMonths(6),
+            'end_date' => now()->subDays(5),
+            'status' => 'expired',
+        ]);
+
+        // 2. Employee with renewed contract (old contract expired/superseded, but current is active)
+        $renewedEmployee = Employee::factory()->create(['name' => 'Siti Active']);
+        EmployeeContract::create([
+            'employee_id' => $renewedEmployee->id,
+            'contract_sequence' => 1,
+            'contract_number' => '001/OLD/2025',
+            'contract_type' => 'PKWT',
+            'position' => 'Staff',
+            'branch' => 'Jakarta',
+            'start_date' => now()->subYears(2),
+            'end_date' => now()->subYear(),
+            'status' => 'renewed',
+        ]);
+        EmployeeContract::create([
+            'employee_id' => $renewedEmployee->id,
+            'contract_sequence' => 2,
+            'contract_number' => '002/CURR/2026',
+            'contract_type' => 'PKWT',
+            'position' => 'Staff',
+            'branch' => 'Jakarta',
+            'start_date' => now()->subMonth(),
+            'end_date' => now()->addMonths(5),
+            'status' => 'active',
+        ]);
+
+        $response = $this->actingAs($user)->get(route('dashboard'));
+
+        $response->assertOk();
+        $response->assertViewHas('expiredContractsCount', 1);
+        $expiredContracts = $response->viewData('expiredContracts');
+        $this->assertCount(1, $expiredContracts);
+        $this->assertEquals($expiredEmployee->id, $expiredContracts->first()->employee_id);
+        $response->assertSee('Budi Expired');
+        $response->assertSee('Lewat 5 Hari');
     }
 
     public function test_root_url_renders_dashboard(): void

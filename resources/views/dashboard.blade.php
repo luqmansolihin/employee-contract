@@ -11,7 +11,6 @@
             </h1>
         </div>
 
-
         <!-- TailAdmin KPI Analytic Cards Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <!-- 1. Employee Card -->
@@ -96,9 +95,184 @@
             </a>
         </div>
 
-        <!-- Breakdown Tipe Kontrak & Peringatan Masa Berlaku -->
+        <!-- Peringatan Masa Berlaku Kontrak Grid: Segera Berakhir & Expired -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- 1. Peringatan Kontrak Segera Berakhir (<= 30 Hari) -->
+            <div class="p-6 rounded-2xl bg-white border border-[#E2E8F0] shadow-xs">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-2">
+                        <div class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></div>
+                        <h3 class="text-sm font-bold text-[#1C2434]">Peringatan: Kontrak Segera Berakhir (&le; 30 Hari)</h3>
+                    </div>
+                    <span
+                        class="text-xs font-bold px-2.5 py-0.5 rounded-full {{ $expiringContractsCount > 0 ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800' }}">
+                        {{ $expiringContractsCount }} Karyawan
+                    </span>
+                </div>
+
+                @if ($expiringContracts->isEmpty())
+                    <div class="py-8 text-center bg-emerald-50/50 rounded-xl border border-emerald-100 mt-3">
+                        <div
+                            class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
+                                </path>
+                            </svg>
+                        </div>
+                        <p class="text-xs font-bold text-emerald-900">Semua Kontrak Aman</p>
+                        <p class="text-[11px] text-emerald-700 mt-0.5">Tidak ada kontrak karyawan yang berakhir dalam kurun waktu 30 hari ke depan.</p>
+                    </div>
+                @else
+                    <div class="overflow-x-auto mt-3">
+                        <table class="w-full text-left text-xs">
+                            <thead
+                                class="bg-slate-50 border-y border-[#E2E8F0] text-slate-500 font-bold uppercase tracking-wider text-[10px]">
+                                <tr>
+                                    <th class="py-2.5 px-3">Karyawan</th>
+                                    <th class="py-2.5 px-3">Tipe</th>
+                                    <th class="py-2.5 px-3">Berakhir</th>
+                                    <th class="py-2.5 px-3">Sisa Waktu</th>
+                                    <th class="py-2.5 px-3 text-right">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-[#E2E8F0]">
+                                @foreach ($expiringContracts as $contract)
+                                    @php
+                                        $daysRemaining = (int) now()
+                                            ->startOfDay()
+                                            ->diffInDays($contract->end_date->startOfDay(), false);
+                                    @endphp
+                                    <tr class="hover:bg-slate-50/80 transition">
+                                        <td class="py-2.5 px-3">
+                                            <a href="{{ route('employees.show', $contract->employee_id) }}"
+                                                class="font-bold text-[#1C2434] hover:text-[#3C50E0]">
+                                                {{ $contract->employee->name }}
+                                            </a>
+                                            <p class="text-[10px] text-slate-400">{{ $contract->position }} &bull;
+                                                {{ $contract->branch }}</p>
+                                        </td>
+                                        <td class="py-2.5 px-3">
+                                            <span
+                                                class="inline-flex px-2 py-0.5 rounded text-[10px] font-bold {{ $contract->contract_type_badge_color }}">
+                                                {{ $contract->contract_type_label }}
+                                            </span>
+                                        </td>
+                                        <td class="py-2.5 px-3 font-semibold text-slate-700">
+                                            {{ $contract->end_date->format('d/m/Y') }}
+                                        </td>
+                                        <td class="py-2.5 px-3">
+                                            <span
+                                                class="font-bold {{ $daysRemaining <= 7 ? 'text-rose-600' : 'text-amber-600' }}">
+                                                {{ $daysRemaining }} Hari Lagi
+                                            </span>
+                                        </td>
+                                        <td class="py-2.5 px-3 text-right">
+                                            <a href="{{ route('addendums.create', $contract) }}"
+                                                class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-purple-50 text-purple-700 hover:bg-purple-100 font-bold text-[10px] transition border border-purple-200">
+                                                <span>+ Adendum</span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @endif
+            </div>
+
+            <!-- 2. Peringatan: Kontrak Telah Berakhir (Expired) -->
+            <div class="p-6 rounded-2xl bg-white border border-[#E2E8F0] shadow-xs">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-2">
+                        <div class="w-2.5 h-2.5 rounded-full bg-rose-500 animate-pulse"></div>
+                        <h3 class="text-sm font-bold text-[#1C2434]">Peringatan: Kontrak Telah Berakhir (Expired)</h3>
+                    </div>
+                    <span
+                        class="text-xs font-bold px-2.5 py-0.5 rounded-full {{ $expiredContractsCount > 0 ? 'bg-rose-100 text-rose-800' : 'bg-emerald-100 text-emerald-800' }}">
+                        {{ $expiredContractsCount }} Karyawan
+                    </span>
+                </div>
+
+                @if ($expiredContracts->isEmpty())
+                    <div class="py-8 text-center bg-emerald-50/50 rounded-xl border border-emerald-100 mt-3">
+                        <div
+                            class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
+                                </path>
+                            </svg>
+                        </div>
+                        <p class="text-xs font-bold text-emerald-900">Tidak Ada Kontrak Expired</p>
+                        <p class="text-[11px] text-emerald-700 mt-0.5">Seluruh kontrak karyawan masih dalam masa berlaku aktif.</p>
+                    </div>
+                @else
+                    <div class="overflow-x-auto mt-3">
+                        <table class="w-full text-left text-xs">
+                            <thead
+                                class="bg-slate-50 border-y border-[#E2E8F0] text-slate-500 font-bold uppercase tracking-wider text-[10px]">
+                                <tr>
+                                    <th class="py-2.5 px-3">Karyawan</th>
+                                    <th class="py-2.5 px-3">Tipe</th>
+                                    <th class="py-2.5 px-3">Berakhir</th>
+                                    <th class="py-2.5 px-3">Lewat Waktu</th>
+                                    <th class="py-2.5 px-3 text-right">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-[#E2E8F0]">
+                                @foreach ($expiredContracts as $contract)
+                                    @php
+                                        $daysOverdue = (int) $contract->end_date
+                                            ->startOfDay()
+                                            ->diffInDays(now()->startOfDay(), false);
+                                    @endphp
+                                    <tr class="hover:bg-slate-50/80 transition">
+                                        <td class="py-2.5 px-3">
+                                            <a href="{{ route('employees.show', $contract->employee_id) }}"
+                                                class="font-bold text-[#1C2434] hover:text-[#3C50E0]">
+                                                {{ $contract->employee->name }}
+                                            </a>
+                                            <p class="text-[10px] text-slate-400">{{ $contract->position }} &bull;
+                                                {{ $contract->branch }}</p>
+                                        </td>
+                                        <td class="py-2.5 px-3">
+                                            <span
+                                                class="inline-flex px-2 py-0.5 rounded text-[10px] font-bold {{ $contract->contract_type_badge_color }}">
+                                                {{ $contract->contract_type_label }}
+                                            </span>
+                                        </td>
+                                        <td class="py-2.5 px-3 font-semibold text-slate-700">
+                                            {{ $contract->end_date->format('d/m/Y') }}
+                                        </td>
+                                        <td class="py-2.5 px-3">
+                                            <span class="font-bold text-rose-600">
+                                                @if ($daysOverdue > 0)
+                                                     Lewat {{ $daysOverdue }} Hari
+                                                @elseif ($daysOverdue === 0)
+                                                    Habis Hari Ini
+                                                @else
+                                                    Habis Kontrak
+                                                @endif
+                                            </span>
+                                        </td>
+                                        <td class="py-2.5 px-3 text-right">
+                                            <a href="{{ route('employees.renew', $contract->employee_id) }}"
+                                                class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-indigo-50 text-[#3C50E0] hover:bg-indigo-100 font-bold text-[10px] transition border border-indigo-200"
+                                                title="Perpanjang Kontrak">
+                                                <span>+ Perpanjang</span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @endif
+            </div>
+        </div>
+
+        <!-- Distribusi & Dokumen Terbaru Grid: 3 Kolom -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <!-- Distribusi Tipe Kontrak -->
+            <!-- 1. Distribusi Tipe Kontrak -->
             <div class="p-6 rounded-2xl bg-white border border-[#E2E8F0] shadow-xs flex flex-col justify-between">
                 <div>
                     <h3 class="text-sm font-bold text-[#1C2434] mb-1">Distribusi Tipe Kontrak Aktif</h3>
@@ -158,95 +332,7 @@
                 </div>
             </div>
 
-            <!-- Peringatan Kontrak Segera Berakhir (<= 30 Hari) -->
-            <div class="lg:col-span-2 p-6 rounded-2xl bg-white border border-[#E2E8F0] shadow-xs">
-                <div class="flex items-center justify-between mb-3">
-                    <div class="flex items-center gap-2">
-                        <div class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></div>
-                        <h3 class="text-sm font-bold text-[#1C2434]">Peringatan: Kontrak Segera Berakhir (&le; 30 Hari)
-                        </h3>
-                    </div>
-                    <span
-                        class="text-xs font-bold px-2.5 py-0.5 rounded-full {{ $expiringContractsCount > 0 ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800' }}">
-                        {{ $expiringContractsCount }} Karyawan
-                    </span>
-                </div>
-
-                @if ($expiringContracts->isEmpty())
-                    <div class="py-8 text-center bg-emerald-50/50 rounded-xl border border-emerald-100 mt-3">
-                        <div
-                            class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-2">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
-                                </path>
-                            </svg>
-                        </div>
-                        <p class="text-xs font-bold text-emerald-900">Semua Kontrak Aman</p>
-                        <p class="text-[11px] text-emerald-700 mt-0.5">Tidak ada kontrak karyawan yang berakhir dalam kurun
-                            waktu 30 hari ke depan.</p>
-                    </div>
-                @else
-                    <div class="overflow-x-auto mt-3">
-                        <table class="w-full text-left text-xs">
-                            <thead
-                                class="bg-slate-50 border-y border-[#E2E8F0] text-slate-500 font-bold uppercase tracking-wider text-[10px]">
-                                <tr>
-                                    <th class="py-2.5 px-3">Karyawan</th>
-                                    <th class="py-2.5 px-3">Tipe</th>
-                                    <th class="py-2.5 px-3">Berakhir</th>
-                                    <th class="py-2.5 px-3">Sisa Waktu</th>
-                                    <th class="py-2.5 px-3 text-right">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-[#E2E8F0]">
-                                @foreach ($expiringContracts as $contract)
-                                    @php
-                                        $daysRemaining = (int) now()
-                                            ->startOfDay()
-                                            ->diffInDays($contract->end_date->startOfDay(), false);
-                                    @endphp
-                                    <tr class="hover:bg-slate-50/80 transition">
-                                        <td class="py-2.5 px-3">
-                                            <a href="{{ route('employees.show', $contract->employee_id) }}"
-                                                class="font-bold text-[#1C2434] hover:text-[#3C50E0]">
-                                                {{ $contract->employee->name }}
-                                            </a>
-                                            <p class="text-[10px] text-slate-400">{{ $contract->position }} &bull;
-                                                {{ $contract->branch }}</p>
-                                        </td>
-                                        <td class="py-2.5 px-3">
-                                            <span
-                                                class="inline-flex px-2 py-0.5 rounded text-[10px] font-bold {{ $contract->contract_type_badge_color }}">
-                                                {{ $contract->contract_type_label }}
-                                            </span>
-                                        </td>
-                                        <td class="py-2.5 px-3 font-semibold text-slate-700">
-                                            {{ $contract->end_date->format('d/m/Y') }}
-                                        </td>
-                                        <td class="py-2.5 px-3">
-                                            <span
-                                                class="font-bold {{ $daysRemaining <= 7 ? 'text-rose-600' : 'text-amber-600' }}">
-                                                {{ $daysRemaining }} Hari Lagi
-                                            </span>
-                                        </td>
-                                        <td class="py-2.5 px-3 text-right">
-                                            <a href="{{ route('addendums.create', $contract) }}"
-                                                class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-purple-50 text-purple-700 hover:bg-purple-100 font-bold text-[10px] transition border border-purple-200">
-                                                <span>+ Adendum</span>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                @endif
-            </div>
-        </div>
-
-        <!-- Dokumen Terbaru Grid: Offering Letters & Kontrak Kerja -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <!-- Offering Letter Terbaru -->
+            <!-- 2. Offering Letter Terbaru -->
             <div class="p-6 rounded-2xl bg-white border border-[#E2E8F0] shadow-xs">
                 <div class="flex items-center justify-between mb-4">
                     <div>
@@ -270,7 +356,7 @@
                                     <div class="flex items-center gap-2">
                                         <a href="{{ route('offering-letters.show', $ol) }}"
                                             class="text-xs font-bold text-[#1C2434] hover:text-[#3C50E0] truncate">
-                                            {{ $ol->letter_number ?: 'OL #' . $ol->id }}
+                                            {{ $ol->letter_number }}
                                         </a>
                                         <span
                                             class="inline-block px-1.5 py-0.5 rounded text-[9px] font-bold {{ $ol->status_badge_color }}">
@@ -290,7 +376,7 @@
                 @endif
             </div>
 
-            <!-- Kontrak Kerja Terbaru -->
+            <!-- 3. Kontrak Kerja Terbaru -->
             <div class="p-6 rounded-2xl bg-white border border-[#E2E8F0] shadow-xs">
                 <div class="flex items-center justify-between mb-4">
                     <div>
@@ -303,7 +389,7 @@
                 </div>
 
                 @if ($recentContracts->isEmpty())
-                    <p class="text-xs text-slate-400 text-center py-6">Belum ada kontrak kerja yang tercatat.</p>
+                    <p class="text-xs text-slate-400 text-center py-6">Belum ada data kontrak kerja yang tercatat.</p>
                 @else
                     <div class="space-y-3">
                         @foreach ($recentContracts as $contract)
@@ -313,7 +399,7 @@
                                     <div class="flex items-center gap-2">
                                         <a href="{{ route('contracts.show', $contract) }}"
                                             class="text-xs font-bold text-[#1C2434] hover:text-[#3C50E0] truncate">
-                                            {{ $contract->contract_number ?: 'Kontrak #' . $contract->id }}
+                                            {{ $contract->contract_number }}
                                         </a>
                                         <span
                                             class="inline-block px-1.5 py-0.5 rounded text-[9px] font-bold {{ $contract->contract_type_badge_color }}">
