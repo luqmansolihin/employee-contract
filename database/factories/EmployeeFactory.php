@@ -140,6 +140,8 @@ class EmployeeFactory extends Factory
                 'first_join_date' => $joinDate->toDateString(),
                 'current_contract_end_date' => Carbon::today()->subDays(fake()->numberBetween(5, 60))->toDateString(),
             ];
+        })->afterCreating(function (Employee $employee) {
+            $employee->contracts()->update(['status' => 'expired']);
         });
     }
 

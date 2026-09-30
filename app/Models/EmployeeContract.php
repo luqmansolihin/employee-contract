@@ -102,6 +102,31 @@ class EmployeeContract extends Model
     }
 
     /**
+     * Badge CSS class alias for contract type.
+     */
+    protected function contractTypeBadgeColor(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): string => $this->contract_type_badge_class
+        );
+    }
+
+    /**
+     * Friendly label for contract type.
+     */
+    protected function contractTypeLabel(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): string => match ($this->contract_type) {
+                'PKWT' => 'PKWT',
+                'MT' => 'Management Trainee (MT)',
+                'MAGANG' => 'Magang',
+                default => $this->contract_type ?? 'PKWT',
+            }
+        );
+    }
+
+    /**
      * Friendly sequence label (e.g. Kontrak #1 (Awal), Kontrak #2 (Perpanjangan 1))
      */
     protected function sequenceLabel(): Attribute

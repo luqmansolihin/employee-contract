@@ -87,6 +87,16 @@ class OfferingLetter extends Model
     }
 
     /**
+     * Badge CSS class alias for status.
+     */
+    protected function statusBadgeColor(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): string => $this->status_badge_class
+        );
+    }
+
+    /**
      * Human-readable formatted contract duration (e.g. 1 Tahun, 1 Bulan, 1 Tahun 6 Bulan).
      */
     protected function formattedDuration(): Attribute
