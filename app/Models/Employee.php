@@ -160,6 +160,44 @@ class Employee extends Model
     }
 
     /**
+     * Get breakdown of contract counts grouped by contract type.
+     * e.g. ['PKWT' => 2, 'MT' => 1]
+     *
+     * @return array<string, int>
+     */
+    public function getContractTypeCounts(): array
+    {
+        return $this->contracts
+            ->groupBy(fn ($contract) => $contract->contract_type ?: 'PKWT')
+            ->map(fn ($group) => $group->count())
+            ->all();
+    }
+
+    /**
+     * Human-readable summary of contract history by type.
+     * e.g. "2x PKWT, 1x MT"
+     */
+    protected function contractHistorySummary(): Attribute
+    {
+        return Attribute::make(
+            get: function (): string {
+                $counts = $this->getContractTypeCounts();
+
+                if (empty($counts)) {
+                    return 'Belum Ada';
+                }
+
+                $parts = [];
+                foreach ($counts as $type => $count) {
+                    $parts[] = "{$count}x {$type}";
+                }
+
+                return implode(', ', $parts);
+            }
+        );
+    }
+
+    /**
      * Days difference relative to today
      */
     protected function remainingDays(): Attribute

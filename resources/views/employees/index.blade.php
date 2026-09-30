@@ -154,27 +154,48 @@
                                     </span>
                                 </td>
 
-                                <!-- Contract Sequence Badge -->
+                                <!-- Contract Sequence & History Badges -->
                                 <td class="py-4 px-4 text-center">
                                     @php
-                                        $contractCount = $employee->contracts->count();
+                                        $typeCounts = $employee->getContractTypeCounts();
+                                        $contractCount = array_sum($typeCounts);
                                     @endphp
                                     @if ($contractCount > 1)
-                                        <span
-                                            class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-indigo-50 text-[#3C50E0] border border-indigo-200"
-                                            title="{{ $contractCount }} kali kontrak">
-                                            <svg class="w-3 h-3 text-[#3C50E0]" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
-                                                </path>
-                                            </svg>
-                                            PKWT #{{ $contractCount }}
-                                        </span>
+                                        <div class="flex items-center justify-center gap-1.5 flex-wrap">
+                                            @foreach ($typeCounts as $type => $count)
+                                                @php
+                                                    $badgeColor = match ($type) {
+                                                        'MT' => 'bg-purple-50 text-purple-700 border-purple-200',
+                                                        'MAGANG' => 'bg-amber-50 text-amber-700 border-amber-200',
+                                                        default => 'bg-indigo-50 text-[#3C50E0] border-indigo-200',
+                                                    };
+                                                @endphp
+                                                <span
+                                                    class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold border {{ $badgeColor }}"
+                                                    title="{{ $count }} kali kontrak {{ $type }} (Total {{ $contractCount }} kontrak)">
+                                                    <svg class="w-3 h-3" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+                                                        </path>
+                                                    </svg>
+                                                    {{ $count }}x {{ $type }}
+                                                </span>
+                                            @endforeach
+                                        </div>
                                     @elseif ($contractCount === 1)
+                                        @php
+                                            $firstType = array_key_first($typeCounts);
+                                            $badgeColor = match ($firstType) {
+                                                'MT' => 'bg-purple-50 text-purple-700 border-purple-200',
+                                                'MAGANG' => 'bg-amber-50 text-amber-700 border-amber-200',
+                                                default => 'bg-indigo-50 text-[#3C50E0] border-indigo-200',
+                                            };
+                                        @endphp
                                         <span
-                                            class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-slate-100 text-slate-600">
-                                            Kontrak Awal
+                                            class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold border {{ $badgeColor }}"
+                                            title="1 kali kontrak {{ $firstType }}">
+                                            1x {{ $firstType }} (Awal)
                                         </span>
                                     @else
                                         <span

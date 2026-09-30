@@ -133,4 +133,26 @@ class ContractRenewalTest extends TestCase
         $this->assertEquals(4, $employee->contracts()->count());
         $this->assertEquals('Department Lead', $employee->current_position);
     }
+
+    public function test_can_renew_contract_with_specific_contract_type(): void
+    {
+        $employee = Employee::factory()->active()->create();
+
+        $payload = [
+            'contract_number' => '002/MT-EXT/2026',
+            'contract_type' => 'MT',
+            'start_date' => Carbon::parse($employee->current_contract_end_date)->addDay()->toDateString(),
+            'end_date' => Carbon::parse($employee->current_contract_end_date)->addDay()->addYear()->toDateString(),
+            'position' => 'Management Trainee',
+            'branch' => $employee->current_branch,
+        ];
+
+        $response = $this->post(route('employees.renew.store', $employee), $payload);
+
+        $response->assertRedirect(route('employees.show', $employee));
+        $employee->refresh();
+
+        $this->assertEquals(2, $employee->contracts()->count());
+        $this->assertEquals('MT', $employee->latestContract->contract_type);
+    }
 }

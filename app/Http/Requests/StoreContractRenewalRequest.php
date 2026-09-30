@@ -24,6 +24,7 @@ class StoreContractRenewalRequest extends FormRequest
     {
         return [
             'contract_number' => ['nullable', 'string', 'max:100'],
+            'contract_type' => ['nullable', 'string', 'in:PKWT,MT,MAGANG'],
             'start_date' => ['required', 'date'],
             'end_date' => ['required', 'date', 'after:start_date'],
             'position' => ['required', 'string', 'max:100'],
@@ -39,7 +40,8 @@ class StoreContractRenewalRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'contract_number' => 'nomor kontrak/PKWT',
+            'contract_number' => 'nomor kontrak',
+            'contract_type' => 'tipe kontrak',
             'start_date' => 'tanggal mulai perpanjangan',
             'end_date' => 'tanggal habis perpanjangan',
             'position' => 'jabatan/posisi',

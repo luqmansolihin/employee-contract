@@ -47,11 +47,13 @@ class ContractRenewalController extends Controller
 
             // Calculate next sequence
             $nextSequence = ($employee->contracts()->max('contract_sequence') ?? 0) + 1;
+            $contractType = $request->input('contract_type') ?? $employee->latestContract?->contract_type ?? 'PKWT';
 
             // Create new extended contract
             $employee->contracts()->create([
                 'contract_sequence' => $nextSequence,
                 'contract_number' => $request->contract_number,
+                'contract_type' => $contractType,
                 'position' => $request->position,
                 'branch' => $request->branch,
                 'start_date' => $request->start_date,

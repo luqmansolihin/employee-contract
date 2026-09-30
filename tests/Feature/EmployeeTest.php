@@ -261,4 +261,59 @@ class EmployeeTest extends TestCase
             'employee_id' => $employee->id,
         ]);
     }
+
+    public function test_employees_index_displays_accurate_contract_history_breakdown_by_type(): void
+    {
+        $employee = Employee::factory()->create(['name' => 'Karyawan Multi Kontrak']);
+        $employee->contracts()->delete();
+
+        // 1st Contract: PKWT
+        $employee->contracts()->create([
+            'contract_sequence' => 1,
+            'contract_number' => '001/PKWT/2024',
+            'contract_type' => 'PKWT',
+            'position' => 'Staff',
+            'branch' => 'Jakarta',
+            'start_date' => now()->subYears(2),
+            'end_date' => now()->subYear(),
+            'status' => 'renewed',
+        ]);
+
+        // 2nd Contract: PKWT
+        $employee->contracts()->create([
+            'contract_sequence' => 2,
+            'contract_number' => '002/PKWT/2025',
+            'contract_type' => 'PKWT',
+            'position' => 'Staff',
+            'branch' => 'Jakarta',
+            'start_date' => now()->subYear(),
+            'end_date' => now()->subMonths(6),
+            'status' => 'renewed',
+        ]);
+
+        // 3rd Contract: MT
+        $employee->contracts()->create([
+            'contract_sequence' => 3,
+            'contract_number' => '003/MT/2026',
+            'contract_type' => 'MT',
+            'position' => 'Supervisor Trainee',
+            'branch' => 'Jakarta',
+            'start_date' => now()->subMonths(6),
+            'end_date' => now()->addMonths(6),
+            'status' => 'active',
+        ]);
+
+        $employee->update([
+            'current_position' => 'Supervisor Trainee',
+            'current_branch' => 'Jakarta',
+            'current_contract_end_date' => now()->addMonths(6),
+        ]);
+
+        $response = $this->get(route('employees.index'));
+
+        $response->assertOk();
+        $response->assertSee('2x PKWT');
+        $response->assertSee('1x MT');
+        $response->assertDontSee('PKWT #3');
+    }
 }

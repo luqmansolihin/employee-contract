@@ -80,7 +80,7 @@
 
                 <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-5">
                     <!-- Nomor Kontrak Baru -->
-                    <div class="md:col-span-2">
+                    <div>
                         <label for="contract_number"
                             class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                             Nomor Surat Kontrak Baru / Adendum <span class="text-slate-400 font-normal">(Opsional)</span>
@@ -90,6 +90,23 @@
                             autocomplete="off"
                             class="w-full px-4 py-2.5 text-sm rounded-lg border border-[#E2E8F0] focus:border-[#3C50E0] focus:ring-2 focus:ring-[#3C50E0]/20 outline-hidden transition bg-white">
                         @error('contract_number')
+                            <p class="text-xs text-rose-600 mt-1 font-medium">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Tipe Kontrak Baru -->
+                    <div>
+                        <label for="contract_type"
+                            class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                            Tipe Kontrak <span class="text-rose-500">*</span>
+                        </label>
+                        <select name="contract_type" id="contract_type" required
+                            class="w-full px-4 py-2.5 text-sm rounded-lg border border-[#E2E8F0] focus:border-[#3C50E0] focus:ring-2 focus:ring-[#3C50E0]/20 outline-hidden transition bg-white">
+                            <option value="PKWT" {{ old('contract_type', $latestContract?->contract_type ?? 'PKWT') === 'PKWT' ? 'selected' : '' }}>PKWT (Perjanjian Kerja Waktu Tertentu)</option>
+                            <option value="MT" {{ old('contract_type', $latestContract?->contract_type ?? 'PKWT') === 'MT' ? 'selected' : '' }}>Management Trainee (MT)</option>
+                            <option value="MAGANG" {{ old('contract_type', $latestContract?->contract_type ?? 'PKWT') === 'MAGANG' ? 'selected' : '' }}>MAGANG (Internship)</option>
+                        </select>
+                        @error('contract_type')
                             <p class="text-xs text-rose-600 mt-1 font-medium">{{ $message }}</p>
                         @enderror
                     </div>
